@@ -1,41 +1,62 @@
-"""Start the backport and bundled Tiny Takeover together on a dedicated server."""
+"""Start an assembled, installable backport jar using the production loader."""
 import os
 import re
 import signal
+import shutil
 import subprocess
 import sys
 import time
-import zipfile
+import urllib.request
 from pathlib import Path
 
 loader = sys.argv[1]
-# Only the temporary dev-runtime copy omits the newer Loom build stamp.
-# The distributed jar keeps the original manifest.
+root = Path.cwd()
+properties = dict(re.findall(r"^([\w_]+)\s*=\s*(.*?)\s*$", (root / "gradle.properties").read_text(), re.M))
+version = properties["minecraft_version"]
+runtime = root / "build" / "production-smoke"
+runtime.mkdir(parents=True, exist_ok=True)
+mods = runtime / "mods"
+mods.mkdir(exist_ok=True)
+jars = list((root / "dist").glob("*.jar"))
+assert len(jars) == 1, jars
+shutil.copy2(jars[0], mods / jars[0].name)
+(runtime / "eula.txt").write_text("eula=true\n")
+(runtime / "server.properties").write_text("online-mode=false\nlevel-type=minecraft:flat\nview-distance=2\nsimulation-distance=2\n")
+java = str(Path(os.environ["JAVA_HOME"]) / "bin/java")
+
+def download(url, destination):
+    if not destination.exists():
+        with urllib.request.urlopen(url, timeout=90) as response, destination.open("wb") as output:
+            shutil.copyfileobj(response, output)
+
 if loader == "fabric":
-    runtime = Path("libs/TinyTakeover-runtime.jar")
-    with zipfile.ZipFile(runtime) as archive:
-        entries = {name: archive.read(name) for name in archive.namelist()}
-    manifest = entries["META-INF/MANIFEST.MF"].decode()
-    manifest = re.sub(r"(?m)^Fabric-Loom-Version:.*\r?\n", "", manifest)
-    entries["META-INF/MANIFEST.MF"] = manifest.encode()
-    with zipfile.ZipFile(runtime, "w", zipfile.ZIP_DEFLATED) as archive:
-        for name, content in entries.items():
-            archive.writestr(name, content)
-for directory in [Path(loader) / "run", Path(loader) / "runs/server"]:
-    directory.mkdir(parents=True, exist_ok=True)
-    (directory / "eula.txt").write_text("eula=true\n")
-    (directory / "server.properties").write_text("online-mode=false\nlevel-type=minecraft:flat\nview-distance=2\nsimulation-distance=2\n")
-log = Path("smoke-server.log")
+    fabric_loader = properties["fabric_loader_version"]
+    download(f"https://meta.fabricmc.net/v2/versions/loader/{version}/{fabric_loader}/1.0.3/server/jar", runtime / "launcher.jar")
+    api = properties["fabric_api_version"]
+    download(f"https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/{api}/fabric-api-{api}.jar", mods / "fabric-api.jar")
+    command = [java, "-Xmx2G", "-jar", "launcher.jar", "nogui"]
+else:
+    forge = properties[f"{loader}_version"]
+    if loader == "forge":
+        installer = f"https://maven.minecraftforge.net/net/minecraftforge/forge/{forge}/forge-{forge}-installer.jar"
+        arguments = f"libraries/net/minecraftforge/forge/{forge}/unix_args.txt"
+    else:
+        installer = f"https://maven.neoforged.net/releases/net/neoforged/neoforge/{forge}/neoforge-{forge}-installer.jar"
+        arguments = f"libraries/net/neoforged/neoforge/{forge}/unix_args.txt"
+    download(installer, runtime / "installer.jar")
+    subprocess.run([java, "-jar", "installer.jar", "--installServer"], cwd=runtime, check=True, timeout=600)
+    command = [java, "-Xmx2G", "@" + arguments, "nogui"]
+log = root / "smoke-server.log"
 passed = False
 with log.open("w") as output:
-    process = subprocess.Popen(["bash", "gradlew", f":{loader}:runServer", "--stacktrace"],
-        stdin=subprocess.PIPE, stdout=output, stderr=subprocess.STDOUT, start_new_session=True)
+    process = subprocess.Popen(command, cwd=runtime, stdin=subprocess.PIPE, stdout=output,
+                               stderr=subprocess.STDOUT, start_new_session=True)
     deadline = time.monotonic() + 600
     ready = None
     try:
         while time.monotonic() < deadline:
             content = log.read_text(errors="replace")
-            if re.search(r"Mixin apply failed|InjectionError|InvalidMixinException|ReportedException|BUILD FAILED", content):
+            if re.search(r"Mixin apply failed|InjectionError|InvalidMixinException|ReportedException|Exception in thread", content):
                 break
             if process.poll() is not None:
                 break
@@ -62,5 +83,5 @@ with log.open("w") as output:
                     os.killpg(process.pid, signal.SIGKILL)
 print(log.read_text(errors="replace"))
 if not passed:
-    raise SystemExit("Bundled server startup did not pass")
-print("Backport and Tiny Takeover server startup passed")
+    raise SystemExit("Production server startup did not pass")
+print("Assembled TrueVanillaBackport server startup passed")

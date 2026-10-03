@@ -39,9 +39,6 @@ repositories {
 }
 
 dependencies {
-    if (rootProject.file("libs/TinyTakeover-runtime.jar").exists()) {
-        modRuntimeOnly files(rootProject.file("libs/TinyTakeover-runtime.jar"))
-    }
     neoForge "net.neoforged:neoforge:$rootProject.neoforge_version"
     modImplementation "flatDir:Platform-neoforge-1.21.1-$rootProject.platform_indev_version"
 //    modImplementation "maven.modrinth:platform:1.3.3-neoforge,1.21.1"
