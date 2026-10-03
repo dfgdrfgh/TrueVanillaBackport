@@ -1,10 +1,25 @@
-# VanillaBackport
-What originally was Caves&CliffsBackport, has evolved to become a more universal mod, backporting more than a single version into a single mod rather than having various mods scattered around. ([Nether Backport](https://legacy.curseforge.com/minecraft/mc-mods/extended-nether-backport), [Caves & Cliffs Backport](https://legacy.curseforge.com/minecraft/mc-mods/vanilla-backport), and [The Wild Backport](https://legacy.curseforge.com/minecraft/mc-mods/the-wild-backport))
+# TrueVanillaBackport
 
-This allows to have better compatibility between backports without having to add dependencies between them and at the same time, give support to more versions.
+A vanilla parity fork of [VanillaBackport](https://modrinth.com/mod/vanillabackport).
+The Minecraft registry namespace and mod ID remain compatible with the original mod.
 
-### ⚠️ Disclaimer
-This mod is in no way affiliated with or endorsed by Mojang, Microsoft, or any of their subsidiaries.  
-Minecraft is a trademark of Mojang Studios. All related assets, including textures, names, and game content, are the property of Mojang Studios and Microsoft.
+## Parity changes
 
-No commercial use is intended or permitted.
+- Restore the vanilla 20% nautilus armor pool chance in buried treasure, ocean ruins and shipwrecks.
+- Add all eight Mounts of Mayhem spear loot entries to their existing vanilla pools, including enchantments and durability.
+- Correct 1.20.1 Lunge direction, exhaustion and maximum enchanting costs.
+- Use the vanilla wolf armor damage exceptions on 1.20.1.
+- Bundle the patched Tiny Takeover implementation: golden dandelions, growth locking, name tag crafting, baby models and sounds, animal sound variants, aquatic babies and trumpet note blocks.
+
+## Builds
+
+The Build parity backport GitHub Actions workflow builds each loader from pinned source revisions.
+Its artifacts contain installable TrueVanillaBackport jars with Platform and Tiny Takeover embedded using the loader's jar-in-jar format, plus SHA-256 checksums.
+Fabric still requires Fabric API. The Tiny Takeover JSON settings retain their upstream defaults; its optional configuration GUI is omitted from the embedded build.
+
+Pinned dependencies and their licenses:
+
+- [Platform (MIT)](https://github.com/ItsBlackGear/Platform)
+- [Tinier Takeover fork (MIT)](https://github.com/dfgdrfgh/Tinier-Takeover-Backport/tree/accd6d7ec828160cc1723256280baaa3d1a8829a)
+
+Minecraft assets belong to Mojang and Microsoft. This mod is not affiliated with either company.

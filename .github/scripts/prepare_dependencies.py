@@ -11,6 +11,7 @@ version = sys.argv[3]
 properties = platform / "gradle.properties"
 properties.write_text(re.sub(r"mod_version\s*=.*", "mod_version = 1.4.0.2638.1.1", properties.read_text()))
 if version == "1.21.1":
+    properties.write_text(re.sub(r"neoforge_version\s*=.*", "neoforge_version = 21.1.219", properties.read_text()))
     p = platform / "common/src/main/java/com/blackgear/platform/common/data/LootModifier.java"
     p.write_text(p.read_text().replace("public interface LootTableContext {", "public interface LootTableContext {\n        net.minecraft.core.HolderLookup.Provider registries();"))
     for loader, expression in [("fabric", "provider"), ("neoforge", "event.getRegistries()")]:
