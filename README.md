@@ -1,7 +1,6 @@
 # TrueVanillaBackport
 
 A vanilla parity fork of [VanillaBackport](https://modrinth.com/mod/vanillabackport).
-The Minecraft registry namespace and mod ID remain compatible with the original mod.
 
 ## Parity changes
 
