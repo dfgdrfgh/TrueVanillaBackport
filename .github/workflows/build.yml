@@ -5,6 +5,9 @@ on:
   pull_request:
     branches: ["1.20.1", "1.21.1"]
   workflow_dispatch:
+concurrency:
+  group: truevanilla-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
@@ -35,13 +38,17 @@ jobs:
             21
             25
       - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-home-cache-excludes: |
+            caches/fabric-loom
+            caches/architectury-loom
       - name: Prepare pinned dependencies
         run: python .github/scripts/prepare_dependencies.py vendor/platform vendor/tiny 1.20.1
       - name: Compile Platform
         env:
           JAVA_HOME: ${{ env.JAVA_HOME_17_X64 }}
         run: |
-          bash vendor/platform/gradlew -p vendor/platform :common:remapJar :fabric:remapJar :forge:remapJar --stacktrace
+          bash vendor/platform/gradlew -p vendor/platform :common:remapJar :fabric:remapJar :forge:remapJar --stacktrace --no-daemon
           mkdir -p libs
           cp vendor/platform/common/build/libs/Platform-common-1.20.1-1.4.0.2638.1.1.jar libs/
           cp vendor/platform/{fabric,forge}/build/libs/Platform-*-1.20.1-1.4.0.2638.1.1.jar libs/
