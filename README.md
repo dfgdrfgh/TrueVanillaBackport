@@ -13,6 +13,8 @@ The Minecraft registry namespace and mod ID remain compatible with the original 
 
 ## Builds
 
+Version 1.2.0.2638.7 fixes nautilus saddle slots appearing empty after reopening the inventory. The client opens the menu before applying the following slot-content update, with a client-thread handoff only when needed. A focused packet-ordering regression check reproduces the previous failure and covers repeated reopening, empty saddle slots, off-thread delivery and disconnects.
+
 Version 1.2.0.2638.6 adds a Tiny Takeover sub-tab inside the mod's creative tab, between Mounts of Mayhem and Chaos Cubed. It uses a golden dandelion icon and contains golden dandelions and name tags.
 
 Version 1.2.0.2638.5 reduces temporary allocations during nautilus, creaking and copper golem animation resets, bonemeal neighbor checks, and copper golem target visibility checks. Model part references are retained only for the lifetime of each baked model. Direction order, raycasts, random calls and animation calculations are preserved. These changes have not been benchmarked for an FPS or tick-time claim.
