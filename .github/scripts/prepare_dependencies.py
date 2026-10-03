@@ -45,3 +45,18 @@ for p in tiny.glob("build.*.gradle.kts"):
     s = p.read_text()
     s = "\n".join(line for line in s.splitlines() if not ("modImplementation(" in line or "implementation(" in line) or not any(dependency in line for dependency in ["maven.modrinth:yacl:", "com.terraformersmc:modmenu:"])) + "\n"
     p.write_text(s)
+
+# Compile compatibility code against this fork, whose armadillo packages were moved.
+for p in java.rglob("*.java"):
+    p.write_text(p.read_text().replace(
+        "com.blackgear.vanillabackport.client.level.entities.model.ArmadilloModel",
+        "com.blackgear.vanillabackport.client.level.model.entity.ArmadilloModel").replace(
+        "com.blackgear.vanillabackport.common.level.entities.armadillo.Armadillo",
+        "com.blackgear.vanillabackport.common.level.entities.mob.animal.armadillo.Armadillo"))
+for p in tiny.glob("build.*.gradle.kts"):
+    s = p.read_text()
+    s = re.sub(r'"maven.modrinth:vanillabackport:\$\{prop\("deps.vanilla_backport"\)\}"',
+               'files(rootProject.file("../../libs/TrueVanillaBackport-api.jar"))', s)
+    s = re.sub(r'"maven.modrinth:platform:\$\{prop\("deps.platform"\)\}"',
+               'files(rootProject.file("../../libs/Platform-api.jar"))', s)
+    p.write_text(s)

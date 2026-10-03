@@ -48,9 +48,18 @@ jobs:
       - name: Compile TrueVanillaBackport
         env:
           JAVA_HOME: ${{ env.JAVA_HOME_17_X64 }}
-        run: bash gradlew :${{ matrix.loader }}:remapJar --stacktrace
+        run: |
+          bash gradlew :${{ matrix.loader }}:remapJar --stacktrace
+          cp ${{ matrix.loader }}/build/libs/TrueVanillaBackport-${{ matrix.loader }}-1.20.1-1.2.0.2638.4.jar libs/TrueVanillaBackport-api.jar
+          cp vendor/platform/${{ matrix.loader }}/build/libs/Platform-${{ matrix.loader }}-1.20.1-1.4.0.2638.1.1.jar libs/Platform-api.jar
       - name: Compile bundled Tiny Takeover
         run: bash vendor/tiny/gradlew -p vendor/tiny :1.20.1-${{ matrix.loader }}:buildAndCollect --stacktrace
+      - name: Check combined server startup
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME_17_X64 }}
+        run: |
+          cp vendor/tiny/build/libs/1.5.1/tiny_takeover_backport-${{ matrix.loader }}-1.20.1-1.5.1.jar libs/TinyTakeover-runtime.jar
+          python .github/scripts/smoke.py ${{ matrix.loader }}
       - name: Assemble installable mod
         run: python .github/scripts/bundle.py 1.20.1 ${{ matrix.loader }}
       - uses: actions/upload-artifact@v4
