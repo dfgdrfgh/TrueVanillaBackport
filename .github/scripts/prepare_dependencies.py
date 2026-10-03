@@ -54,9 +54,9 @@ for p in java.rglob("*.java"):
         "com.blackgear.vanillabackport.common.level.entities.armadillo.Armadillo",
         "com.blackgear.vanillabackport.common.level.entities.mob.animal.armadillo.Armadillo"))
 for p in tiny.glob("build.*.gradle.kts"):
-    s = p.read_text()
+    s = p.read_text().replace("repositories {", 'repositories {\n    flatDir { dirs(rootProject.file("../../libs")) }', 1)
     s = re.sub(r'"maven.modrinth:vanillabackport:\$\{prop\("deps.vanilla_backport"\)\}"',
-               'files(rootProject.file("../../libs/TrueVanillaBackport-api.jar"))', s)
+               '"truevanilla:TrueVanillaBackport-api:1"', s)
     s = re.sub(r'"maven.modrinth:platform:\$\{prop\("deps.platform"\)\}"',
-               'files(rootProject.file("../../libs/Platform-api.jar"))', s)
+               '"truevanilla:Platform-api:1"', s)
     p.write_text(s)
