@@ -1,9 +1,9 @@
 name: Build parity backport
 on:
   push:
-    branches: ["1.21.1", "1.21.1"]
+    branches: ["1.21.1"]
   pull_request:
-    branches: ["1.21.1", "1.21.1"]
+    branches: ["1.21.1"]
   workflow_dispatch:
 concurrency:
   group: truevanilla-${{ github.ref }}
@@ -57,7 +57,7 @@ jobs:
           JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
         run: |
           bash gradlew :${{ matrix.loader }}:remapJar --stacktrace
-          cp ${{ matrix.loader }}/build/libs/TrueVanillaBackport-${{ matrix.loader }}-1.21.1-1.2.0.2638.4.jar libs/TrueVanillaBackport-api.jar
+          cp ${{ matrix.loader }}/build/libs/TrueVanillaBackport-${{ matrix.loader }}-1.21.1-1.2.0.2638.5.jar libs/TrueVanillaBackport-api.jar
           cp vendor/platform/${{ matrix.loader }}/build/libs/Platform-${{ matrix.loader }}-1.21.1-1.4.0.2638.1.1.jar libs/Platform-api.jar
       - name: Compile bundled Tiny Takeover
         run: bash vendor/tiny/gradlew -p vendor/tiny :1.21.1-${{ matrix.loader }}:buildAndCollect --stacktrace
