@@ -13,6 +13,8 @@ The Minecraft registry namespace and mod ID remain compatible with the original 
 
 ## Builds
 
+Version 1.2.0.2638.6 adds a Tiny Takeover sub-tab inside the mod's creative tab, between Mounts of Mayhem and Chaos Cubed. It uses a golden dandelion icon and contains golden dandelions and name tags.
+
 Version 1.2.0.2638.5 reduces temporary allocations during nautilus, creaking and copper golem animation resets, bonemeal neighbor checks, and copper golem target visibility checks. Model part references are retained only for the lifetime of each baked model. Direction order, raycasts, random calls and animation calculations are preserved. These changes have not been benchmarked for an FPS or tick-time claim.
 
 The Build parity backport GitHub Actions workflow builds each loader from pinned source revisions.

@@ -7,11 +7,13 @@ import com.blackgear.vanillabackport.common.registries.enchantment.ModEnchantmen
 import com.blackgear.vanillabackport.common.registries.items.ModItems;
 import com.blackgear.vanillabackport.common.registries.items.ModPaintingVariants;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.RegistryOps;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.decoration.Painting;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.BlockItemStateProperties;
@@ -25,6 +27,7 @@ import java.util.stream.IntStream;
 
 public class ModBundledTabs {
     private static final List<BundledTabs> FILTERS = new ArrayList<>();
+    private static final ResourceLocation GOLDEN_DANDELION = ResourceLocation.withDefaultNamespace("golden_dandelion");
 
     public static final BundledTabs BUNDLES_OF_BRAVERY = register(
         BundledTabs.builder()
@@ -275,6 +278,17 @@ public class ModBundledTabs {
             .build()
     );
     
+    public static final BundledTabs TINY_TAKEOVER = register(
+        BundledTabs.builder()
+            .title(Component.translatable("bundled_tab.tiny_takeover.title"))
+            .icon(() -> new ItemStack(BuiltInRegistries.ITEM.getOptional(GOLDEN_DANDELION).orElse(Items.NAME_TAG)))
+            .displayItems((provider, output) -> {
+                BuiltInRegistries.ITEM.getOptional(GOLDEN_DANDELION).ifPresent(output::accept);
+                output.accept(Items.NAME_TAG);
+            })
+            .build()
+    );
+
     public static final BundledTabs CHAOS_CUBED = register(
         BundledTabs.builder()
             .title(Component.translatable("bundled_tab.chaos_cubed.title"))

@@ -687,6 +687,7 @@ public class LangGenerator extends FabricLanguageProvider {
         builder.add("bundled_tab.hot_as_lava.title", "Hot as Lava");
         builder.add("bundled_tab.copper_age.title", "Copper Age");
         builder.add("bundled_tab.mounts_of_mayhem.title", "Mounts of Mayhem");
+        builder.add("bundled_tab.tiny_takeover.title", "Tiny Takeover");
         builder.add("bundled_tab.chaos_cubed.title", "Chaos Cubed");
         builder.add("bundled_tab.wilderness_bound.title", "Wilderness Bound");
         builder.add("bundled_tab.miscellaneous.title", "Miscellaneous");
