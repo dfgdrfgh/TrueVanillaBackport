@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "vanillabackport",
   "version": "${version}",
-  "name": "TrueVanillaBackport",
+  "name": "VanillaBackport",
   "description": "Backporting Minecraft Features to previous versions!",
   "authors": [
     "BlackGear"
