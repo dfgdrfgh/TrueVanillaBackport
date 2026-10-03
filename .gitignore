@@ -122,3 +122,7 @@ runs/
 /common/src/main/generated/.cache
 /neoforge/bin/
 /fabric/bin/
+
+/libs/
+/vendor/
+/dist/

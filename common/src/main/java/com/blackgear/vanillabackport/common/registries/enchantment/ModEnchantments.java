@@ -62,6 +62,9 @@ public class ModEnchantments {
                 LootItemEntityPropertyCondition.hasProperties(
                     LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().flags(EntityFlagsPredicate.Builder.flags().setIsFlying(false))
                 ),
+                LootItemEntityPropertyCondition.hasProperties(
+                    LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().flags(EntityFlagsPredicate.Builder.flags().setIsInWater(false))
+                ),
                 AnyOfCondition.anyOf(
                     InvertedLootItemCondition.invert(
                         LootItemEntityPropertyCondition.hasProperties(
