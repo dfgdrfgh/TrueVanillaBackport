@@ -9,17 +9,9 @@ The Minecraft registry namespace and mod ID remain compatible with the original 
 - Add all eight Mounts of Mayhem spear loot entries to their existing vanilla pools, including enchantments and durability.
 - Correct 1.20.1 Lunge direction, exhaustion and maximum enchanting costs.
 - Use the vanilla wolf armor damage exceptions on 1.20.1.
-- Bundle the patched Tiny Takeover implementation: golden dandelions, growth locking, name tag crafting, baby models and sounds, animal sound variants, aquatic babies and trumpet note blocks.
-
-## Builds
-
-The Build parity backport GitHub Actions workflow builds each loader from pinned source revisions.
-Its artifacts contain installable TrueVanillaBackport jars with Platform and Tiny Takeover embedded using the loader's jar-in-jar format, plus SHA-256 checksums.
-Fabric still requires Fabric API. The Tiny Takeover JSON settings retain their upstream defaults; its optional configuration GUI is omitted from the embedded build.
 
 Pinned dependencies and their licenses:
 
 - [Platform (MIT)](https://github.com/ItsBlackGear/Platform)
-- [Tinier Takeover fork (MIT)](https://github.com/dfgdrfgh/Tinier-Takeover-Backport/tree/accd6d7ec828160cc1723256280baaa3d1a8829a)
 
 Minecraft assets belong to Mojang and Microsoft. This mod is not affiliated with either company.
