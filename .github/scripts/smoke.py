@@ -5,9 +5,22 @@ import signal
 import subprocess
 import sys
 import time
+import zipfile
 from pathlib import Path
 
 loader = sys.argv[1]
+# Only the temporary dev-runtime copy omits the newer Loom build stamp.
+# The distributed jar keeps the original manifest.
+if loader == "fabric":
+    runtime = Path("libs/TinyTakeover-runtime.jar")
+    with zipfile.ZipFile(runtime) as archive:
+        entries = {name: archive.read(name) for name in archive.namelist()}
+    manifest = entries["META-INF/MANIFEST.MF"].decode()
+    manifest = re.sub(r"(?m)^Fabric-Loom-Version:.*\r?\n", "", manifest)
+    entries["META-INF/MANIFEST.MF"] = manifest.encode()
+    with zipfile.ZipFile(runtime, "w", zipfile.ZIP_DEFLATED) as archive:
+        for name, content in entries.items():
+            archive.writestr(name, content)
 for directory in [Path(loader) / "run", Path(loader) / "runs/server"]:
     directory.mkdir(parents=True, exist_ok=True)
     (directory / "eula.txt").write_text("eula=true\n")
