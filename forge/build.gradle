@@ -39,9 +39,6 @@ configurations {
 }
 
 dependencies {
-    if (rootProject.file("libs/TinyTakeover-runtime.jar").exists()) {
-        modRuntimeOnly files(rootProject.file("libs/TinyTakeover-runtime.jar"))
-    }
     forge "net.minecraftforge:forge:$rootProject.forge_version"
 //    modImplementation "flatDir:Platform-forge-1.20.1-$rootProject.platform_indev_version"
 //    modImplementation "com.blackgear:Platform-forge:$rootProject.platform_indev_version"
