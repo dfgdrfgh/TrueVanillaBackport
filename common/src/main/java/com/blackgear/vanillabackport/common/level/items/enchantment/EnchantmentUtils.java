@@ -38,7 +38,6 @@ public class EnchantmentUtils {
             
             Vec3 look = player.getLookAngle();
             Vec3 direction = look.with(Direction.Axis.Y, 0.0)
-                .normalize()
                 .scale(0.458F * (float) lungeLevel);
             
             player.addDeltaMovement(direction);
@@ -48,7 +47,7 @@ public class EnchantmentUtils {
             GraceTimeWeaponHolder.of(player).applyPostImpulseGraceTime(10);
             weapon.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
             
-            player.causeFoodExhaustion(3.0F * (float) lungeLevel);
+            player.causeFoodExhaustion(4.0F * (float) lungeLevel);
             
             if (!player.isSilent()) {
                 int soundIndex = Math.min(lungeLevel - 1, LUNGE_SOUNDS.size() - 1);

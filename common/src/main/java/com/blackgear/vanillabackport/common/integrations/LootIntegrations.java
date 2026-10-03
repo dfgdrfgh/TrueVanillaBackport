@@ -16,6 +16,9 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.functions.SetItemDamageFunction;
+import net.minecraft.world.level.storage.loot.functions.EnchantRandomlyFunction;
+import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
 import net.minecraft.world.level.storage.loot.predicates.DamageSourceCondition;
 import net.minecraft.world.level.storage.loot.predicates.LocationCheck;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
@@ -109,6 +112,33 @@ public class LootIntegrations implements LootModifier.LootTableModifier {
                 .build());
         }
         
+        // Add to the existing vanilla pools so rolls, competing entries and luck remain intact.
+        if (builtin) {
+            if (path.equals(BuiltInLootTables.BURIED_TREASURE)) {
+                context.addToPool(3, LootItem.lootTableItem(ModItems.IRON_SPEAR.get()).build());
+            }
+            if (path.equals(BuiltInLootTables.VILLAGE_WEAPONSMITH)) {
+                context.addToPool(0,
+                    LootItem.lootTableItem(ModItems.IRON_SPEAR.get()).setWeight(5).build(),
+                    LootItem.lootTableItem(ModItems.COPPER_SPEAR.get()).setWeight(7).build());
+            }
+            if (path.equals(BuiltInLootTables.UNDERWATER_RUIN_BIG)
+                || path.equals(BuiltInLootTables.UNDERWATER_RUIN_SMALL)) {
+                context.addToPool(0, LootItem.lootTableItem(ModItems.STONE_SPEAR.get()).setWeight(2).build());
+            }
+            if (path.equals(BuiltInLootTables.BASTION_TREASURE)) {
+                context.addToPool(0,
+                    LootItem.lootTableItem(ModItems.DIAMOND_SPEAR.get()).setWeight(6)
+                        .apply(SetItemDamageFunction.setDamage(UniformGenerator.between(0.8F, 1.0F)))
+                        .apply(EnchantRandomlyFunction.randomApplicableEnchantment()).build(),
+                    LootItem.lootTableItem(ModItems.DIAMOND_SPEAR.get()).setWeight(6).build());
+            }
+            if (path.equals(BuiltInLootTables.END_CITY_TREASURE)) {
+                context.addToPool(0, LootItem.lootTableItem(ModItems.DIAMOND_SPEAR.get()).setWeight(3)
+                    .apply(EnchantWithLevelsFunction.enchantWithLevels(UniformGenerator.between(20.0F, 39.0F)).allowTreasure()).build());
+            }
+        }
+
         // GENERATE COPPER HORSE ARMOR
         if (VanillaBackport.COMMON_CONFIG.hasCopperHorseArmorLoot.get()) {
             if (path.equals(BuiltInLootTables.SIMPLE_DUNGEON)) {
@@ -143,7 +173,7 @@ public class LootIntegrations implements LootModifier.LootTableModifier {
         if (CONTAIN_NAUTILUS_ARMOR.contains(path) && VanillaBackport.COMMON_CONFIG.hasNautilusArmorLoot.get()) {
             context.addPool(LootPool.lootPool()
                 .setRolls(ConstantValue.exactly(1.0F))
-                .add(EmptyLootItem.emptyItem().setQuality(148))
+                .add(EmptyLootItem.emptyItem().setWeight(148))
                 .add(LootItem.lootTableItem(ModItems.COPPER_NAUTILUS_ARMOR.get())
                     .setWeight(20)
                     .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F))))

@@ -8,7 +8,7 @@ import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.tags.DamageTypeTags;
+import com.blackgear.vanillabackport.core.data.tags.ModDamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -56,7 +56,7 @@ public abstract class WolfMixin extends TamableAnimal implements NeutralMob {
 
     @Unique
     private boolean canArmorAbsorb(DamageSource source) {
-        return this.hasArmor() && !source.is(DamageTypeTags.BYPASSES_ARMOR);
+        return this.hasArmor() && !source.is(ModDamageTypeTags.BYPASSES_WOLF_ARMOR);
     }
     
     @Inject(method = "setTame", at = @At("TAIL"))

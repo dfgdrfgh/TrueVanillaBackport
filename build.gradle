@@ -32,7 +32,7 @@ subprojects {
         maven { url "https://maven.minecraftforge.net" }
         maven { url "https://jitpack.io" }
 //        maven { url = uri("E:/Modding/Platform/Platform-1.20.1/build/local-repo")}
-        flatDir { dirs "/libs" }
+        flatDir { dirs rootProject.file("libs") }
     }
 
     loom {

@@ -1,0 +1,60 @@
+name: Build parity backport
+on:
+  push:
+    branches: ["1.20.1", "1.21.1"]
+  pull_request:
+    branches: ["1.20.1", "1.21.1"]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        loader: [fabric, forge]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: ItsBlackGear/Platform
+          ref: 7e4b788084ae039651cce814ab9fb03588a88cc7
+          path: vendor/platform
+      - uses: actions/checkout@v4
+        with:
+          repository: dfgdrfgh/Tinier-Takeover-Backport
+          ref: accd6d7ec828160cc1723256280baaa3d1a8829a
+          path: vendor/tiny
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: |
+            17
+            21
+            25
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Prepare pinned dependencies
+        run: python .github/scripts/prepare_dependencies.py vendor/platform vendor/tiny 1.20.1
+      - name: Compile Platform
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME_17_X64 }}
+        run: |
+          bash vendor/platform/gradlew -p vendor/platform :common:jar :fabric:remapJar :forge:remapJar --stacktrace
+          mkdir -p libs
+          cp vendor/platform/common/build/libs/Platform-common-1.20.1-1.4.0.2638.1.1.jar libs/
+          cp vendor/platform/{fabric,forge}/build/libs/Platform-*-1.20.1-1.4.0.2638.1.1.jar libs/
+      - name: Compile TrueVanillaBackport
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME_17_X64 }}
+        run: bash gradlew :${{ matrix.loader }}:remapJar --stacktrace
+      - name: Compile bundled Tiny Takeover
+        run: bash vendor/tiny/gradlew -p vendor/tiny :1.20.1-${{ matrix.loader }}:buildAndCollect --stacktrace
+      - name: Assemble installable mod
+        run: python .github/scripts/bundle.py 1.20.1 ${{ matrix.loader }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: TrueVanillaBackport-1.20.1-${{ matrix.loader }}
+          path: dist/*
+          if-no-files-found: error

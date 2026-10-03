@@ -120,3 +120,7 @@ runs/
 
 # Data gen cache
 /common/src/main/generated/.cache
+
+/libs/
+/vendor/
+/dist/

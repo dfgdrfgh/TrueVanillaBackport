@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "vanillabackport",
   "version": "${version}",
-  "name": "VanillaBackport",
+  "name": "TrueVanillaBackport",
   "description": "Backporting Minecraft Features to previous versions!",
   "authors": [
     "BlackGear"
@@ -38,7 +38,7 @@
   ],
   "depends": {
     "fabricloader": ">=0.15.10",
-    "platform": ">=1.3.4",
+    "platform": ">=1.4.0.2638.1.1",
     "minecraft": "~1.20.1",
     "java": ">=17",
     "fabric-api": "*"

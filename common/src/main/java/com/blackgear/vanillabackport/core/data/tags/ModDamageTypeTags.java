@@ -10,5 +10,6 @@ public class ModDamageTypeTags {
     public static final TagRegistry<DamageType> TAGS = TagRegistry.create(Registries.DAMAGE_TYPE, VanillaBackport.NAMESPACE);
 
     public static final TagKey<DamageType> SULFUR_CUBE_WITH_BLOCK_IMMUNE_TO = TAGS.register("sulfur_cube_with_block_immune_to");
+    public static final TagKey<DamageType> BYPASSES_WOLF_ARMOR = TAGS.register("bypasses_wolf_armor");
     public static final TagKey<DamageType> NO_KNOCKBACK = TAGS.register("no_knockback");
 }
