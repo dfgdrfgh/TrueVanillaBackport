@@ -15,7 +15,7 @@ def production_jar(directory, prefix):
         raise RuntimeError(f"Expected one production jar in {directory}: {jars}")
     return jars[0]
 
-main = production_jar(root / loader / "build/libs", "TrueVanillaBackport-")
+main = production_jar(root / loader / "build/libs", "VanillaBackport-")
 platform = production_jar(root / "vendor/platform" / loader / "build/libs", f"Platform-{loader}-")
 tiny = production_jar(root / "vendor/tiny" / "build/libs/1.5.1", "tiny_takeover_backport-")
 output = root / "dist" / main.name
