@@ -26,7 +26,8 @@ java = str(Path(os.environ["JAVA_HOME"]) / "bin/java")
 
 def download(url, destination):
     if not destination.exists():
-        with urllib.request.urlopen(url, timeout=90) as response, destination.open("wb") as output:
+        request = urllib.request.Request(url, headers={"User-Agent": "TrueVanillaBackport-build/1.0"})
+        with urllib.request.urlopen(request, timeout=90) as response, destination.open("wb") as output:
             shutil.copyfileobj(response, output)
 
 if loader == "fabric":
