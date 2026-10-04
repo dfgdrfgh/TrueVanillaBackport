@@ -1,5 +1,7 @@
 """Start an assembled, installable backport jar using the production loader."""
 import os
+import json
+import hashlib
 import re
 import signal
 import shutil
@@ -10,10 +12,11 @@ import urllib.request
 from pathlib import Path
 
 loader = sys.argv[1]
+wwoo = len(sys.argv) > 2 and sys.argv[2] == "wwoo"
 root = Path.cwd()
 properties = dict(re.findall(r"^([\w_]+)\s*=\s*(.*?)\s*$", (root / "gradle.properties").read_text(), re.M))
 version = properties["minecraft_version"]
-runtime = root / "build" / "production-smoke"
+runtime = root / "build" / ("wwoo-smoke" if wwoo else "production-smoke")
 runtime.mkdir(parents=True, exist_ok=True)
 mods = runtime / "mods"
 mods.mkdir(exist_ok=True)
@@ -21,7 +24,9 @@ jars = list((root / "dist").glob("*.jar"))
 assert len(jars) == 1, jars
 shutil.copy2(jars[0], mods / jars[0].name)
 (runtime / "eula.txt").write_text("eula=true\n")
-(runtime / "server.properties").write_text("online-mode=false\nlevel-type=minecraft:flat\nview-distance=2\nsimulation-distance=2\n")
+(runtime / "server.properties").write_text("online-mode=false\nlevel-type=" +
+    ("minecraft:normal" if wwoo else "minecraft:flat") +
+    "\nlevel-seed=12345\nview-distance=2\nsimulation-distance=2\n")
 java = str(Path(os.environ["JAVA_HOME"]) / "bin/java")
 
 def download(url, destination):
@@ -30,7 +35,7 @@ def download(url, destination):
             shutil.copyfileobj(response, output)
 
 if loader == "fabric":
-    fabric_loader = properties["fabric_loader_version"]
+    fabric_loader = "0.18.5" if wwoo else properties["fabric_loader_version"]
     download(f"https://meta.fabricmc.net/v2/versions/loader/{version}/{fabric_loader}/1.0.3/server/jar", runtime / "launcher.jar")
     api = properties["fabric_api_version"]
     download(f"https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/{api}/fabric-api-{api}.jar", mods / "fabric-api.jar")
@@ -46,7 +51,22 @@ else:
     download(installer, runtime / "installer.jar")
     subprocess.run([java, "-jar", "installer.jar", "--installServer"], cwd=runtime, check=True, timeout=600)
     command = [java, "-Xmx2G", "@" + arguments, "nogui"]
-log = root / "smoke-server.log"
+if wwoo:
+    # Test external mods without redistributing or embedding them in the backport jar.
+    dependencies = {
+        "fabric": ["JBbDOEnc", "BRVWgniI"],
+        "neoforge": ["sU7oaRZv", "JbGjwnV6"],
+    }
+    pins = json.loads((root / ".github/scripts/wwoo-smoke-dependencies.json").read_text())
+    for version_id in dependencies[loader] + [pins[loader]]:
+        with urllib.request.urlopen("https://api.modrinth.com/v2/version/" + version_id, timeout=90) as response:
+            metadata = json.load(response)
+        artifact = next(file for file in metadata["files"] if file["primary"])
+        destination = mods / artifact["filename"]
+        download(artifact["url"], destination)
+        assert hashlib.sha512(destination.read_bytes()).hexdigest() == artifact["hashes"]["sha512"], destination
+
+log = root / ("smoke-wwoo-server.log" if wwoo else "smoke-server.log")
 passed = False
 with log.open("w") as output:
     process = subprocess.Popen(command, cwd=runtime, stdin=subprocess.PIPE, stdout=output,
@@ -62,6 +82,9 @@ with log.open("w") as output:
                 break
             if re.search(r'Done \([^)]+\)! For help', content):
                 ready = ready or time.monotonic()
+                if wwoo and time.monotonic() - ready >= 5:
+                    if "WWOO compatibility: preserving minecraft:worldgen/biome/pale_garden.json" not in content:
+                        raise RuntimeError("WWOO's Pale Garden override was not resolved")
                 if time.monotonic() - ready >= 5:
                     passed = True
                     break
@@ -84,4 +107,4 @@ with log.open("w") as output:
 print(log.read_text(errors="replace"))
 if not passed:
     raise SystemExit("Production server startup did not pass")
-print("Assembled TrueVanillaBackport server startup passed")
+print("Assembled TrueVanillaBackport" + (" + WWOO normal-world" if wwoo else "") + " server startup passed")

@@ -14,3 +14,7 @@ Pinned dependencies and their licenses:
 - [Platform (MIT)](https://github.com/ItsBlackGear/Platform)
 
 Minecraft assets belong to Mojang and Microsoft. This mod is not affiliated with either company.
+
+### William Wythers' Overhauled Overworld compatibility
+
+On 1.21.1, WWOO can overhaul the older Overworld biomes while the backport retains its Pale Garden, Dappled Forest, and Sulfur Caves definitions. The compatibility handler only replaces a WWOO override of those three biome resources; custom world datapacks still take priority. World generation changes apply to newly generated chunks. Fabric and NeoForge builds are checked with WWOO 2.6.7 and Cristel Lib 3.1.5 in a normal world.
