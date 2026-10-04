@@ -85,9 +85,10 @@ with log.open("w") as output:
             if re.search(r'Done \([^)]+\)! For help', content):
                 ready = ready or time.monotonic()
                 if not content_probe_sent:
-                    # Exercise integrated item/block registration and baby entity mixins.
-                    process.stdin.write(b"setblock 0 80 0 minecraft:golden_dandelion\n")
-                    process.stdin.write(b'summon minecraft:cow 0 81 0 {Age:-24000}\n')
+                    # Console commands start at the loaded world spawn. WWOO can move
+                    # spawn far from (0, 0), so use relative positions for content probes.
+                    process.stdin.write(b"setblock ~ ~2 ~ minecraft:golden_dandelion\n")
+                    process.stdin.write(b'summon minecraft:cow ~ ~3 ~ {Age:-24000}\n')
                     process.stdin.flush()
                     content_probe_sent = True
                 if wwoo and not locate_sent:
@@ -99,7 +100,7 @@ with log.open("w") as output:
                 if wwoo and "Could not find a biome" in content:
                     raise RuntimeError("Pale Garden was not found in the seeded WWOO normal world")
                 located = not wwoo or re.search(r"nearest .*pale_garden.* is at", content)
-                content_registered = "Changed the block at 0, 80, 0" in content and "Summoned new Cow" in content
+                content_registered = "Changed the block at" in content and "Summoned new Cow" in content
                 if time.monotonic() - ready >= 5 and located and content_registered:
                     passed = True
                     break
