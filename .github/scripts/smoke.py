@@ -37,7 +37,7 @@ def download(url, destination):
 if loader == "fabric":
     fabric_loader = "0.18.5" if wwoo else properties["fabric_loader_version"]
     download(f"https://meta.fabricmc.net/v2/versions/loader/{version}/{fabric_loader}/1.0.3/server/jar", runtime / "launcher.jar")
-    api = properties["fabric_api_version"]
+    api = "0.116.12+1.21.1" if wwoo else properties["fabric_api_version"]
     download(f"https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/{api}/fabric-api-{api}.jar", mods / "fabric-api.jar")
     command = [java, "-Xmx2G", "-jar", "launcher.jar", "nogui"]
 else:
