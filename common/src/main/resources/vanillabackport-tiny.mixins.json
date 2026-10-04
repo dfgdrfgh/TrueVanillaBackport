@@ -1,0 +1,50 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.evandev.tiny_takeover_backport.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "AgeableMobMixin",
+    "AnimalMixin",
+    "CamelMixin",
+    "DolphinMixin",
+    "EntityMixin",
+    "GoatMixin",
+    "LivingEntityMixin",
+    "MobMixin",
+    "NoteBlockMixin",
+    "RabbitMixin",
+    "RabbitMoveControlMixin",
+    "SquidMixin",
+    "StriderMixin",
+    "ItemsForEmeraldsAccessor",
+    "VillagerMixin",
+    "VillagerTradesAccessor",
+    "AbstractHorseMixin",
+    "AxolotlMixin",
+    "AbstractVillagerMixin",
+    "WanderingTraderMixin"
+  ],
+  "client": [
+    "client.CatCollarLayerMixin",
+    "client.DrownedOuterLayerMixin",
+    "client.HorseMarkingLayerMixin",
+    "client.HumanoidArmorLayerMixin",
+    "client.ItemInHandLayerMixin",
+    "client.LivingEntityMixin",
+    "client.LivingEntityRendererMixin",
+    "client.LlamaDecorLayerMixin",
+    "client.RenderLayerMixin",
+    "client.SheepWoolLayerMixin",
+    "client.SquidRendererMixin",
+    "client.VillagerProfessionLayerMixin",
+    "client.WolfCollarLayerMixin",
+    "client.SaddleLayerMixin",
+    "client.WolfArmorLayerMixin",
+    "client.CatRendererMixin"
+  ],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

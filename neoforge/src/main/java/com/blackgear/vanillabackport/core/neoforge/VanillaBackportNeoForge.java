@@ -16,6 +16,8 @@ public final class VanillaBackportNeoForge {
         IEventBus bus = ModLoadingContext.get().getActiveContainer().getEventBus();
         if (bus == null) throw new IllegalStateException("Failed to load mod event bus for " + VanillaBackport.MOD_ID);
 
+        new com.evandev.tiny_takeover_backport.TinyTakeoverBackportForge(
+            bus, ModLoadingContext.get().getActiveContainer());
         bus.addListener(this::commonSetup);
     }
 

@@ -74,6 +74,7 @@ with log.open("w") as output:
     deadline = time.monotonic() + 600
     ready = None
     locate_sent = False
+    content_probe_sent = False
     try:
         while time.monotonic() < deadline:
             content = log.read_text(errors="replace")
@@ -83,6 +84,12 @@ with log.open("w") as output:
                 break
             if re.search(r'Done \([^)]+\)! For help', content):
                 ready = ready or time.monotonic()
+                if not content_probe_sent:
+                    # Exercise integrated item/block registration and baby entity mixins.
+                    process.stdin.write(b"setblock 0 80 0 minecraft:golden_dandelion\n")
+                    process.stdin.write(b'summon minecraft:cow 0 81 0 {Age:-24000}\n')
+                    process.stdin.flush()
+                    content_probe_sent = True
                 if wwoo and not locate_sent:
                     if "WWOO compatibility: using native Pale Garden plateau placement" not in content:
                         raise RuntimeError("WWOO Pale Garden placement was not activated")
@@ -92,7 +99,8 @@ with log.open("w") as output:
                 if wwoo and "Could not find a biome" in content:
                     raise RuntimeError("Pale Garden was not found in the seeded WWOO normal world")
                 located = not wwoo or re.search(r"nearest .*pale_garden.* is at", content)
-                if time.monotonic() - ready >= 5 and located:
+                content_registered = "Changed the block at 0, 80, 0" in content and "Summoned new Cow" in content
+                if time.monotonic() - ready >= 5 and located and content_registered:
                     passed = True
                     break
             time.sleep(1)

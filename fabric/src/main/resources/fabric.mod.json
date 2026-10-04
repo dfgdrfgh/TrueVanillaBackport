@@ -17,10 +17,12 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "com.blackgear.vanillabackport.core.fabric.emissive.EmissiveModelHandler"
+      "com.blackgear.vanillabackport.core.fabric.emissive.EmissiveModelHandler",
+      "com.evandev.tiny_takeover_backport.client.TinyTakeoverBackportClient"
     ],
     "main": [
-      "com.blackgear.vanillabackport.core.fabric.VanillaBackportFabric"
+      "com.blackgear.vanillabackport.core.fabric.VanillaBackportFabric",
+      "com.evandev.tiny_takeover_backport.TinyTakeoverBackportFabric"
     ],
     "fabric-datagen": [
       "com.blackgear.vanillabackport.data.DataGenerator"
@@ -33,7 +35,8 @@
     ]
   },
   "mixins": [
-    "vanillabackport.mixins.json"
+    "vanillabackport.mixins.json",
+    "vanillabackport-tiny.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.16.12",

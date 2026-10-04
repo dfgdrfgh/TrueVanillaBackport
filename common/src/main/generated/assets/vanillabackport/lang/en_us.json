@@ -442,7 +442,7 @@
   "music.game.nightly": "fingerspit - Nightly",
   "music.game.one_more_day": "Lena Raine - One More Day",
   "music.game.os_piano": "Amos Roddy - O's Piano",
-  "music.game.oxygene": "C418 - Oxygène",
+  "music.game.oxygene": "C418 - Oxyg\u00e8ne",
   "music.game.pokopoko": "Kumi Tanioka - pokopoko",
   "music.game.puzzlebox": "Aaron Cherof - Puzzlebox",
   "music.game.shores": "fingerspit - Shores",
@@ -625,5 +625,6 @@
   "subtitles.item.spear_wood.hit": "Spear hits",
   "subtitles.item.spear_wood.use": "Charges with Spear",
   "subtitles.weather.end_flash": "End Flash rumbles",
-  "trim_material.minecraft.resin": "Resin Material"
+  "trim_material.minecraft.resin": "Resin Material",
+  "bundled_tab.tiny_takeover.title": "Tiny Takeover"
 }
