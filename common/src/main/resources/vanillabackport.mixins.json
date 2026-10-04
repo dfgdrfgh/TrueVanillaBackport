@@ -170,7 +170,7 @@
     "common.zombie_horses.ZombieHorseMixin",
     "compat.jer.BiomeHelperMixin",
     "compat.mousetweaks.MainMixin",
-    "compat.wwoo.RegistryDataLoaderMixin"
+    "compat.wwoo.OverworldBiomeBuilderMixin"
   ],
   "injectors": {
     "defaultRequire": 1

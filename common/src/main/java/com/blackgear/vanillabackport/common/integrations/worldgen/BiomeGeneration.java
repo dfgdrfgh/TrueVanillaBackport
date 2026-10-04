@@ -4,6 +4,7 @@ import com.blackgear.platform.common.worldgen.placement.BiomePlacement;
 import com.blackgear.platform.common.worldgen.placement.Placement;
 import com.blackgear.platform.common.worldgen.placement.parameters.*;
 import com.blackgear.vanillabackport.common.registries.worldgen.ModBiomes;
+import com.blackgear.vanillabackport.common.integrations.compat.wwoo.WwooBiomeCompatibility;
 import com.blackgear.vanillabackport.core.VanillaBackport;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.Util;
@@ -47,7 +48,8 @@ public class BiomeGeneration {
     );
     
     public static void bootstrap(BiomePlacement.Event event) {
-        if (VanillaBackport.COMMON_CONFIG.hasPaleGarden.get())
+        // With WWOO, use the native plateau slot instead of overlapping dark-forest entries.
+        if (VanillaBackport.COMMON_CONFIG.hasPaleGarden.get() && !WwooBiomeCompatibility.useNativePaleGardenPlacement())
             PALE_GARDEN.forEach(event::add);
         
         if (VanillaBackport.COMMON_CONFIG.hasSulfurCaves.get())

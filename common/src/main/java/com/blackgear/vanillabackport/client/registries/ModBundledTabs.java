@@ -27,7 +27,6 @@ import java.util.stream.IntStream;
 
 public class ModBundledTabs {
     private static final List<BundledTabs> FILTERS = new ArrayList<>();
-    private static final ResourceLocation GOLDEN_DANDELION = ResourceLocation.withDefaultNamespace("golden_dandelion");
 
     public static final BundledTabs BUNDLES_OF_BRAVERY = register(
         BundledTabs.builder()
@@ -278,17 +277,6 @@ public class ModBundledTabs {
             .build()
     );
     
-    public static final BundledTabs TINY_TAKEOVER = register(
-        BundledTabs.builder()
-            .title(Component.translatable("bundled_tab.tiny_takeover.title"))
-            .icon(() -> new ItemStack(BuiltInRegistries.ITEM.getOptional(GOLDEN_DANDELION).orElse(Items.NAME_TAG)))
-            .displayItems((provider, output) -> {
-                BuiltInRegistries.ITEM.getOptional(GOLDEN_DANDELION).ifPresent(output::accept);
-                output.accept(Items.NAME_TAG);
-            })
-            .build()
-    );
-
     public static final BundledTabs CHAOS_CUBED = register(
         BundledTabs.builder()
             .title(Component.translatable("bundled_tab.chaos_cubed.title"))

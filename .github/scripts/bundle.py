@@ -1,4 +1,4 @@
-"""Bundle pinned Platform and Tiny Takeover jars using each loader's native jar-in-jar format."""
+"""Bundle the pinned Platform jar using each loader's native jar-in-jar format."""
 import hashlib
 import json
 import sys
@@ -17,13 +17,11 @@ def production_jar(directory, prefix):
 
 main = production_jar(root / loader / "build/libs", "VanillaBackport-")
 platform = production_jar(root / "vendor/platform" / loader / "build/libs", f"Platform-{loader}-")
-tiny = production_jar(root / "vendor/tiny" / "build/libs/1.5.1", "tiny_takeover_backport-")
 output = root / "dist" / main.name
 output.parent.mkdir(exist_ok=True)
 with zipfile.ZipFile(main) as source:
     data = {name: source.read(name) for name in source.namelist()}
-nested = [(platform, "com.blackgear", "platform", "1.4.0.2638.1.1"),
-          (tiny, "com.evandev", "tiny_takeover_backport", "1.5.1")]
+nested = [(platform, "com.blackgear", "platform", "1.4.0.2638.1.1")]
 if loader == "fabric":
     metadata = json.loads(data["fabric.mod.json"])
     for jar, _, _, _ in nested:

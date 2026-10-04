@@ -17,4 +17,6 @@ Minecraft assets belong to Mojang and Microsoft. This mod is not affiliated with
 
 ### William Wythers' Overhauled Overworld compatibility
 
-On 1.21.1, WWOO can overhaul the older Overworld biomes while the backport retains its Pale Garden, Dappled Forest, and Sulfur Caves definitions. The compatibility handler only replaces a WWOO override of those three biome resources; custom world datapacks still take priority. World generation changes apply to newly generated chunks. Fabric and NeoForge builds are checked with WWOO 2.6.7 and Cristel Lib 3.1.5 in a normal world.
+On 1.21.1, WWOO keeps its Pale Garden trees, vegetation, terrain, and biome definition. When WWOO is installed, the backport places the Pale Garden in vanilla 1.21.4's plateau-variant slot instead of appending overlapping Dark Forest climate entries. The Pale Garden toggle still applies, and world generation changes apply to new chunks. Fabric and NeoForge builds are tested with WWOO 2.6.7 and Cristel Lib 3.1.5 in a normal world.
+
+Tiny Takeover is no longer bundled or needed to compile this fork. Platform remains bundled.

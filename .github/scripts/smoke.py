@@ -73,6 +73,7 @@ with log.open("w") as output:
                                stderr=subprocess.STDOUT, start_new_session=True)
     deadline = time.monotonic() + 600
     ready = None
+    locate_sent = False
     try:
         while time.monotonic() < deadline:
             content = log.read_text(errors="replace")
@@ -82,10 +83,16 @@ with log.open("w") as output:
                 break
             if re.search(r'Done \([^)]+\)! For help', content):
                 ready = ready or time.monotonic()
-                if wwoo and time.monotonic() - ready >= 5:
-                    if "WWOO compatibility: preserving minecraft:worldgen/biome/pale_garden.json" not in content:
-                        raise RuntimeError("WWOO's Pale Garden override was not resolved")
-                if time.monotonic() - ready >= 5:
+                if wwoo and not locate_sent:
+                    if "WWOO compatibility: using native Pale Garden plateau placement" not in content:
+                        raise RuntimeError("WWOO Pale Garden placement was not activated")
+                    process.stdin.write(b"execute positioned 0 80 0 run locate biome minecraft:pale_garden\n")
+                    process.stdin.flush()
+                    locate_sent = True
+                if wwoo and "Could not find a biome" in content:
+                    raise RuntimeError("Pale Garden was not found in the seeded WWOO normal world")
+                located = not wwoo or re.search(r"nearest .*pale_garden.* is at", content)
+                if time.monotonic() - ready >= 5 and located:
                     passed = True
                     break
             time.sleep(1)

@@ -1,53 +1,27 @@
 package com.blackgear.vanillabackport.common.integrations.compat.wwoo;
 
+import com.blackgear.vanillabackport.core.ModChecker;
 import com.blackgear.vanillabackport.core.VanillaBackport;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.Resource;
-import net.minecraft.server.packs.resources.ResourceManager;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.blackgear.vanillabackport.common.registries.worldgen.ModBiomes;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.biome.Climate;
 
 public final class WwooBiomeCompatibility {
-    private static final List<ResourceLocation> BACKPORTED_BIOMES = List.of(
-        ResourceLocation.withDefaultNamespace("worldgen/biome/pale_garden.json"),
-        ResourceLocation.withDefaultNamespace("worldgen/biome/dappled_forest.json"),
-        ResourceLocation.withDefaultNamespace("worldgen/biome/sulfur_caves.json")
-    );
-
     private WwooBiomeCompatibility() {}
 
-    /** Keep WWOO's overhaul of older biomes without replacing backported biome content. */
-    public static Map<ResourceLocation, Resource> resolveBiomes(Map<ResourceLocation, Resource> resources, ResourceManager manager) {
-        Map<ResourceLocation, Resource> resolved = resources;
-        for (ResourceLocation location : BACKPORTED_BIOMES) {
-            Resource selected = resources.get(location);
-            if (selected == null || !isWwooPack(selected.sourcePackId())) {
-                continue;
-            }
-
-            // Resource stacks run from lowest to highest priority. Preserve the highest
-            // non-WWOO definition, including explicit world datapacks supplied by the user.
-            List<Resource> stack = manager.getResourceStack(location);
-            for (int index = stack.size() - 1; index >= 0; index--) {
-                Resource candidate = stack.get(index);
-                if (!isWwooPack(candidate.sourcePackId())) {
-                    if (resolved == resources) {
-                        resolved = new HashMap<>(resources);
-                    }
-                    resolved.put(location, candidate);
-                    VanillaBackport.LOGGER.info("WWOO compatibility: preserving {} from {} instead of {}",
-                        location, candidate.sourcePackId(), selected.sourcePackId());
-                    break;
-                }
-            }
-        }
-        return resolved;
+    public static boolean useNativePaleGardenPlacement() {
+        return ModChecker.WWOO;
     }
 
-    private static boolean isWwooPack(String packId) {
-        return packId.startsWith("wwoo:") || packId.startsWith("wwoo/")
-            || packId.equals("mod/wwoo") || packId.equals("mod:wwoo");
+    /** Vanilla 1.21.4's plateau variant [temperature 2][humidity 4]. */
+    public static ResourceKey<Biome> selectPlateauBiome(ResourceKey<Biome> original, int temperature, int humidity, Climate.Parameter weirdness) {
+        if (useNativePaleGardenPlacement() && VanillaBackport.COMMON_CONFIG.hasPaleGarden.get()
+            && temperature == 2 && humidity == 4 && weirdness.max() >= 0L
+            && original.equals(Biomes.DARK_FOREST)) {
+            return ModBiomes.PALE_GARDEN;
+        }
+        return original;
     }
 }
