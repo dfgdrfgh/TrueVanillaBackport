@@ -29,7 +29,6 @@
     "client.CatCollarLayerMixin",
     "client.DrownedOuterLayerMixin",
     "client.HorseMarkingLayerMixin",
-    "client.HumanoidArmorLayerMixin",
     "client.ItemInHandLayerMixin",
     "client.LivingEntityMixin",
     "client.LivingEntityRendererMixin",

@@ -38,5 +38,8 @@ modId = "vanillabackport"
 [[mixins]]
     config = "vanillabackport-tiny.mixins.json"
 
+[[mixins]]
+    config = "vanillabackport-tiny-armor.mixins.json"
+
 ["badoptimizations:cache_hooks"]
     common = "com.blackgear.vanillabackport.client.api.modules.end_flashes.BadOptimizationsCommonHook"

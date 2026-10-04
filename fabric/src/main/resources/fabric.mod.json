@@ -36,7 +36,8 @@
   },
   "mixins": [
     "vanillabackport.mixins.json",
-    "vanillabackport-tiny.mixins.json"
+    "vanillabackport-tiny.mixins.json",
+    "vanillabackport-tiny-armor.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.16.12",
