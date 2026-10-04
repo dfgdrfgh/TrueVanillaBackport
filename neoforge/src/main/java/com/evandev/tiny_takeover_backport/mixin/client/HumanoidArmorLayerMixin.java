@@ -20,10 +20,12 @@ import net.minecraft.client.model.Model;
 @Mixin(HumanoidArmorLayer.class)
 public class HumanoidArmorLayerMixin<T extends LivingEntity, M extends HumanoidModel<T>, A extends HumanoidModel<T>> {
 
+    // This overload is added by NeoForge and has no vanilla obfuscation mapping.
     @ModifyVariable(
             method = "renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;FFFFFF)V",
             at = @At("HEAD"),
-            argsOnly = true
+            argsOnly = true,
+            remap = false
     )
     private A swapBabyArmorModel(
             A model,
@@ -45,10 +47,12 @@ public class HumanoidArmorLayerMixin<T extends LivingEntity, M extends HumanoidM
         ModRenderHelper.adjustBabyArmorVisibility(model, slot);
     }
 
+    // This overload is added by NeoForge and has no vanilla obfuscation mapping.
     @ModifyVariable(
             method = "renderModel(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/client/model/Model;ILnet/minecraft/resources/ResourceLocation;)V",
             at = @At("HEAD"),
-            argsOnly = true
+            argsOnly = true,
+            remap = false
     )
     private ResourceLocation redirectBabyArmorTexture(
             ResourceLocation textureLocation,
