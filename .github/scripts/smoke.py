@@ -75,10 +75,11 @@ with log.open("w") as output:
     ready = None
     locate_sent = False
     content_probe_sent = False
+    reload_sent = False
     try:
         while time.monotonic() < deadline:
             content = log.read_text(errors="replace")
-            if re.search(r"Mixin apply failed|InjectionError|InvalidMixinException|ReportedException|Exception in thread", content):
+            if re.search(r"Mixin apply failed|InjectionError|InvalidMixinException|ReportedException|Exception in thread|Failed to execute reload|Failed to load recipe", content):
                 break
             if process.poll() is not None:
                 break
@@ -101,7 +102,12 @@ with log.open("w") as output:
                     raise RuntimeError("Pale Garden was not found in the seeded WWOO normal world")
                 located = not wwoo or re.search(r"nearest .*pale_garden.* is at", content)
                 content_registered = "Changed the block at" in content and "Summoned new Cow" in content
-                if time.monotonic() - ready >= 5 and located and content_registered:
+                if not wwoo and content_registered and not reload_sent:
+                    process.stdin.write(b"reload\n")
+                    process.stdin.flush()
+                    reload_sent = True
+                reload_checked = wwoo or len(re.findall(r"Loaded \d+ recipes", content)) >= 2
+                if time.monotonic() - ready >= 5 and located and content_registered and reload_checked:
                     passed = True
                     break
             time.sleep(1)

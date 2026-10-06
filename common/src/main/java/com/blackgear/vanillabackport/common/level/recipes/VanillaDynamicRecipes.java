@@ -221,6 +221,20 @@ public class VanillaDynamicRecipes extends RecipeProvider {
 
         SimpleCookingRecipeBuilder.smelting(
                 Ingredient.of(
+                    Items.IRON_PICKAXE,
+                    Items.IRON_SHOVEL,
+                    Items.IRON_AXE,
+                    Items.IRON_HOE,
+                    Items.IRON_SWORD,
+                    Items.IRON_HELMET,
+                    Items.IRON_CHESTPLATE,
+                    Items.IRON_LEGGINGS,
+                    Items.IRON_BOOTS,
+                    Items.IRON_HORSE_ARMOR,
+                    Items.CHAINMAIL_HELMET,
+                    Items.CHAINMAIL_CHESTPLATE,
+                    Items.CHAINMAIL_LEGGINGS,
+                    Items.CHAINMAIL_BOOTS,
                     ModItems.IRON_SPEAR.get(),
                     ModItems.IRON_NAUTILUS_ARMOR.get()
                 ),
@@ -229,12 +243,36 @@ public class VanillaDynamicRecipes extends RecipeProvider {
                 0.1F,
                 200
             )
+            .unlockedBy("has_iron_pickaxe", has(Items.IRON_PICKAXE))
+            .unlockedBy("has_iron_shovel", has(Items.IRON_SHOVEL))
+            .unlockedBy("has_iron_axe", has(Items.IRON_AXE))
+            .unlockedBy("has_iron_hoe", has(Items.IRON_HOE))
+            .unlockedBy("has_iron_sword", has(Items.IRON_SWORD))
+            .unlockedBy("has_iron_helmet", has(Items.IRON_HELMET))
+            .unlockedBy("has_iron_chestplate", has(Items.IRON_CHESTPLATE))
+            .unlockedBy("has_iron_leggings", has(Items.IRON_LEGGINGS))
+            .unlockedBy("has_iron_boots", has(Items.IRON_BOOTS))
+            .unlockedBy("has_iron_horse_armor", has(Items.IRON_HORSE_ARMOR))
+            .unlockedBy("has_chainmail_helmet", has(Items.CHAINMAIL_HELMET))
+            .unlockedBy("has_chainmail_chestplate", has(Items.CHAINMAIL_CHESTPLATE))
+            .unlockedBy("has_chainmail_leggings", has(Items.CHAINMAIL_LEGGINGS))
+            .unlockedBy("has_chainmail_boots", has(Items.CHAINMAIL_BOOTS))
             .unlockedBy("has_iron_spear", has(ModItems.IRON_SPEAR.get()))
             .unlockedBy("has_iron_nautilus_armor", has(ModItems.IRON_NAUTILUS_ARMOR.get()))
             .save(output, path.apply(getSmeltingRecipeName(Items.IRON_NUGGET)));
 
         SimpleCookingRecipeBuilder.smelting(
                 Ingredient.of(
+                    Items.GOLDEN_PICKAXE,
+                    Items.GOLDEN_SHOVEL,
+                    Items.GOLDEN_AXE,
+                    Items.GOLDEN_HOE,
+                    Items.GOLDEN_SWORD,
+                    Items.GOLDEN_HELMET,
+                    Items.GOLDEN_CHESTPLATE,
+                    Items.GOLDEN_LEGGINGS,
+                    Items.GOLDEN_BOOTS,
+                    Items.GOLDEN_HORSE_ARMOR,
                     ModItems.GOLDEN_SPEAR.get(),
                     ModItems.GOLDEN_NAUTILUS_ARMOR.get()
                 ),
@@ -243,12 +281,32 @@ public class VanillaDynamicRecipes extends RecipeProvider {
                 0.1F,
                 200
             )
+            .unlockedBy("has_golden_pickaxe", has(Items.GOLDEN_PICKAXE))
+            .unlockedBy("has_golden_shovel", has(Items.GOLDEN_SHOVEL))
+            .unlockedBy("has_golden_axe", has(Items.GOLDEN_AXE))
+            .unlockedBy("has_golden_hoe", has(Items.GOLDEN_HOE))
+            .unlockedBy("has_golden_sword", has(Items.GOLDEN_SWORD))
+            .unlockedBy("has_golden_helmet", has(Items.GOLDEN_HELMET))
+            .unlockedBy("has_golden_chestplate", has(Items.GOLDEN_CHESTPLATE))
+            .unlockedBy("has_golden_leggings", has(Items.GOLDEN_LEGGINGS))
+            .unlockedBy("has_golden_boots", has(Items.GOLDEN_BOOTS))
+            .unlockedBy("has_golden_horse_armor", has(Items.GOLDEN_HORSE_ARMOR))
             .unlockedBy("has_golden_spear", has(ModItems.GOLDEN_SPEAR.get()))
             .unlockedBy("has_golden_nautilus_armor", has(ModItems.GOLDEN_NAUTILUS_ARMOR.get()))
             .save(output, path.apply(getSmeltingRecipeName(Items.GOLD_NUGGET)));
 
         SimpleCookingRecipeBuilder.blasting(
                 Ingredient.of(
+                    Items.GOLDEN_PICKAXE,
+                    Items.GOLDEN_SHOVEL,
+                    Items.GOLDEN_AXE,
+                    Items.GOLDEN_HOE,
+                    Items.GOLDEN_SWORD,
+                    Items.GOLDEN_HELMET,
+                    Items.GOLDEN_CHESTPLATE,
+                    Items.GOLDEN_LEGGINGS,
+                    Items.GOLDEN_BOOTS,
+                    Items.GOLDEN_HORSE_ARMOR,
                     ModItems.GOLDEN_SPEAR.get(),
                     ModItems.GOLDEN_NAUTILUS_ARMOR.get()
                 ),
@@ -257,12 +315,36 @@ public class VanillaDynamicRecipes extends RecipeProvider {
                 0.1F,
                 200
             )
+            .unlockedBy("has_golden_pickaxe", has(Items.GOLDEN_PICKAXE))
+            .unlockedBy("has_golden_shovel", has(Items.GOLDEN_SHOVEL))
+            .unlockedBy("has_golden_axe", has(Items.GOLDEN_AXE))
+            .unlockedBy("has_golden_hoe", has(Items.GOLDEN_HOE))
+            .unlockedBy("has_golden_sword", has(Items.GOLDEN_SWORD))
+            .unlockedBy("has_golden_helmet", has(Items.GOLDEN_HELMET))
+            .unlockedBy("has_golden_chestplate", has(Items.GOLDEN_CHESTPLATE))
+            .unlockedBy("has_golden_leggings", has(Items.GOLDEN_LEGGINGS))
+            .unlockedBy("has_golden_boots", has(Items.GOLDEN_BOOTS))
+            .unlockedBy("has_golden_horse_armor", has(Items.GOLDEN_HORSE_ARMOR))
             .unlockedBy("has_golden_spear", has(ModItems.GOLDEN_SPEAR.get()))
             .unlockedBy("has_golden_nautilus_armor", has(ModItems.GOLDEN_NAUTILUS_ARMOR.get()))
             .save(output, path.apply(getBlastingRecipeName(Items.GOLD_NUGGET)));
 
         SimpleCookingRecipeBuilder.blasting(
                 Ingredient.of(
+                    Items.IRON_PICKAXE,
+                    Items.IRON_SHOVEL,
+                    Items.IRON_AXE,
+                    Items.IRON_HOE,
+                    Items.IRON_SWORD,
+                    Items.IRON_HELMET,
+                    Items.IRON_CHESTPLATE,
+                    Items.IRON_LEGGINGS,
+                    Items.IRON_BOOTS,
+                    Items.IRON_HORSE_ARMOR,
+                    Items.CHAINMAIL_HELMET,
+                    Items.CHAINMAIL_CHESTPLATE,
+                    Items.CHAINMAIL_LEGGINGS,
+                    Items.CHAINMAIL_BOOTS,
                     ModItems.IRON_SPEAR.get(),
                     ModItems.IRON_NAUTILUS_ARMOR.get()
                 ),
@@ -271,6 +353,20 @@ public class VanillaDynamicRecipes extends RecipeProvider {
                 0.1F,
                 200
             )
+            .unlockedBy("has_iron_pickaxe", has(Items.IRON_PICKAXE))
+            .unlockedBy("has_iron_shovel", has(Items.IRON_SHOVEL))
+            .unlockedBy("has_iron_axe", has(Items.IRON_AXE))
+            .unlockedBy("has_iron_hoe", has(Items.IRON_HOE))
+            .unlockedBy("has_iron_sword", has(Items.IRON_SWORD))
+            .unlockedBy("has_iron_helmet", has(Items.IRON_HELMET))
+            .unlockedBy("has_iron_chestplate", has(Items.IRON_CHESTPLATE))
+            .unlockedBy("has_iron_leggings", has(Items.IRON_LEGGINGS))
+            .unlockedBy("has_iron_boots", has(Items.IRON_BOOTS))
+            .unlockedBy("has_iron_horse_armor", has(Items.IRON_HORSE_ARMOR))
+            .unlockedBy("has_chainmail_helmet", has(Items.CHAINMAIL_HELMET))
+            .unlockedBy("has_chainmail_chestplate", has(Items.CHAINMAIL_CHESTPLATE))
+            .unlockedBy("has_chainmail_leggings", has(Items.CHAINMAIL_LEGGINGS))
+            .unlockedBy("has_chainmail_boots", has(Items.CHAINMAIL_BOOTS))
             .unlockedBy("has_iron_spear", has(ModItems.IRON_SPEAR.get()))
             .unlockedBy("has_iron_nautilus_armor", has(ModItems.IRON_NAUTILUS_ARMOR.get()))
             .save(output, path.apply(getBlastingRecipeName(Items.IRON_NUGGET)));

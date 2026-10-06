@@ -60,6 +60,10 @@ jobs:
           JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
         run: |
           bash gradlew :${{ matrix.loader }}:remapJar --stacktrace
+      - name: Check dynamic recipes and recipe-book unlocks
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
+        run: bash gradlew :common:checkDynamicRecipes --stacktrace
       - name: Assemble installable mod
         run: python .github/scripts/bundle.py 1.21.1 ${{ matrix.loader }}
       - name: Check integrated Tiny Takeover content
