@@ -16,3 +16,17 @@ if version == "1.21.1":
     for loader, expression in [("fabric", "provider"), ("neoforge", "event.getRegistries()")]:
         p = platform / f"{loader}/src/main/java/com/blackgear/platform/common/data/{loader}/LootModifierImpl.java"
         p.write_text(p.read_text().replace("new LootModifier.LootTableContext() {", "new LootModifier.LootTableContext() {\n                    @Override\n                    public net.minecraft.core.HolderLookup.Provider registries() {\n                        return " + expression + ";\n                    }"))
+
+    # Upstream 26w39a passes builders; retain the pinned Platform implementation.
+    p = platform / "common/src/main/java/com/blackgear/platform/common/data/LootModifier.java"
+    s = p.read_text()
+    s = s.replace("        void addPool(LootPool.Builder pool);", """        void addPool(LootPool.Builder pool);
+
+        default boolean addToPool(int index, LootPoolEntryContainer.Builder<?>... content) {
+            return this.addToPool(index, java.util.Arrays.stream(content).map(LootPoolEntryContainer.Builder::build).toArray(LootPoolEntryContainer[]::new));
+        }
+
+        default boolean addToPool(LootPoolEntryContainer.Builder<?>... content) {
+            return this.addToPool(0, content);
+        }""")
+    p.write_text(s)
