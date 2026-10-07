@@ -8,6 +8,7 @@ import com.blackgear.vanillabackport.common.level.items.spear.SpearAnimations;
 import net.minecraft.client.model.AgeableListModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
@@ -73,6 +74,22 @@ public abstract class HumanoidModelMixin<T extends LivingEntity> extends Ageable
                 ? entity.getMainArm()
                 : entity.getMainArm().getOpposite();
             
+            // Modern vanilla applies the common body/arm swing setup before
+            // the spear-specific STAB pose. Because this mixin cancels the
+            // 1.21.1 method, reproduce that common prelude here first.
+            this.body.yRot = Mth.sin(Mth.sqrt(this.attackTime) * Mth.TWO_PI) * 0.2F;
+            if (attackArm == HumanoidArm.LEFT) {
+                this.body.yRot *= -1.0F;
+            }
+
+            this.rightArm.z = Mth.sin(this.body.yRot) * 5.0F;
+            this.rightArm.x = -Mth.cos(this.body.yRot) * 5.0F;
+            this.leftArm.z = -Mth.sin(this.body.yRot) * 5.0F;
+            this.leftArm.x = Mth.cos(this.body.yRot) * 5.0F;
+            this.rightArm.yRot += this.body.yRot;
+            this.leftArm.yRot += this.body.yRot;
+            this.leftArm.xRot += this.body.yRot;
+
             SpearAnimations.thirdPersonAttackHand((HumanoidModel<T>)(Object)this, this.attackTime, attackArm);
             ci.cancel();
         }
