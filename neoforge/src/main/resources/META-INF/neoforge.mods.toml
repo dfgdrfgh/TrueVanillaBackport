@@ -9,7 +9,7 @@ modId = "vanillabackport"
     displayName = "VanillaBackport"
     authors = "BlackGear"
     description = "Backporting Minecraft Features to previous versions!"
-    logoFile = "icon.png"
+    logoFile = "META-INF/icon.png"
 
 [[dependencies.vanillabackport]]
     modId = "neoforge"
