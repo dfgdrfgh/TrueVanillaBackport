@@ -1,0 +1,102 @@
+name: Import modern vanilla textures for 1.21.1
+
+on:
+  push:
+    branches: ['1.21.1']
+    paths: ['.github/workflows/import-modern-vanilla-textures.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: '1.21.1'
+      - name: Import and validate modern vanilla resources
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          import struct
+          import time
+          import urllib.request
+          from pathlib import Path
+          
+          base = Path("common/src/main/resources/assets/minecraft")
+          source = "https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets"
+          
+          models = [
+              "comparator", "comparator_on", "comparator_on_subtract", "comparator_subtract",
+              "redstone_torch", "redstone_torch_off",
+              "redstone_wall_torch", "redstone_wall_torch_off",
+              *(
+                  f"repeater_{delay}tick{suffix}"
+                  for delay in range(1, 5)
+                  for suffix in ("", "_locked", "_on", "_on_locked")
+              ),
+              "template_redstone_torch", "template_redstone_torch_wall",
+              "template_torch_unlit", "template_torch_wall_unlit",
+          ]
+          patterns = [
+              "bordure_indented", "creeper", "field_masoned", "flow", "flower",
+              "globe", "guster", "mojang", "piglin", "skull",
+          ]
+          block_textures = [
+              "comparator", "comparator_on", "redstone_torch", "redstone_torch_off",
+              "repeater", "repeater_on",
+          ]
+          files = {
+              **{f"models/block/{model}.json": "1.21.2" for model in models},
+              "models/item/filled_map.json": "26.3",
+              **{f"textures/block/{name}.png": "26.3" for name in block_textures},
+              **{f"textures/item/{name}.png": "26.3" for name in ("map", "filled_map")},
+              **{f"textures/item/{name}_banner_pattern.png": "26.3" for name in patterns},
+              "textures/environment/clouds.png": "26.3",
+          }
+          
+          for relative, version in files.items():
+              url = f"{source}/{version}/assets/minecraft/{relative}"
+              for attempt in range(3):
+                  try:
+                      request = urllib.request.Request(url, headers={"User-Agent": "TrueVanillaBackport-assets"})
+                      with urllib.request.urlopen(request, timeout=40) as response:
+                          data = response.read()
+                      break
+                  except Exception:
+                      if attempt == 2:
+                          raise
+                      time.sleep(2 * (attempt + 1))
+              if relative.endswith(".json"):
+                  model = json.loads(data)
+                  assert "shade_direction_override" not in data.decode("utf-8"), relative
+                  assert isinstance(model, dict), relative
+                  if relative == "models/item/filled_map.json":
+                      assert list(model["textures"]) == ["layer0"], "26.3 maps must not use old markings overlay"
+              else:
+                  assert data.startswith(b"\\x89PNG\\r\\n\\x1a\\n".decode("unicode_escape").encode("latin1")), relative
+                  width, height = struct.unpack(">II", data[16:24])
+                  assert (width, height) == ((256, 256) if relative == "textures/environment/clouds.png" else (16, 16)), (relative, width, height)
+              output = base / relative
+              output.parent.mkdir(parents=True, exist_ok=True)
+              output.write_bytes(data)
+              print(f"Imported {relative} from {version} ({len(data)} bytes)")
+          assert len(files) == 48, len(files)
+          print(f"Validated {len(files)} vanilla asset files")
+          PY
+      - name: Commit texture updates to 1.21.1
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- common/src/main/resources/assets/minecraft
+          if git diff --cached --quiet; then
+            echo 'Assets already up to date'
+          else
+            git commit -m 'Backport modern map, redstone, banner-pattern and cloud assets to 1.21.1'
+            git push origin HEAD:1.21.1
+          fi
