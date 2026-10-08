@@ -28,6 +28,7 @@
     "client.game_options.OptionsMixin",
     "client.game_options.SoundOptionsScreenMixin",
     "client.game_patches.RenderSectionMixin",
+    "client.horse_armor.HorseArmorLayerMixin",
     "client.leash_behavior.EntityRendererMixin",
     "client.music_fade.MusicManagerMixin",
     "client.music_frequency.MusicManagerMixin",

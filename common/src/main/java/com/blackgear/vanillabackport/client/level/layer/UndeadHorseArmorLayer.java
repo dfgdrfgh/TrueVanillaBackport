@@ -13,14 +13,17 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor.ARGB32;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.item.AnimalArmorItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.DyedItemColor;
 
 @Environment(EnvType.CLIENT)
 public class UndeadHorseArmorLayer extends RenderLayer<AbstractHorse, HorseModel<AbstractHorse>> {
+	private static final ResourceLocation LEATHER_OVERLAY = ResourceLocation.withDefaultNamespace("textures/entity/horse/armor/horse_armor_leather_overlay.png");
 	private final HorseModel<AbstractHorse> model;
 
 	public UndeadHorseArmorLayer(RenderLayerParent<AbstractHorse, HorseModel<AbstractHorse>> renderer, EntityModelSet models) {
@@ -50,6 +53,10 @@ public class UndeadHorseArmorLayer extends RenderLayer<AbstractHorse, HorseModel
 			
 			VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(armor.getTexture()));
 			this.model.renderToBuffer(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, color);
+			if (equipment.is(Items.LEATHER_HORSE_ARMOR)) {
+				VertexConsumer overlay = buffer.getBuffer(RenderType.entityCutoutNoCull(LEATHER_OVERLAY));
+				this.model.renderToBuffer(poseStack, overlay, packedLight, OverlayTexture.NO_OVERLAY, -1);
+			}
 		}
 	}
 }
