@@ -1,6 +1,7 @@
 package com.blackgear.vanillabackport.core.compat;
 
 import com.blackgear.vanillabackport.core.ModChecker;
+import com.evandev.tiny_takeover_backport.config.ModConfig;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -14,7 +15,7 @@ import net.minecraft.world.entity.animal.frog.Frog;
 @Environment(EnvType.CLIENT)
 public class ClientCompat {
     public static boolean shouldBypassBabyModel(LivingEntity entity) {
-        if (ModChecker.TINY_TAKEOVER && entity.isBaby()) {
+        if (ModChecker.TINY_TAKEOVER && entity.isBaby() && ModConfig.get().isModelEnabled(entity)) {
             return entity.getType() == EntityType.COW || entity.getType() == EntityType.CHICKEN || entity.getType() == EntityType.PIG;
         }
         
