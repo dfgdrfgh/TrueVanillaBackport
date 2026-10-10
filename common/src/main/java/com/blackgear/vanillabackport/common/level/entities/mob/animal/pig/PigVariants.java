@@ -16,7 +16,7 @@ public class PigVariants {
 
     public static final RegistryKey<PigVariant> TEMPERATE = register("temperate",
         PigVariant.ModelType.NORMAL,
-        "pig",
+        "temperate_pig",
         SpawnPrioritySelectors.fallback(0));
     public static final RegistryKey<PigVariant> WARM = register("warm",
         PigVariant.ModelType.NORMAL,

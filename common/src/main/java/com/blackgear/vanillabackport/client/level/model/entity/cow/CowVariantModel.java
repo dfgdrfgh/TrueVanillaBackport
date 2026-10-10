@@ -6,6 +6,7 @@ import net.minecraft.client.model.CowModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.animal.Cow;
@@ -14,6 +15,10 @@ import net.minecraft.world.entity.animal.Cow;
 public class CowVariantModel<T extends Cow> extends CowModel<T> {
     public CowVariantModel(ModelPart root) {
         super(root);
+    }
+
+    public static LayerDefinition createBodyLayer() {
+        return LayerDefinition.create(createBaseCowModel(), 64, 64);
     }
 
     static MeshDefinition createBaseCowModel() {

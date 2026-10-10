@@ -8,6 +8,7 @@ import com.blackgear.vanillabackport.common.level.entities.mob.animal.chicken.Ch
 import com.blackgear.vanillabackport.common.level.entities.mob.animal.chicken.ChickenVariants;
 import com.blackgear.vanillabackport.core.compat.ClientCompat;
 import com.google.common.collect.Maps;
+import com.evandev.tiny_takeover_backport.client.ModBabyTextureRegistry;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.ChickenModel;
@@ -16,6 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.animal.Chicken;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
 public class ChickenVariantRenderer extends AbstractVariantRenderer<Chicken, ChickenModel<Chicken>, ChickenVariant, ChickenVariant.ModelType> {
@@ -42,6 +44,15 @@ public class ChickenVariantRenderer extends AbstractVariantRenderer<Chicken, Chi
         return variant.modelAndTexture().asset().path();
     }
     
+    // The temperate variant also has a backported asset; preserve baby textures
+    // regardless of the order of the integrated renderer hooks.
+    @Override
+    public Optional<ResourceLocation> getTexture(Chicken chicken) {
+        return this.getVariant(chicken)
+            .map(variant -> this.getTexture(chicken, variant))
+            .map(texture -> ModBabyTextureRegistry.getBabyTexture(chicken, texture));
+    }
+
     @Override
     protected BuiltInCoreRegistry<ChickenVariant> getRegistry() {
         return ChickenVariants.REGISTRIES;
