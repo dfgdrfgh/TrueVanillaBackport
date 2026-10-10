@@ -64,10 +64,10 @@ public class ModBabyTextureRegistry {
         }
 
         switch (path) {
-            case "textures/entity/chicken.png", "textures/entity/chicken/temperate_chicken.png" -> {
+            case "textures/entity/chicken.png" -> {
                 return Constants.vanillaLocation("textures/entity/chicken/chicken_temperate_baby.png");
             }
-            case "textures/entity/cow/cow.png", "textures/entity/cow/temperate_cow.png" -> {
+            case "textures/entity/cow/cow.png" -> {
                 return Constants.vanillaLocation("textures/entity/cow/cow_temperate_baby.png");
             }
             case "textures/entity/cow/brown_mooshroom.png" -> {
@@ -76,7 +76,7 @@ public class ModBabyTextureRegistry {
             case "textures/entity/cow/red_mooshroom.png" -> {
                 return Constants.vanillaLocation("textures/entity/cow/mooshroom_red_baby.png");
             }
-            case "textures/entity/pig/pig.png", "textures/entity/pig/temperate_pig.png" -> {
+            case "textures/entity/pig/pig.png" -> {
                 return Constants.vanillaLocation("textures/entity/pig/pig_temperate_baby.png");
             }
             case "textures/entity/turtle/big_sea_turtle.png" -> {
