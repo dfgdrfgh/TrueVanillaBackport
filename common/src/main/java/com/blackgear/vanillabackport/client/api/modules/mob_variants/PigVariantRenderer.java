@@ -45,6 +45,16 @@ public class PigVariantRenderer extends AbstractVariantRenderer<Pig, PigModel<Pi
         return variant.modelAndTexture().asset().path();
     }
     
+    @Override
+    public Optional<PigModel<Pig>> getModel(Pig pig) {
+        if (ClientCompat.hasQuarkPigTexture(pig)
+            && this.getVariant(pig).map(this::getModelType)
+                .filter(type -> type == PigVariant.ModelType.NORMAL).isPresent()) {
+            return Optional.empty();
+        }
+        return super.getModel(pig);
+    }
+
     // The temperate variant also has a backported asset; preserve baby textures
     // regardless of the order of the integrated renderer hooks.
     @Override

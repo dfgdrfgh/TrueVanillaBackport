@@ -47,6 +47,16 @@ public class CowVariantRenderer extends AbstractVariantRenderer<Cow, CowModel<Co
         return variant.modelAndTexture().asset().path();
     }
     
+    @Override
+    public Optional<CowModel<Cow>> getModel(Cow cow) {
+        if (ClientCompat.hasQuarkCowTexture(cow)
+            && this.getVariant(cow).map(this::getModelType)
+                .filter(type -> type == CowVariant.ModelType.NORMAL).isPresent()) {
+            return Optional.empty();
+        }
+        return super.getModel(cow);
+    }
+
     // The temperate variant also has a backported asset; preserve baby textures
     // regardless of the order of the integrated renderer hooks.
     @Override
