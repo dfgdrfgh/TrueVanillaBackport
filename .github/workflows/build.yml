@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: ItsBlackGear/Platform
-          ref: c0e05e88e3b1c48c590b888f140157a6a3dd8a25
+          ref: f735aebbc1b6efc90ac72f01fe10eaac69f4051a
           path: vendor/platform
       - uses: actions/setup-java@v4
         with:
