@@ -13,10 +13,13 @@ properties = (platform / "gradle.properties").read_text()
 expected_platform_version = "1.4.0.2640.1"
 
 def property_value(name):
-    match = re.search(r"^" + re.escape(name) + r"\\s*=\\s*(.+)$", properties, re.MULTILINE)
-    if match is None:
-        raise SystemExit(f"Missing Platform property: {name}")
-    return match.group(1).strip()
+    for line in properties.splitlines():
+        if "=" not in line or line.lstrip().startswith("#"):
+            continue
+        key, value = line.split("=", 1)
+        if key.strip() == name:
+            return value.strip()
+    raise SystemExit(f"Missing Platform property: {name}")
 
 if property_value("minecraft_version") != minecraft_version:
     raise SystemExit("Platform checkout does not target the required Minecraft version")
