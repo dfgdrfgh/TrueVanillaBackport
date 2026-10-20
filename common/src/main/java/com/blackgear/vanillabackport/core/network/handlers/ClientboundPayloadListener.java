@@ -22,6 +22,8 @@ public class ClientboundPayloadListener {
     }
     
     public static void handleNautilusScreenOpen(ClientboundNautilusScreenOpenPacket packet, Player player) {
+        // A disconnect can clear the client/player between packet dispatch and execution.
+        if (player == null || Minecraft.getInstance().level == null) return;
         if (player.level().getEntity(packet.entityId()) instanceof AbstractNautilus nautilus) {
             SimpleContainer container = new SimpleContainer(packet.size());
             NautilusInventoryMenu menu = new NautilusInventoryMenu(packet.containerId(), player.getInventory(), container, nautilus);
