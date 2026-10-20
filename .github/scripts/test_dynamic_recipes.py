@@ -122,8 +122,11 @@ fixtures = {
                     for (String metal : List.of("iron", "gold")) {
                         for (String furnace : List.of("smelting", "blasting")) {
                             var recipe = recipes.get(id(metal + "_nugget_from_" + furnace));
-                            String vanillaItem = metal.equals("iron") ? "iron_pickaxe" : "golden_pickaxe";
-                            require(recipe.toString().contains("minecraft:" + vanillaItem), "Vanilla recycling lost: " + metal);
+                            String prefix = metal.equals("iron") ? "iron" : "golden";
+                            for (String ingredient : List.of(prefix + "_spear", prefix + "_nautilus_armor")) {
+                                require(recipe != null && recipe.toString().contains("minecraft:" + ingredient),
+                                        "Backported " + metal + " recycling ingredient missing: " + ingredient + " (" + furnace + ")");
+                            }
                         }
                     }
                     for (var entry : advancements.entrySet()) {
