@@ -16,7 +16,7 @@ public class ChickenVariants {
 
     public static final RegistryKey<ChickenVariant> TEMPERATE = register("temperate",
         ChickenVariant.ModelType.NORMAL,
-        ResourceLocation.withDefaultNamespace("entity/chicken"),
+        ResourceLocation.withDefaultNamespace("entity/chicken/temperate_chicken"),
         SpawnPrioritySelectors.fallback(0));
     public static final RegistryKey<ChickenVariant> WARM = register("warm",
         ChickenVariant.ModelType.NORMAL,

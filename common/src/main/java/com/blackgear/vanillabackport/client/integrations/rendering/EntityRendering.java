@@ -9,12 +9,14 @@ import com.blackgear.vanillabackport.client.level.model.entity.CopperGolemModel;
 import com.blackgear.vanillabackport.client.level.model.entity.CreakingModel;
 import com.blackgear.vanillabackport.client.level.model.entity.chicken.ColdChickenModel;
 import com.blackgear.vanillabackport.client.level.model.entity.cow.ColdCowModel;
+import com.blackgear.vanillabackport.client.level.model.entity.cow.CowVariantModel;
 import com.blackgear.vanillabackport.client.level.model.entity.cow.WarmCowModel;
 import com.blackgear.vanillabackport.client.level.model.entity.happy_ghast.HappyGhastHarnessModel;
 import com.blackgear.vanillabackport.client.level.model.entity.happy_ghast.HappyGhastModel;
 import com.blackgear.vanillabackport.client.level.model.entity.nautilus.NautilusModel;
 import com.blackgear.vanillabackport.client.level.model.entity.nautilus.ZombieNautilusCoralModel;
 import com.blackgear.vanillabackport.client.level.model.entity.pig.ColdPigModel;
+import com.blackgear.vanillabackport.client.level.model.entity.pig.PigVariantModel;
 import com.blackgear.vanillabackport.client.level.model.entity.sulfur_cube.SmallSulfurCubeModel;
 import com.blackgear.vanillabackport.client.level.model.entity.sulfur_cube.SulfurCubeModel;
 import com.blackgear.vanillabackport.client.level.model.object.CushionModel;
@@ -44,6 +46,8 @@ public class EntityRendering {
         event.register(ModModelLayers.CUSTOM_BOAT, BoatModel::createBodyModel);
         event.register(ModModelLayers.CUSTOM_CHEST_BOAT, ChestBoatModel::createBodyModel);
         
+        event.register(ModModelLayers.TEMPERATE_PIG, PigVariantModel::createBodyLayer);
+        event.register(ModModelLayers.TEMPERATE_COW, CowVariantModel::createBodyLayer);
         event.register(ModModelLayers.COLD_PIG, ColdPigModel::createBodyLayer);
         event.register(ModModelLayers.COLD_CHICKEN, ColdChickenModel::createBodyLayer);
         event.register(ModModelLayers.COLD_COW, ColdCowModel::createBodyLayer);

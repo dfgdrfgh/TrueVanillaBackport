@@ -9,7 +9,7 @@ modId = "vanillabackport"
     displayName = "VanillaBackport"
     authors = "BlackGear"
     description = "Backporting Minecraft Features to previous versions!"
-    logoFile = "icon.png"
+    logoFile = "META-INF/icon.png"
 
 [[dependencies.vanillabackport]]
     modId = "neoforge"
@@ -36,6 +36,12 @@ modId = "vanillabackport"
     config = "vanillabackport.mixins.json"
 [[mixins]]
     config = "vanillabackport-neoforge.mixins.json"
+
+[[mixins]]
+    config = "vanillabackport-tiny.mixins.json"
+
+[[mixins]]
+    config = "vanillabackport-tiny-armor.mixins.json"
 
 ["badoptimizations:cache_hooks"]
     common = "com.blackgear.vanillabackport.client.api.modules.end_flashes.BadOptimizationsCommonHook"
