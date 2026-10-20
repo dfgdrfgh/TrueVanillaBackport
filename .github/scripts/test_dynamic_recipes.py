@@ -42,19 +42,26 @@ fixtures = {
         }
     """,
     "com.blackgear.vanillabackport.core.VanillaBackport": """
+        import com.blackgear.vanillabackport.common.level.recipes.RecipeStrategy;
         public class VanillaBackport {
             public record Flag(boolean enabled) { public boolean get() { return enabled; } }
-            public record Config(Flag hasCopperNuggets, Flag hasCopperToolSet, Flag hasSpears) {}
+            public record StrategyFlag(RecipeStrategy value) { public RecipeStrategy get() { return value; } }
+            public static class Config {
+                public final Flag hasCopperNuggets, hasCopperToolSet, hasSpears;
+                public final StrategyFlag bundleRecipe, lodestoneRecipe, leadRecipe, saddleRecipe;
+                public Config(boolean nuggets, boolean copper, boolean spears) {
+                    this(nuggets, copper, spears, RecipeStrategy.APPEND);
+                }
+                public Config(boolean nuggets, boolean copper, boolean spears, RecipeStrategy strategy) {
+                    hasCopperNuggets = new Flag(nuggets);
+                    hasCopperToolSet = new Flag(copper);
+                    hasSpears = new Flag(spears);
+                    bundleRecipe = lodestoneRecipe = leadRecipe = saddleRecipe = new StrategyFlag(strategy);
+                }
+            }
             public static Config COMMON_CONFIG;
         }
-    """.replace("public record Config(Flag hasCopperNuggets, Flag hasCopperToolSet, Flag hasSpears) {}", """
-        public static class Config {
-            public final Flag hasCopperNuggets, hasCopperToolSet, hasSpears;
-            public Config(boolean nuggets, boolean copper, boolean spears) {
-                hasCopperNuggets = new Flag(nuggets); hasCopperToolSet = new Flag(copper); hasSpears = new Flag(spears);
-            }
-        }
-    """),
+    """,
     "com.blackgear.vanillabackport.core.data.tags.ModItemTags": """
         import net.minecraft.core.registries.Registries;
         import net.minecraft.resources.ResourceLocation;
@@ -67,6 +74,7 @@ fixtures = {
     """,
     "DynamicRecipeTest": r"""
         import com.blackgear.vanillabackport.common.level.recipes.DynamicRecipeResources;
+        import com.blackgear.vanillabackport.common.level.recipes.RecipeStrategy;
         import com.blackgear.vanillabackport.common.registries.items.ModItems;
         import com.blackgear.vanillabackport.core.VanillaBackport;
         import com.blackgear.vanillabackport.core.data.tags.ModItemTags;
@@ -127,7 +135,12 @@ fixtures = {
                     var reloaded = DynamicRecipeResources.addRecipes(Map.of(), registries);
                     require(recipes.equals(reloaded), "Data reload is not stable");
                 }
-                System.out.println("PASS: eight recipe config combinations, vanilla recycling, recipe unlocks, stable reload generation");
+                VanillaBackport.COMMON_CONFIG = new VanillaBackport.Config(true, true, true, RecipeStrategy.IGNORE);
+                var ignoredRecipes = DynamicRecipeResources.addRecipes(Map.of(), registries);
+                for (String name : List.of("bundle", "lead", "saddle", "lodestone")) {
+                    require(!ignoredRecipes.containsKey(id(name)), "Ignored recipe still generated: " + name);
+                }
+                System.out.println("PASS: eight equipment-config combinations, ignored recipe strategies, vanilla recycling, recipe unlocks, stable reload generation");
             }
         }
     """,
@@ -141,7 +154,8 @@ with tempfile.TemporaryDirectory() as directory:
         package = name.rsplit(".", 1)[0] if "." in name else None
         path.write_text((f"package {package};\n" if package else "") + body)
         files.append(str(path))
-    files += [str(provider), str(source / "common/level/recipes/DynamicRecipeResources.java")]
+    files += [str(provider), str(source / "common/level/recipes/DynamicRecipeResources.java"),
+              str(source / "common/level/recipes/RecipeStrategy.java")]
     subprocess.run([str(java.with_name("javac")), "-proc:none", "--release", "21", "-cp", classpath,
                     "-d", str(folder), *files], check=True)
     subprocess.run([str(java), "-cp", str(folder) + os.pathsep + classpath, "DynamicRecipeTest"], check=True)
