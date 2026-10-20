@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.evandev.tiny_takeover_backport.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "refmap": "VanillaBackport-neoforge-1.21.1-neoforge-refmap.json",
+  "client": [
+    "client.HumanoidArmorLayerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
