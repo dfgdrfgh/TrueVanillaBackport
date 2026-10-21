@@ -72,6 +72,8 @@ jobs:
         env:
           JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
         run: python .github/scripts/check_platform_bundle.py ${{ matrix.loader }}
+      - name: Verify WWOO biome parity in packaged release JAR
+        run: python .github/scripts/check_packaged_worldgen.py
       - name: Check integrated Tiny Takeover content
         run: python .github/scripts/check_tiny_integration.py ${{ matrix.loader }}
       - name: Check production server startup
