@@ -24,8 +24,8 @@ assert "useNativePaleGardenPlacement" not in src
 
 for flag, field, expression in [
     ("pale_garden", "PALE_GARDEN", "PALE_GARDEN.forEach(event::add)"),
-    ("sulfur_caves", "SULFUR_CAVES", "event.add(SULFUR_CAVES)"),
-    ("dappled_forest", "DAPPLED_FOREST", "DAPPLED_FOREST.forEach(event::add)"),
+    ("has_sulfur_caves", "SULFUR_CAVES", "event.add(SULFUR_CAVES)"),
+    ("has_dappled_forest", "DAPPLED_FOREST", "DAPPLED_FOREST.forEach(event::add)"),
 ]:
     assert f'.define("{flag}", true)' in configs, f"Default disabled: {flag}"
     assert expression in src, f"Missing biome mapping: {field}"
