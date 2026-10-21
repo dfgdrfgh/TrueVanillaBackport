@@ -4,6 +4,7 @@ import com.blackgear.platform.common.worldgen.placement.BiomePlacement;
 import com.blackgear.platform.common.worldgen.placement.Placement;
 import com.blackgear.platform.common.worldgen.placement.parameters.*;
 import com.blackgear.vanillabackport.common.registries.worldgen.ModBiomes;
+import com.blackgear.vanillabackport.common.integrations.compat.wwoo.WwooBiomeCompatibility;
 import com.blackgear.vanillabackport.core.VanillaBackport;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.Util;
@@ -53,16 +54,17 @@ public class BiomeGeneration {
         if (!reportedBiomePlacement) {
             reportedBiomePlacement = true;
             VanillaBackport.LOGGER.info(
-                "TrueVanillaBackport Fabric/NeoForge 1.21.1 biome placement parity: pale_garden={}, sulfur_caves={}, dappled_forest={}, climate_overwrite=false",
+                "TrueVanillaBackport 1.21.1 restored fork placement: pale_garden={}, sulfur_caves={}, dappled_forest={}, wwoo_native_plateau={}",
                 VanillaBackport.COMMON_CONFIG.hasPaleGarden.get(),
                 VanillaBackport.COMMON_CONFIG.hasSulfurCaves.get(),
-                VanillaBackport.COMMON_CONFIG.hasDappledForest.get()
+                VanillaBackport.COMMON_CONFIG.hasDappledForest.get(),
+                WwooBiomeCompatibility.useNativePaleGardenPlacement()
             );
         }
-        // Preserve the established climate placements with or without WWOO.
-        // Replacing OverworldBiomeBuilder plateau entries changes biome selection
-        // for existing seeds and can suppress Pale Garden placement entirely.
-        if (VanillaBackport.COMMON_CONFIG.hasPaleGarden.get())
+        // Restore the actual pre-upstream-sync fork behavior. With WWOO loaded,
+        // use the vanilla 1.21.4 plateau variant rather than appending competing
+        // Pale Garden climate points on top of WWOO's original biome layout.
+        if (VanillaBackport.COMMON_CONFIG.hasPaleGarden.get() && !WwooBiomeCompatibility.useNativePaleGardenPlacement())
             PALE_GARDEN.forEach(event::add);
         
         if (VanillaBackport.COMMON_CONFIG.hasSulfurCaves.get())
