@@ -93,12 +93,14 @@ with log.open("w") as output:
                     process.stdin.flush()
                     content_probe_sent = True
                 if wwoo and not locate_sent:
-                    process.stdin.write(b"execute positioned 0 80 0 run locate biome minecraft:pale_garden\n")
+                    for name, y in [("pale_garden", 80), ("dappled_forest", 80), ("sulfur_caves", -40)]:
+                        process.stdin.write(f"execute positioned 0 {y} 0 run locate biome minecraft:{name}\n".encode())
                     process.stdin.flush()
                     locate_sent = True
-                if wwoo and "Could not find a biome" in content:
-                    raise RuntimeError("Pale Garden was not found in the seeded WWOO normal world")
-                located = not wwoo or re.search(r"nearest .*pale_garden.* is at", content)
+                if wwoo and ("Could not find a biome" in content or "Unknown biome" in content):
+                    raise RuntimeError("A required backported biome was not found in the seeded WWOO normal world")
+                located = not wwoo or all(re.search(r"nearest .*" + name + r".* is at", content)
+                    for name in ("pale_garden", "dappled_forest", "sulfur_caves"))
                 content_registered = "Changed the block at" in content and "Summoned new Cow" in content
                 if not wwoo and content_registered and not reload_sent:
                     process.stdin.write(b"reload\n")
