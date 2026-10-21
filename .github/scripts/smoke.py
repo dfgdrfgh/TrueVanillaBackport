@@ -93,6 +93,8 @@ with log.open("w") as output:
                     process.stdin.flush()
                     content_probe_sent = True
                 if wwoo and not locate_sent:
+                    if "WWOO compatibility: using native Pale Garden plateau placement" not in content:
+                        raise RuntimeError("Pre-sync WWOO Pale Garden plateau placement was not activated")
                     for name, y in [("pale_garden", 80), ("dappled_forest", 80), ("sulfur_caves", -40)]:
                         process.stdin.write(f"execute positioned 0 {y} 0 run locate biome minecraft:{name}\n".encode())
                     process.stdin.flush()
