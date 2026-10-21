@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BiomeGeneration {
+    // Debug marker for identifying a built fork JAR in logs, without changing biome selection.
+    private static boolean reportedBiomePlacement;
+
     public static final List<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> PALE_GARDEN = Util.make(() -> {
         List<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> parameters = new ArrayList<>();
         addBiome(parameters, ModBiomes.PALE_GARDEN, Placement.MID_SLICE_VARIANT, Temperature.NEUTRAL, Humidity.HUMID, Continentalness.FAR_INLAND.parameter(), Erosion.EROSION_1.parameter());
@@ -47,6 +50,15 @@ public class BiomeGeneration {
     );
     
     public static void bootstrap(BiomePlacement.Event event) {
+        if (!reportedBiomePlacement) {
+            reportedBiomePlacement = true;
+            VanillaBackport.LOGGER.info(
+                "TrueVanillaBackport Fabric/NeoForge 1.21.1 biome placement parity: pale_garden={}, sulfur_caves={}, dappled_forest={}, climate_overwrite=false",
+                VanillaBackport.COMMON_CONFIG.hasPaleGarden.get(),
+                VanillaBackport.COMMON_CONFIG.hasSulfurCaves.get(),
+                VanillaBackport.COMMON_CONFIG.hasDappledForest.get()
+            );
+        }
         // Preserve the established climate placements with or without WWOO.
         // Replacing OverworldBiomeBuilder plateau entries changes biome selection
         // for existing seeds and can suppress Pale Garden placement entirely.
