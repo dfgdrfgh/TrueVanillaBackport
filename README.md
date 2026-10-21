@@ -17,7 +17,7 @@ Minecraft assets belong to Mojang and Microsoft. This mod is not affiliated with
 
 ### William Wythers' Overhauled Overworld compatibility
 
-On 1.21.1, WWOO keeps its Pale Garden trees, vegetation, terrain, and biome definition. When WWOO is installed, the backport places the Pale Garden in vanilla 1.21.4's plateau-variant slot instead of appending overlapping Dark Forest climate entries. The Pale Garden toggle still applies, and world generation changes apply to new chunks. Fabric and NeoForge builds are tested with WWOO 2.6.7 and Cristel Lib 3.1.5 in a normal world.
+On 1.21.1, WWOO keeps its Pale Garden trees, vegetation, terrain, and biome definition. The backport now retains its original biome placement mappings with and without WWOO, rather than replacing native Dark Forest plateau climate entries. This restores the pre-sync selection behavior for the same seed; Pale Garden, Dappled Forest, and Sulfur Caves remain gated by their individual settings. World-generation changes affect newly generated chunks. Automated server smoke tests currently use WWOO 2.6.7 and Cristel Lib 3.1.5, **not** the newer WWOO 3.0.1 backport or the complete user modpack.
 
 Tiny Takeover content is integrated directly into VanillaBackport, including its baby models, Golden Dandelion, sounds, recipes, and creative tab. No separate Tiny Takeover mod or build dependency is required. Its original resource IDs and `tiny_takeover_backport.json` settings are preserved. Platform remains bundled.
 
