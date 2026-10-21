@@ -1,0 +1,91 @@
+name: Build parity backport
+on:
+  push:
+    branches: ["1.21.1"]
+  pull_request:
+    branches: ["1.21.1"]
+  workflow_dispatch:
+concurrency:
+  group: truevanilla-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        loader: [fabric, neoforge]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: ItsBlackGear/Platform
+          ref: aad0b6ca607e08c91965f76d8583e64dbbb69944
+          path: vendor/platform
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: |
+            17
+            21
+            25
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-home-cache-excludes: |
+            caches/fabric-loom
+            caches/architectury-loom
+      - name: Prepare pinned dependencies
+        run: python .github/scripts/prepare_dependencies.py vendor/platform 1.21.1
+      - name: Check nautilus inventory packet ordering
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
+        run: python .github/scripts/test_nautilus_open.py
+      - name: Check WWOO Pale Garden placement
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
+        run: python .github/scripts/test_wwoo_biomes.py
+      - name: Verify mixin manifests reference existing source classes
+        run: python .github/scripts/check_mixins.py
+      - name: Compile Platform
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
+        run: |
+          bash vendor/platform/gradlew -p vendor/platform :common:remapJar :fabric:remapJar :neoforge:remapJar --stacktrace --no-daemon
+          mkdir -p libs
+          cp vendor/platform/common/build/libs/Platform-common-1.21.1-1.4.0.2640.1.jar libs/
+          cp vendor/platform/{fabric,neoforge}/build/libs/Platform-*-1.21.1-1.4.0.2640.1.jar libs/
+      - name: Compile VanillaBackport
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
+        run: |
+          bash gradlew :${{ matrix.loader }}:remapJar --stacktrace
+      - name: Check dynamic recipes and recipe-book unlocks
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
+        run: bash gradlew :common:checkDynamicRecipes --stacktrace
+      - name: Assemble installable mod
+        run: python .github/scripts/bundle.py 1.21.1 ${{ matrix.loader }}
+      - name: Verify bundled Platform API and minimum compatible version
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
+        run: python .github/scripts/check_platform_bundle.py ${{ matrix.loader }}
+      - name: Verify WWOO biome parity in packaged release JAR
+        run: python .github/scripts/check_packaged_worldgen.py
+      - name: Check integrated Tiny Takeover content
+        run: python .github/scripts/check_tiny_integration.py ${{ matrix.loader }}
+      - name: Check production server startup
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
+        run: python .github/scripts/smoke.py ${{ matrix.loader }}
+      - name: Check WWOO compatibility in a normal world
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
+        run: python .github/scripts/smoke.py ${{ matrix.loader }} wwoo
+      - uses: actions/upload-artifact@v4
+        with:
+          name: VanillaBackport-1.21.1-${{ matrix.loader }}
+          path: dist/*
+          if-no-files-found: error

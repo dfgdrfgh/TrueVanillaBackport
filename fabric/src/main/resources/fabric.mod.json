@@ -17,10 +17,12 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "com.blackgear.vanillabackport.core.fabric.emissive.EmissiveModelHandler"
+      "com.blackgear.vanillabackport.core.fabric.emissive.EmissiveModelHandler",
+      "com.evandev.tiny_takeover_backport.client.TinyTakeoverBackportClient"
     ],
     "main": [
-      "com.blackgear.vanillabackport.core.fabric.VanillaBackportFabric"
+      "com.blackgear.vanillabackport.core.fabric.VanillaBackportFabric",
+      "com.evandev.tiny_takeover_backport.TinyTakeoverBackportFabric"
     ],
     "fabric-datagen": [
       "com.blackgear.vanillabackport.data.DataGenerator"
@@ -33,11 +35,13 @@
     ]
   },
   "mixins": [
-    "vanillabackport.mixins.json"
+    "vanillabackport.mixins.json",
+    "vanillabackport-tiny.mixins.json",
+    "vanillabackport-tiny-armor.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.16.12",
-    "platform": ">=1.4",
+    "platform": ">=1.4.0.2640.1",
     "minecraft": "~1.21.1",
     "java": ">=21",
     "fabric-api": "*"

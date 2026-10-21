@@ -24,6 +24,7 @@ public class CopperGolemModel<T extends CopperGolem> extends HierarchicalModel<T
     private final ModelPart body;
     private final ModelPart rightArm;
     private final ModelPart leftArm;
+    private final ModelPart[] resetParts;
     
     public CopperGolemModel(ModelPart root) {
         this.root = root;
@@ -31,6 +32,8 @@ public class CopperGolemModel<T extends CopperGolem> extends HierarchicalModel<T
         this.head = this.body.getChild("head");
         this.rightArm = this.body.getChild("right_arm");
         this.leftArm = this.body.getChild("left_arm");
+        // Model parts are fixed for this baked model; resource reloads create a new model.
+        this.resetParts = this.root.getAllParts().toArray(ModelPart[]::new);
     }
     
     public static LayerDefinition createBodyLayer() {
@@ -231,7 +234,9 @@ public class CopperGolemModel<T extends CopperGolem> extends HierarchicalModel<T
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.entity = entity;
         
-        this.root().getAllParts().forEach(ModelPart::resetPose);
+        for (ModelPart part : this.resetParts) {
+            part.resetPose();
+        }
         this.head.xRot = headPitch * (float) (Math.PI / 180F);
         this.head.yRot = netHeadYaw * (float) (Math.PI / 180F);
         

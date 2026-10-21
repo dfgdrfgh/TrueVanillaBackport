@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.evandev.tiny_takeover_backport.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "refmap": "VanillaBackport-fabric-1.21.1-fabric-refmap.json",
+  "client": [
+    "client.HumanoidArmorLayerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

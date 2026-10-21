@@ -16,7 +16,7 @@ public class PigVariants {
 
     public static final RegistryKey<PigVariant> TEMPERATE = register("temperate",
         PigVariant.ModelType.NORMAL,
-        "pig",
+        "temperate_pig",
         SpawnPrioritySelectors.fallback(0));
     public static final RegistryKey<PigVariant> WARM = register("warm",
         PigVariant.ModelType.NORMAL,
@@ -33,6 +33,6 @@ public class PigVariants {
 
     private static RegistryKey<PigVariant> register(String key, PigVariant.ModelType type, String assetId, SpawnPrioritySelectors selectors) {
         ResourceLocation path = ResourceLocation.withDefaultNamespace("entity/pig/" + assetId);
-        return REGISTRIES.registerKey(key, new PigVariant(new ModelAndTexture<>(type, path), selectors));
+        return REGISTRIES.register(key, new PigVariant(new ModelAndTexture<>(type, path), selectors));
     }
 }

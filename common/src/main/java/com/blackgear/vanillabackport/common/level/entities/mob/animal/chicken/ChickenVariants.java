@@ -16,7 +16,7 @@ public class ChickenVariants {
 
     public static final RegistryKey<ChickenVariant> TEMPERATE = register("temperate",
         ChickenVariant.ModelType.NORMAL,
-        ResourceLocation.withDefaultNamespace("entity/chicken"),
+        ResourceLocation.withDefaultNamespace("entity/chicken/temperate_chicken"),
         SpawnPrioritySelectors.fallback(0));
     public static final RegistryKey<ChickenVariant> WARM = register("warm",
         ChickenVariant.ModelType.NORMAL,
@@ -33,6 +33,6 @@ public class ChickenVariants {
     }
 
     private static RegistryKey<ChickenVariant> register(String key, ChickenVariant.ModelType type, ResourceLocation assetId, SpawnPrioritySelectors selectors) {
-        return REGISTRIES.registerKey(key, new ChickenVariant(new ModelAndTexture<>(type, assetId), selectors));
+        return REGISTRIES.register(key, new ChickenVariant(new ModelAndTexture<>(type, assetId), selectors));
     }
 }

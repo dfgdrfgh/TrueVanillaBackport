@@ -10,6 +10,8 @@ public class ModModelLayers {
     public static final ModelLayerLocation CUSTOM_CHEST_BOAT = register("custom_chest_boat");
 
     // Spring to Life
+    public static final ModelLayerLocation TEMPERATE_PIG = register("temperate_pig");
+    public static final ModelLayerLocation TEMPERATE_COW = register("temperate_cow");
     public static final ModelLayerLocation COLD_PIG = register("cold_pig");
     public static final ModelLayerLocation COLD_CHICKEN = register("cold_chicken");
     public static final ModelLayerLocation COLD_COW = register("cold_cow");

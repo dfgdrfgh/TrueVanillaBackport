@@ -16,7 +16,7 @@ public class CowVariants {
     
     public static final RegistryKey<CowVariant> TEMPERATE = register("temperate",
         CowVariant.ModelType.NORMAL,
-        "cow",
+        "temperate_cow",
         SpawnPrioritySelectors.fallback(0));
     public static final RegistryKey<CowVariant> WARM = register("warm",
         CowVariant.ModelType.WARM,
@@ -33,6 +33,6 @@ public class CowVariants {
 
     private static RegistryKey<CowVariant> register(String key, CowVariant.ModelType type, String assetId, SpawnPrioritySelectors selectors) {
         ResourceLocation path = ResourceLocation.withDefaultNamespace("entity/cow/" + assetId);
-        return REGISTRIES.registerKey(key, new CowVariant(new ModelAndTexture<>(type, path), selectors));
+        return REGISTRIES.register(key, new CowVariant(new ModelAndTexture<>(type, path), selectors));
     }
 }

@@ -17,11 +17,14 @@ import net.minecraft.util.Mth;
 public class CreakingModel<T extends Creaking> extends HierarchicalModel<T> {
     private final ModelPart root;
     private final ModelPart head;
+    private final ModelPart[] resetParts;
 
     public CreakingModel(ModelPart root) {
         this.root = root.getChild("root");
         ModelPart upperBody = this.root.getChild("upper_body");
         this.head = upperBody.getChild("head");
+        // Model parts are fixed for this baked model; resource reloads create a new model.
+        this.resetParts = this.root.getAllParts().toArray(ModelPart[]::new);
     }
 
     private static MeshDefinition createMesh() {
@@ -106,7 +109,9 @@ public class CreakingModel<T extends Creaking> extends HierarchicalModel<T> {
 
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        this.root().getAllParts().forEach(ModelPart::resetPose);
+        for (ModelPart part : this.resetParts) {
+            part.resetPose();
+        }
         this.head.xRot = headPitch * Mth.DEG_TO_RAD;
         this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
 
