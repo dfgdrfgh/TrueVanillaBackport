@@ -279,8 +279,7 @@ public class VanillaTabIntegrations {
     private static void registerMountsOfMayhem(Event event) {
         event.register(VanillaTabs.COMBAT, (flags, output, operator) -> {
             if (VanillaBackport.COMMON_CONFIG.hasSpears.get()) {
-                // Modern combat tab: spears follow swords and precede axes.
-                // Do not expose copper spears when copper equipment is disabled.
+                // Match the existing 1.21.1 mod tab placement and respect the copper equipment toggle.
                 var spears = output.before(Items.WOODEN_AXE)
                     .add(ModItems.WOODEN_SPEAR.get(), ModItems.STONE_SPEAR.get());
                 if (VanillaBackport.COMMON_CONFIG.hasCopperToolSet.get()) {
