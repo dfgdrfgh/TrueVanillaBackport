@@ -174,7 +174,8 @@
     "common.zombie_horses.ZombieHorseMixin",
     "compat.jer.BiomeHelperMixin",
     "compat.mousetweaks.MainMixin",
-    "common.access.NoiseGeneratorSettingsAccessor"
+    "common.access.NoiseGeneratorSettingsAccessor",
+    "compat.wwoo.OverworldBiomeBuilderMixin"
   ],
   "injectors": {
     "defaultRequire": 1
