@@ -13,6 +13,5 @@ public final class VanillaBackportFabric implements ModInitializer {
 
         // Run our common setup.
         VanillaBackport.bootstrap();
-        ModernCreativeSorting.register();
     }
 }
