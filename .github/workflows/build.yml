@@ -1,0 +1,92 @@
+name: Build Fabric 1.21.1
+
+on:
+  push:
+    branches: ["1.21.1"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fabric:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - name: Check out TrueVanillaBackport
+        uses: actions/checkout@v4
+
+      - name: Check out pinned Platform dependency
+        uses: actions/checkout@v4
+        with:
+          repository: ItsBlackGear/Platform
+          ref: f735aebbc1b6efc90ac72f01fe10eaac69f4051a
+          path: vendor/platform
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: |
+            17
+            21
+            25
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-home-cache-excludes: |
+            caches/fabric-loom
+            caches/architectury-loom
+
+      - name: Prepare pinned dependencies
+        run: python .github/scripts/prepare_dependencies.py vendor/platform 1.21.1
+
+      - name: Build Platform dependency
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
+        run: |
+          bash vendor/platform/gradlew -p vendor/platform :common:remapJar :fabric:remapJar --stacktrace --no-daemon
+          mkdir -p libs
+          cp vendor/platform/common/build/libs/Platform-common-1.21.1-1.4.0.2638.1.1.jar libs/
+          cp vendor/platform/fabric/build/libs/Platform-fabric-1.21.1-1.4.0.2638.1.1.jar libs/
+
+      - name: Build TrueVanillaBackport for Fabric
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
+        run: bash gradlew :fabric:remapJar --stacktrace --no-daemon
+
+      - name: Assemble installable mod JAR
+        run: python .github/scripts/bundle.py 1.21.1 fabric
+
+      - name: Validate geyser sound and bundled Platform
+        run: |
+          python - <<'PY'
+          import json
+          import zipfile
+          from pathlib import Path
+
+          jars = list(Path("dist").glob("*.jar"))
+          assert len(jars) == 1, f"Expected one installable JAR; found {jars}"
+          with zipfile.ZipFile(jars[0]) as jar:
+              assert jar.testzip() is None
+              names = set(jar.namelist())
+              sounds = json.loads(jar.read("assets/minecraft/sounds.json"))
+              new = sounds["block.potent_sulfur.geyser_continuous_eruption"]
+              legacy = sounds["block.potent_sulfur.geyser_continuous_eruption_start"]
+              assert len(new["sounds"]) == 6 and new == legacy
+              for sound in new["sounds"]:
+                  assert f"assets/minecraft/sounds/{sound}.ogg" in names, sound
+              assert "com/blackgear/vanillabackport/client/registries/ModSoundEvents.class" in names
+              assert any(n.startswith("META-INF/jars/Platform-fabric-") and n.endswith(".jar") for n in names)
+              metadata = json.loads(jar.read("fabric.mod.json"))
+              assert metadata["id"] == "vanillabackport"
+          print(f"Validated {jars[0]}: six geyser sounds, both event IDs, bundled Platform")
+          PY
+
+      - name: Upload Fabric JAR to Actions
+        uses: actions/upload-artifact@v4
+        with:
+          name: VanillaBackport-1.21.1-fabric
+          path: dist/*.jar
+          if-no-files-found: error
