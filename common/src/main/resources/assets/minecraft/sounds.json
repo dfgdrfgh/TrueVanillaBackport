@@ -1959,6 +1959,17 @@
       "block/potent_sulfur/sulfur_spring/eruption_active8"
     ]
   },
+  "block.potent_sulfur.geyser_continuous_eruption_start": {
+    "sounds": [
+      "block/potent_sulfur/geyser_continuous/eruption1",
+      "block/potent_sulfur/geyser_continuous/eruption2",
+      "block/potent_sulfur/geyser_continuous/eruption3",
+      "block/potent_sulfur/geyser_continuous/eruption4",
+      "block/potent_sulfur/geyser_continuous/eruption5",
+      "block/potent_sulfur/geyser_continuous/eruption6"
+    ],
+    "subtitle": "subtitles.block.potent_sulfur.geyser_eruption"
+  },
   "block.potent_sulfur.geyser_continuous_eruption": {
     "sounds": [
       "block/potent_sulfur/geyser_continuous/eruption1",
