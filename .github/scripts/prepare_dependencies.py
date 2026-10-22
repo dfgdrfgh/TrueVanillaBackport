@@ -30,3 +30,22 @@ if version == "1.21.1":
             return this.addToPool(0, content);
         }""")
     p.write_text(s)
+
+# Avoid Forge's Maven mirror for unrelated Maven Central libraries.
+# Forge's mirror has caused transient download timeouts on the CI runners.
+settings = platform / "settings.gradle"
+config = settings.read_text()
+forge_repo = 'maven { url "https://files.minecraftforge.net/maven/" }'
+filtered = '''maven {
+            url "https://files.minecraftforge.net/maven/"
+            content {
+                excludeGroup "net.md-5"
+                excludeGroup "com.google.guava"
+            }
+        }'''
+if forge_repo not in config:
+    raise RuntimeError("Pinned Platform settings.gradle changed; inspect its repositories")
+config = config.replace(forge_repo, filtered)
+# Maven Central holds SpecialSource and Guava. Prefer it before Forge.
+config = config.replace('        gradlePluginPortal()', '        mavenCentral()\\n        gradlePluginPortal()'.replace('\\n','\n'))
+settings.write_text(config)
