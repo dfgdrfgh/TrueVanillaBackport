@@ -83,7 +83,7 @@ public class ModSoundEvents {
     public static final Supplier<SoundEvent> NOXIOUS_GAS = REGISTRIES.soundEvent("block.potent_sulfur.noxious_gas");
     public static final Supplier<SoundEvent> GEYSER_ERUPTION_START = REGISTRIES.soundEvent("block.potent_sulfur.geyser_eruption");
     public static final Supplier<SoundEvent> GEYSER_ERUPTION_ACTIVE = REGISTRIES.soundEvent("block.potent_sulfur.geyser_eruption_active");
-    public static final Supplier<SoundEvent> GEYSER_CONTINUOUS_START = REGISTRIES.soundEvent("block.potent_sulfur.geyser_continuous_eruption_start");
+    public static final Supplier<SoundEvent> GEYSER_CONTINUOUS_START = REGISTRIES.soundEvent("block.potent_sulfur.geyser_continuous_eruption");
     public static final Supplier<SoundEvent> GEYSER_CONTINUOUS_ACTIVE = REGISTRIES.soundEvent("block.potent_sulfur.geyser_continuous_eruption_active");
     
     public static final Supplier<SoundEvent> COPPER_CHEST_CLOSE = REGISTRIES.soundEvent("block.copper_chest.close");
