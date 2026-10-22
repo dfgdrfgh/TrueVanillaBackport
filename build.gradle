@@ -27,7 +27,13 @@ subprojects {
     repositories {
         mavenCentral()
         maven { url "https://maven.parchmentmc.org" }
-        maven { url "https://maven.bawnorton.com/releases" }
+        // This repository provides Mixinsquared, not unrelated mod artifacts.
+        maven {
+            url "https://maven.bawnorton.com/releases"
+            content {
+                includeGroup "com.github.bawnorton.mixinsquared"
+            }
+        }
         // Keep CurseForge artifact lookups on CurseMaven; other Maven mirrors can
         // return transient HTTP errors for curse.maven coordinates.
         exclusiveContent {
