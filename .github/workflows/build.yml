@@ -48,8 +48,8 @@ jobs:
         run: |
           bash vendor/platform/gradlew -p vendor/platform :common:remapJar :fabric:remapJar --stacktrace --no-daemon
           mkdir -p libs
-          cp vendor/platform/common/build/libs/Platform-common-1.21.1-1.4.0.2638.1.1.jar libs/
-          cp vendor/platform/fabric/build/libs/Platform-fabric-1.21.1-1.4.0.2638.1.1.jar libs/
+          cp vendor/platform/common/build/libs/Platform-common-1.21.1-1.4.0.2638.1.1.jar libs/Platform-common-1.21.1-1.4.jar
+          cp vendor/platform/fabric/build/libs/Platform-fabric-1.21.1-1.4.0.2638.1.1.jar libs/Platform-fabric-1.21.1-1.4.jar
 
       - name: Build TrueVanillaBackport for Fabric
         env:
