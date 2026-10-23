@@ -458,6 +458,44 @@ public class ModBundledTabs {
             .build()
     );
 
+
+    // 26.4 - Ice Caves. Registration is provided by the Fabric-nested Ice Caves module.
+    // Keep the list in snapshot item order; do not change normal vanilla creative sorting.
+    public static final BundledTabs ICE_CAVES = register(
+        BundledTabs.builder()
+            .title(Component.translatable("bundled_tab.ice_caves.title"))
+            .icon(new ItemStack(Items.BLUE_ICE))
+            .displayItems((provider, output) -> {
+                for (String name : List.of(
+                    "ice_crystal", "icicle", "brittle_ice",
+                    "packed_ice_bricks", "packed_ice_brick_stairs",
+                    "packed_ice_brick_slab", "packed_ice_brick_wall",
+                    "chiseled_packed_ice", "ice_door", "ice_ball",
+                    "frostbite_spawn_egg"
+                )) {
+                    BuiltInRegistries.ITEM.getOptional(
+                        ResourceLocation.fromNamespaceAndPath("ice_caves", name)
+                    ).ifPresent(output::accept);
+                }
+
+                provider.lookup(Registries.POTION).ifPresent(potions -> {
+                    for (String potionName : List.of("freezing", "long_freezing")) {
+                        potions.get(net.minecraft.resources.ResourceKey.create(
+                            Registries.POTION,
+                            ResourceLocation.fromNamespaceAndPath("ice_caves", potionName)
+                        )).ifPresent(potion -> {
+                            output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(Items.POTION, potion));
+                            output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(Items.SPLASH_POTION, potion));
+                            output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(Items.LINGERING_POTION, potion));
+                            // Only one stack per effect; avoids the original duplicate-looking Freezing arrows.
+                            output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(Items.TIPPED_ARROW, potion));
+                        });
+                    }
+                });
+            })
+            .build()
+    );
+
     public static BundledTabs register(BundledTabs builder) {
         FILTERS.add(builder);
         return builder;

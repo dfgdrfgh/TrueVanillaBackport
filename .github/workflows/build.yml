@@ -25,6 +25,11 @@ jobs:
           repository: ItsBlackGear/Platform
           ref: aad0b6ca607e08c91965f76d8583e64dbbb69944
           path: vendor/platform
+      - uses: actions/checkout@v4
+        with:
+          repository: dfgdrfgh/Ice-Caves-Backport
+          ref: b168a8a0948877732987c4f7f8c8e124cd09a2bd
+          path: vendor/ice-caves
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -82,6 +87,18 @@ jobs:
           gradle.write_text(source)
           print("Adjusted CI-only dependency resolution; repository source files remain unchanged")
           PY
+      - name: Build merged Ice Caves Fabric module
+        if: matrix.loader == 'fabric'
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
+        run: |
+          curl --fail --location --retry 3 \
+            https://maven.fabricmc.net/net/fabricmc/intermediary/1.21.1/intermediary-1.21.1-v2.jar \
+            -o /tmp/intermediary-1.21.1-v2.jar
+          python vendor/ice-caves/.github/scripts/make_named_intermediary.py \
+            /tmp/intermediary-1.21.1-v2.jar \
+            vendor/ice-caves/mapping/intermediary-named.jar
+          bash gradlew -p vendor/ice-caves build --stacktrace --no-daemon
       - name: Compile VanillaBackport
         env:
           JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
@@ -97,6 +114,8 @@ jobs:
         env:
           JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
         run: python .github/scripts/check_platform_bundle.py ${{ matrix.loader }}
+      - name: Validate bundled Ice Caves and creative section
+        run: python .github/scripts/check_ice_caves_integration.py ${{ matrix.loader }}
       - name: Verify WWOO biome parity in packaged release JAR
         run: python .github/scripts/check_packaged_worldgen.py
       - name: Check integrated Tiny Takeover content

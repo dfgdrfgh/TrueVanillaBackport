@@ -26,6 +26,17 @@ properties = dict((key.strip(), value.strip()) for line in (root / "gradle.prope
                   for key, value in [line.split("=", 1)])
 platform_version = properties["platform_indev_version"]
 nested = [(platform, "com.blackgear", "platform", platform_version)]
+# Fabric-only merged Ice Caves is assembled from the pinned source and nested as a
+# loader mod. NeoForge remains intentionally unchanged rather than shipping stub content.
+if loader == "fabric":
+    ice_build = root / "vendor/ice-caves/build/libs"
+    ice_mod = production_jar(ice_build, "ice-caves-backport-fabric-")
+    with zipfile.ZipFile(ice_mod) as nested_mod:
+        ice_meta = json.loads(nested_mod.read("fabric.mod.json"))
+        if ice_meta.get("id") != "ice_caves" or ice_meta.get("depends", {}).get("minecraft") != "~1.21.1":
+            raise RuntimeError(f"Wrong Ice Caves Fabric module: {ice_meta}")
+    nested.append((ice_mod, "org.zerw.net", "ice-caves-backport-fabric", ice_meta["version"]))
+
 if loader == "fabric":
     metadata = json.loads(data["fabric.mod.json"])
     for jar, _, _, _ in nested:
