@@ -54,17 +54,57 @@ if loader == "fabric":
         if ice_meta.get("jars") or ice_meta.get("accessWidener"):
             raise RuntimeError("Ice Caves module contains unsupported nested dependencies/access widener")
 
+        def normalize_resource(name, content):
+            # Materialize the data and assets in vanilla's own minecraft namespace.
+            if "ice_door" in name:
+                return None, None
+            for prefix in ("assets/ice_caves/", "data/ice_caves/"):
+                if name.startswith(prefix):
+                    name = prefix.split("/")[0] + "/minecraft/" + name[len(prefix):]
+                    break
+            if not name.endswith(".json"):
+                return name, content
+
+            node = json.loads(content.decode("utf-8")
+                .replace("ice_caves:", "minecraft:")
+                .replace(".ice_caves.", ".minecraft."))
+
+            def remove_door(value):
+                if isinstance(value, dict):
+                    return {k: remove_door(v) for k,v in value.items() if "ice_door" not in k}
+                if isinstance(value, list):
+                    return [remove_door(v) for v in value if not (isinstance(v,str) and "ice_door" in v)]
+                return value
+
+            node = remove_door(node)
+            return name, (json.dumps(node, ensure_ascii=False, indent=2) + "\n").encode()
+
+        def merge_dictionary(previous, incoming, name):
+            left, right = json.loads(previous), json.loads(incoming)
+            if not isinstance(left, dict) or not isinstance(right, dict):
+                raise RuntimeError(f"Not dictionary JSON metadata: {name}")
+            for key, value in right.items():
+                if key in left and left[key] != value:
+                    raise RuntimeError(f"Conflicting resource value at {name}: {key}")
+                left[key] = value
+            return (json.dumps(left, ensure_ascii=False, indent=2) + "\n").encode()
+
         skipped_metadata = {"fabric.mod.json", "pack.mcmeta", "ice_caves.png"}
         for info in ice.infolist():
             name = info.filename
             if info.is_dir() or name in skipped_metadata or name.startswith("META-INF/"):
                 continue
-            content = ice.read(info)
+            name, content = normalize_resource(name, ice.read(info))
+            if name is None:
+                continue
             if name in data:
                 if name.startswith("data/") and "/tags/" in name and name.endswith(".json"):
                     data[name] = merge_tag(data[name], content, name)
                     continue
-                raise RuntimeError(f"Ice Caves resource would replace VanillaBackport content: {name}")
+                if name.startswith("assets/minecraft/lang/") or name == "assets/minecraft/sounds.json":
+                    data[name] = merge_dictionary(data[name], content, name)
+                    continue
+                raise RuntimeError(f"Overlapping Ice Caves and VanillaBackport resource: {name}")
             data[name] = content
 
     metadata = json.loads(data["fabric.mod.json"])
@@ -78,11 +118,6 @@ if loader == "fabric":
         if config in metadata.setdefault("mixins", []):
             raise RuntimeError(f"Duplicate Fabric Mixin configuration: {config}")
         metadata["mixins"].append(config)
-    # Other mods that rely on the former ice_caves ID still see this capability;
-    # Fabric loads only the vanillabackport mod instead of a second child mod.
-    aliases = metadata.setdefault("provides", [])
-    if "ice_caves" not in aliases:
-        aliases.append("ice_caves")
     data["fabric.mod.json"] = json.dumps(metadata, indent=2).encode()
 
 if loader == "fabric":
