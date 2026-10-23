@@ -7,10 +7,11 @@ from pathlib import Path
 root = Path(__file__).resolve().parents[2]
 java = str(Path(os.environ['JAVA_HOME']) / 'bin/java') if 'JAVA_HOME' in os.environ else 'java'
 fixtures = {
-    'net.minecraft.resources.ResourceKey': 'public record ResourceKey<T>(String id) {}',
+    'net.minecraft.resources.ResourceLocation': 'public record ResourceLocation(String value) { public String getNamespace() { return value.split(":", 2)[0]; } }',
+    'net.minecraft.resources.ResourceKey': 'public record ResourceKey<T>(String id) { public ResourceLocation location() { return new ResourceLocation(id); } }',
     'net.minecraft.world.level.biome.Biome': 'public class Biome {}',
     'net.minecraft.world.level.biome.Biomes': '''public class Biomes {
-        public static final net.minecraft.resources.ResourceKey<Biome> DARK_FOREST = new net.minecraft.resources.ResourceKey<>("dark_forest");
+        public static final net.minecraft.resources.ResourceKey<Biome> DARK_FOREST = new net.minecraft.resources.ResourceKey<>("minecraft:dark_forest");\n        public static final net.minecraft.resources.ResourceKey<Biome> TAIGA = new net.minecraft.resources.ResourceKey<>("minecraft:taiga");
     }''',
     'net.minecraft.world.level.biome.Climate': 'public class Climate { public record Parameter(long min, long max) {} }',
     'com.blackgear.vanillabackport.core.ModChecker': 'public class ModChecker { public static boolean WWOO = true; }',
@@ -38,6 +39,10 @@ fixtures = {
                         check(selected.equals(temperature == 2 && humidity == 4 ? ModBiomes.PALE_GARDEN : Biomes.DARK_FOREST));
                     }
                 }
+                // WWOO can return spruce/taiga instead of the vanilla dark-forest key.
+                check(WwooBiomeCompatibility.selectPlateauBiome(Biomes.TAIGA, 2, 4, variant).equals(ModBiomes.PALE_GARDEN));
+                check(WwooBiomeCompatibility.selectPlateauBiome(Biomes.TAIGA, 2, 3, variant).equals(Biomes.TAIGA));
+                check(WwooBiomeCompatibility.selectPlateauBiome(Biomes.TAIGA, 2, 4, new Climate.Parameter(-10000, -1)).equals(Biomes.TAIGA));
                 check(WwooBiomeCompatibility.selectPlateauBiome(Biomes.DARK_FOREST, 2, 4, new Climate.Parameter(-10000, -1)).equals(Biomes.DARK_FOREST));
                 check(WwooBiomeCompatibility.selectPlateauBiome(Biomes.DARK_FOREST, 2, 4, new Climate.Parameter(0, 0)).equals(ModBiomes.PALE_GARDEN));
                 var otherMod = new ResourceKey<Biome>("another_mod:forest");
@@ -48,7 +53,7 @@ fixtures = {
                 ModChecker.WWOO = false;
                 check(!WwooBiomeCompatibility.useNativePaleGardenPlacement());
                 check(WwooBiomeCompatibility.selectPlateauBiome(Biomes.DARK_FOREST, 2, 4, variant).equals(Biomes.DARK_FOREST));
-                System.out.println("PASS: native plateau slot, normal/variant boundary, all climate indices, config off, WWOO absent, other mod biome preserved");
+                System.out.println("PASS: Pale Garden plateau slot even with WWOO taiga substitutions, no added climate points, config off, WWOO absent, other mod biome preserved");
             }
         }
     ''',

@@ -5,7 +5,6 @@ import com.blackgear.vanillabackport.core.VanillaBackport;
 import com.blackgear.vanillabackport.common.registries.worldgen.ModBiomes;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.Climate;
 
 public final class WwooBiomeCompatibility {
@@ -15,11 +14,11 @@ public final class WwooBiomeCompatibility {
         return ModChecker.WWOO;
     }
 
-    /** Vanilla 1.21.4's plateau variant [temperature 2][humidity 4]. */
+    /** Vanilla 1.21.4's Pale Garden plateau slot [temperature 2][humidity 4].\n     * WWOO may select a different vanilla biome at this point: restrict by\n     * climate index, not by the previous biome ID, so Pale Garden survives\n     * WWOO climate substitutions without injecting extra parameter points.\n     */
     public static ResourceKey<Biome> selectPlateauBiome(ResourceKey<Biome> original, int temperature, int humidity, Climate.Parameter weirdness) {
         if (useNativePaleGardenPlacement() && VanillaBackport.COMMON_CONFIG.hasPaleGarden.get()
             && temperature == 2 && humidity == 4 && weirdness.max() >= 0L
-            && original.equals(Biomes.DARK_FOREST)) {
+            && original.location().getNamespace().equals("minecraft")) {
             return ModBiomes.PALE_GARDEN;
         }
         return original;
