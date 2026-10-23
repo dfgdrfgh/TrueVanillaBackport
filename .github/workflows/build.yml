@@ -11,7 +11,7 @@ permissions:
 jobs:
   fabric:
     runs-on: ubuntu-latest
-    timeout-minutes: 50
+    timeout-minutes: 55
     steps:
       - name: Check out TrueVanillaBackport
         uses: actions/checkout@v4
@@ -53,8 +53,8 @@ jobs:
         run: |
           bash vendor/platform/gradlew -p vendor/platform :common:remapJar :fabric:remapJar --stacktrace --no-daemon
           mkdir -p libs
-          cp vendor/platform/common/build/libs/Platform-common-1.21.1-1.4.0.2640.1.jar libs/Platform-common-1.21.1-1.4.jar
-          cp vendor/platform/fabric/build/libs/Platform-fabric-1.21.1-1.4.0.2640.1.jar libs/Platform-fabric-1.21.1-1.4.jar
+          cp vendor/platform/common/build/libs/Platform-common-1.21.1-1.4.0.2640.1.jar libs/Platform-common-1.21.1-1.4.0.2640.1.jar
+          cp vendor/platform/fabric/build/libs/Platform-fabric-1.21.1-1.4.0.2640.1.jar libs/Platform-fabric-1.21.1-1.4.0.2640.1.jar
 
       - name: Build TrueVanillaBackport for Fabric
         env:
@@ -93,6 +93,24 @@ jobs:
               assert metadata["id"] == "vanillabackport"
           print(f"Validated {jars[0]}: six geyser sounds, both event IDs, bundled Platform")
           PY
+
+      - name: Verify original WWOO worldgen hook in built JAR
+        run: python .github/scripts/check_packaged_worldgen.py
+
+      - name: Verify exact bundled Platform version and API
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
+        run: python .github/scripts/check_platform_bundle.py fabric
+
+      - name: Smoke test production server startup
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
+        run: python .github/scripts/smoke.py fabric
+
+      - name: Smoke test WWOO world and Pale Garden biome
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
+        run: python .github/scripts/smoke.py fabric wwoo
 
       - name: Upload Fabric JAR to Actions
         uses: actions/upload-artifact@v4
