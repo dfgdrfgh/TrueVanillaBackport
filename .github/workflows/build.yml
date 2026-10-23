@@ -54,7 +54,8 @@ jobs:
       - name: Build TrueVanillaBackport for Fabric
         env:
           JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
-        run: bash gradlew :fabric:remapJar --stacktrace --no-daemon
+          TRUEVANILLA_FABRIC_CI: "true"
+        run: bash gradlew -Penabled_platforms=fabric :fabric:remapJar --stacktrace --no-daemon
 
       - name: Assemble installable mod JAR
         run: python .github/scripts/bundle.py 1.21.1 fabric
