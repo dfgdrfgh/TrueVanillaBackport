@@ -465,7 +465,7 @@ public class ModBundledTabs {
         BundledTabs.builder()
             .title(Component.translatable("bundled_tab.ice_caves.title"))
             .icon(() -> new ItemStack(BuiltInRegistries.ITEM.getOptional(
-                ResourceLocation.fromNamespaceAndPath("ice_caves", "ice_crystal")
+                ResourceLocation.withDefaultNamespace( "ice_crystal")
             ).orElse(Items.BLUE_ICE)))
             .displayItems((provider, output) -> {
                 // Maintain one consistent release order, including in search.
@@ -473,20 +473,20 @@ public class ModBundledTabs {
                     "ice_crystal", "icicle", "brittle_ice",
                     "packed_ice_bricks", "packed_ice_brick_stairs",
                     "packed_ice_brick_slab", "packed_ice_brick_wall",
-                    "chiseled_packed_ice", "ice_door",
+                    "chiseled_packed_ice",
                     "ice_ball", "frostbite_spawn_egg"
                 )) {
                     BuiltInRegistries.ITEM.getOptional(
-                        ResourceLocation.fromNamespaceAndPath("ice_caves", name)
+                        ResourceLocation.withDefaultNamespace( name)
                     ).ifPresent(output::accept);
                 }
 
                 provider.lookup(Registries.POTION).ifPresent(potions -> {
                     var freezing = potions.get(net.minecraft.resources.ResourceKey.create(
-                        Registries.POTION, ResourceLocation.fromNamespaceAndPath("ice_caves", "freezing")
+                        Registries.POTION, ResourceLocation.withDefaultNamespace( "freezing")
                     ));
                     var longFreezing = potions.get(net.minecraft.resources.ResourceKey.create(
-                        Registries.POTION, ResourceLocation.fromNamespaceAndPath("ice_caves", "long_freezing")
+                        Registries.POTION, ResourceLocation.withDefaultNamespace( "long_freezing")
                     ));
                     // Regular first, then extended. Splash/lingering grouped by item.
                     freezing.ifPresent(potion -> output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(Items.POTION, potion)));

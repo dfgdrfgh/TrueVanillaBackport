@@ -31,3 +31,19 @@ to TrueVanillaBackport's shared Mojang-mapped common module.
 
 Client creative UI and the full most-recent modpack still require in-game
 validation; no such testing is claimed.
+
+## Vanilla 26.4 ID and inventory normalization
+
+The Fabric release now builds Ice Caves with `minecraft:` resource identifiers
+for blocks, items, potions, effects, entities and worldgen features. All Ice Door
+registrations, models, tags, and recipes are excluded. The external standalone
+Ice Caves checkout is transformed **only in CI** before compilation; unchanged
+source remains available upstream.
+
+Minecraft's Natural Blocks, Building Blocks, Combat, Spawn Eggs, and Food &
+Drinks tabs use anchored Fabric creative-tab entries. The existing VanillaBackport
+Ice Caves filter is retained and lists the same items without an Ice Door.
+
+**Existing worlds:** Previously placed `ice_caves:` block/entity/item IDs are
+not automatically remapped. Back up old saves and migrate content IDs before
+loading important worlds made with the earlier experimental release.

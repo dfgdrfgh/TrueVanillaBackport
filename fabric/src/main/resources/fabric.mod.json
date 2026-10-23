@@ -22,7 +22,8 @@
     ],
     "main": [
       "com.blackgear.vanillabackport.core.fabric.VanillaBackportFabric",
-      "com.evandev.tiny_takeover_backport.TinyTakeoverBackportFabric"
+      "com.evandev.tiny_takeover_backport.TinyTakeoverBackportFabric",
+      "com.blackgear.vanillabackport.core.fabric.IceCavesCreativeSorting"
     ],
     "fabric-datagen": [
       "com.blackgear.vanillabackport.data.DataGenerator"
