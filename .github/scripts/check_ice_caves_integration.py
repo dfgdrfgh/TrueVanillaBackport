@@ -35,7 +35,9 @@ with zipfile.ZipFile(releases[0]) as jar:
         assert "org.zerw.net.icecaves.client.IceCavesFabricClient" in metadata["entrypoints"]["client"]
         assert metadata["mixins"].count("ice_caves.mixins.json") == 1
         assert not any("ice-caves" in e["file"] for e in metadata.get("jars", []))
-        assert not any("ice-caves-backport" in n for n in names)
+        assert not any(n.startswith("META-INF/jars/ice-caves-backport") for n in names)
+        # The original named refmap is legitimately shipped at the JAR root.
+        assert "ice-caves-backport-fabric-refmap.json" in names
         assert all(n in names for n in (
             "org/zerw/net/icecaves/IceCavesFabric.class",
             "org/zerw/net/icecaves/entity/FrostbiteZombie.class",
