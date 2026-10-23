@@ -27,13 +27,8 @@ subprojects {
     repositories {
         mavenCentral()
         maven { url "https://maven.parchmentmc.org" }
-        // This repository provides Mixinsquared, not unrelated mod artifacts.
-        maven {
-            url "https://maven.bawnorton.com/releases"
-            content {
-                includeGroup "com.github.bawnorton.mixinsquared"
-            }
-        }
+        // MixinSquared 0.1.1 is also published on JitPack, configured below.
+        // Avoid the unavailable Bawnorton Maven mirror entirely.
         // Keep CurseForge artifact lookups on CurseMaven; other Maven mirrors can
         // return transient HTTP errors for curse.maven coordinates.
         exclusiveContent {

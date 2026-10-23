@@ -21,7 +21,7 @@ output = root / "dist" / main.name
 output.parent.mkdir(exist_ok=True)
 with zipfile.ZipFile(main) as source:
     data = {name: source.read(name) for name in source.namelist()}
-nested = [(platform, "com.blackgear", "platform", "1.4.0.2638.1.1")]
+nested = [(platform, "com.blackgear", "platform", "1.4.0.2640.1")]
 if loader == "fabric":
     metadata = json.loads(data["fabric.mod.json"])
     for jar, _, _, _ in nested:
