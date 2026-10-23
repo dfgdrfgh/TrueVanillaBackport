@@ -28,7 +28,7 @@ jobs:
       - uses: actions/checkout@v5
         with:
           repository: dfgdrfgh/Ice-Caves-Backport
-          ref: 30f43b7fadb34bec3358db1dbcfbf2645af5efbc
+          ref: 55742113f3be28231d4fc32965dec6dedba5928b
           path: vendor/ice-caves
       - uses: actions/setup-java@v5
         with:
