@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BiomeGeneration {
+    // Debug marker for identifying a built fork JAR in logs, without changing biome selection.
+    private static boolean reportedBiomePlacement;
+
     public static final List<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> PALE_GARDEN = Util.make(() -> {
         List<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> parameters = new ArrayList<>();
         addBiome(parameters, ModBiomes.PALE_GARDEN, Placement.MID_SLICE_VARIANT, Temperature.NEUTRAL, Humidity.HUMID, Continentalness.FAR_INLAND.parameter(), Erosion.EROSION_1.parameter());
@@ -48,8 +51,19 @@ public class BiomeGeneration {
     );
     
     public static void bootstrap(BiomePlacement.Event event) {
-        // Preserve WWOO's original climate mapping, placing Pale Garden in the
-        // native plateau slot instead of overlaying WWOO biome entries.
+        if (!reportedBiomePlacement) {
+            reportedBiomePlacement = true;
+            VanillaBackport.LOGGER.info(
+                "TrueVanillaBackport 1.21.1 restored fork placement: pale_garden={}, sulfur_caves={}, dappled_forest={}, wwoo_native_plateau={}",
+                VanillaBackport.COMMON_CONFIG.hasPaleGarden.get(),
+                VanillaBackport.COMMON_CONFIG.hasSulfurCaves.get(),
+                VanillaBackport.COMMON_CONFIG.hasDappledForest.get(),
+                WwooBiomeCompatibility.useNativePaleGardenPlacement()
+            );
+        }
+        // Restore the actual pre-upstream-sync fork behavior. With WWOO loaded,
+        // use the vanilla 1.21.4 plateau variant rather than appending competing
+        // Pale Garden climate points on top of WWOO's original biome layout.
         if (VanillaBackport.COMMON_CONFIG.hasPaleGarden.get() && !WwooBiomeCompatibility.useNativePaleGardenPlacement())
             PALE_GARDEN.forEach(event::add);
         
