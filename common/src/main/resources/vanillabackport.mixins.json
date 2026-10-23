@@ -171,7 +171,8 @@
     "common.zombie_horses.EntityTypeMixin",
     "common.zombie_horses.ZombieHorseMixin",
     "compat.jer.BiomeHelperMixin",
-    "compat.mousetweaks.MainMixin"
+    "compat.mousetweaks.MainMixin",
+    "compat.wwoo.OverworldBiomeBuilderMixin"
   ],
   "injectors": {
     "defaultRequire": 1
