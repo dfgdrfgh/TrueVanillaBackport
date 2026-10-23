@@ -14,7 +14,11 @@ public final class WwooBiomeCompatibility {
         return ModChecker.WWOO;
     }
 
-    /** Vanilla 1.21.4's Pale Garden plateau slot [temperature 2][humidity 4].\n     * WWOO may select a different vanilla biome at this point: restrict by\n     * climate index, not by the previous biome ID, so Pale Garden survives\n     * WWOO climate substitutions without injecting extra parameter points.\n     */
+    /** Vanilla 1.21.4's Pale Garden plateau slot [temperature 2][humidity 4].
+     * WWOO may select a different vanilla biome at this point: restrict by
+     * climate index, not by the previous biome ID, so Pale Garden survives
+     * WWOO climate substitutions without injecting extra parameter points.
+     */
     public static ResourceKey<Biome> selectPlateauBiome(ResourceKey<Biome> original, int temperature, int humidity, Climate.Parameter weirdness) {
         if (useNativePaleGardenPlacement() && VanillaBackport.COMMON_CONFIG.hasPaleGarden.get()
             && temperature == 2 && humidity == 4 && weirdness.max() >= 0L
