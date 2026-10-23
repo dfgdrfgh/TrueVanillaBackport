@@ -38,8 +38,10 @@ for line in door_lines:
     java=java.replace(line,"")
 # This content is integrated into TVB; normal vanilla categories are inserted
 # by TVB with anchored addAfter rather than appended at the ends by the old mod.
-start=java.find("      ItemGroupEvents.modifyEntriesEvent(")
-end=java.find("      BiomeModifications.addFeature(",start)
+hit=java.find("ItemGroupEvents.modifyEntriesEvent(")
+start=java.rfind("\n", 0, hit) + 1 if hit >= 0 else -1
+end=java.find("BiomeModifications.addFeature(",hit)
+end=java.rfind("\n", 0, end) + 1 if end >= 0 else -1
 if start < 0 or end < 0 or java[start:end].count("ItemGroupEvents.modifyEntriesEvent")!=4:
     raise RuntimeError("Expected exactly four old unsorted creative events")
 java=java[:start]+java[end:]
