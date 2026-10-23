@@ -464,14 +464,17 @@ public class ModBundledTabs {
     public static final BundledTabs ICE_CAVES = register(
         BundledTabs.builder()
             .title(Component.translatable("bundled_tab.ice_caves.title"))
-            .icon(new ItemStack(Items.BLUE_ICE))
+            .icon(() -> new ItemStack(BuiltInRegistries.ITEM.getOptional(
+                ResourceLocation.fromNamespaceAndPath("ice_caves", "ice_crystal")
+            ).orElse(Items.BLUE_ICE)))
             .displayItems((provider, output) -> {
+                // Maintain one consistent release order, including in search.
                 for (String name : List.of(
                     "ice_crystal", "icicle", "brittle_ice",
                     "packed_ice_bricks", "packed_ice_brick_stairs",
                     "packed_ice_brick_slab", "packed_ice_brick_wall",
-                    "chiseled_packed_ice", "ice_door", "ice_ball",
-                    "frostbite_spawn_egg"
+                    "chiseled_packed_ice", "ice_door",
+                    "ice_ball", "frostbite_spawn_egg"
                 )) {
                     BuiltInRegistries.ITEM.getOptional(
                         ResourceLocation.fromNamespaceAndPath("ice_caves", name)
@@ -479,18 +482,21 @@ public class ModBundledTabs {
                 }
 
                 provider.lookup(Registries.POTION).ifPresent(potions -> {
-                    for (String potionName : List.of("freezing", "long_freezing")) {
-                        potions.get(net.minecraft.resources.ResourceKey.create(
-                            Registries.POTION,
-                            ResourceLocation.fromNamespaceAndPath("ice_caves", potionName)
-                        )).ifPresent(potion -> {
-                            output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(Items.POTION, potion));
-                            output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(Items.SPLASH_POTION, potion));
-                            output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(Items.LINGERING_POTION, potion));
-                            // Only one stack per effect; avoids the original duplicate-looking Freezing arrows.
-                            output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(Items.TIPPED_ARROW, potion));
-                        });
-                    }
+                    var freezing = potions.get(net.minecraft.resources.ResourceKey.create(
+                        Registries.POTION, ResourceLocation.fromNamespaceAndPath("ice_caves", "freezing")
+                    ));
+                    var longFreezing = potions.get(net.minecraft.resources.ResourceKey.create(
+                        Registries.POTION, ResourceLocation.fromNamespaceAndPath("ice_caves", "long_freezing")
+                    ));
+                    // Regular first, then extended. Splash/lingering grouped by item.
+                    freezing.ifPresent(potion -> output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(Items.POTION, potion)));
+                    longFreezing.ifPresent(potion -> output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(Items.POTION, potion)));
+                    freezing.ifPresent(potion -> output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(Items.SPLASH_POTION, potion)));
+                    longFreezing.ifPresent(potion -> output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(Items.SPLASH_POTION, potion)));
+                    freezing.ifPresent(potion -> output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(Items.LINGERING_POTION, potion)));
+                    longFreezing.ifPresent(potion -> output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(Items.LINGERING_POTION, potion)));
+                    freezing.ifPresent(potion -> output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(Items.TIPPED_ARROW, potion)));
+                    longFreezing.ifPresent(potion -> output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(Items.TIPPED_ARROW, potion)));
                 });
             })
             .build()

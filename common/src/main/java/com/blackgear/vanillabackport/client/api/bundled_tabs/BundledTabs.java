@@ -14,7 +14,7 @@ import java.util.function.Supplier;
 
 public class BundledTabs {
     private final Component tooltip;
-    private final ItemStack icon;
+    private final Supplier<ItemStack> icon;
     private final List<ItemStack> displayItems;
     private final @Nullable BiConsumer<HolderLookup.Provider, Output> provider;
     private boolean populated;
@@ -23,7 +23,7 @@ public class BundledTabs {
 
     private BundledTabs(
         Component tooltip,
-        ItemStack icon,
+        Supplier<ItemStack> icon,
         List<ItemStack> staticItems,
         @Nullable BiConsumer<HolderLookup.Provider, Output> provider
     ) {
@@ -42,7 +42,7 @@ public class BundledTabs {
     }
 
     public ItemStack getIcon() {
-        return this.icon;
+        return this.icon.get();
     }
 
     public List<ItemStack> getDisplayItems() {
@@ -97,7 +97,7 @@ public class BundledTabs {
 
     public static class Builder {
         private Component title;
-        private ItemStack icon;
+        private Supplier<ItemStack> icon;
         private BiConsumer<HolderLookup.Provider, Output> provider;
 
         public Builder title(Component title) {
@@ -106,12 +106,12 @@ public class BundledTabs {
         }
 
         public Builder icon(ItemStack icon) {
-            this.icon = icon;
+            this.icon = () -> icon;
             return this;
         }
         
         public Builder icon(Supplier<ItemStack> icon) {
-            this.icon = icon.get();
+            this.icon = icon;
             return this;
         }
 
@@ -122,7 +122,7 @@ public class BundledTabs {
 
         public BundledTabs build() {
             if (this.title == null) this.title = Component.empty();
-            if (this.icon == null) this.icon = ItemStack.EMPTY;
+            if (this.icon == null) this.icon = () -> ItemStack.EMPTY;
             return new BundledTabs(this.title, this.icon, new ArrayList<>(), this.provider);
         }
     }

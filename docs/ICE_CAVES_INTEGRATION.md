@@ -1,17 +1,33 @@
-# Ice Caves (Fabric 1.21.1) integration
-The 26.4 Ice Caves section is appended after Wilderness Bound in the bundled creative tab.
-Items are drawn from the pinned merged Ice-Caves-Backport module and ordered by
-decorative blocks, Ice Ball, Frostbite egg, then normal/extended potions and arrows.
+# Integrated Ice Caves — Fabric 1.21.1
 
-The official 1.21.1 Fabric Loader nested-JAR mechanism packages the Ice Caves module
-*inside* the final TrueVanillaBackport Fabric JAR, so no second download is required.
-The embedded module retains the `ice_caves` mod ID, which also prevents accidentally
-loading a second copy of the same mod.
+The combined Ice Caves gameplay implementation is compiled from a pinned copy
+of [Ice-Caves-Backport](https://github.com/dfgdrfgh/Ice-Caves-Backport)
+during CI and **merged into TrueVanillaBackport's outer Fabric JAR**. It is
+not loaded as a separately identified, nested Fabric mod anymore.
 
-This does NOT import Bananaman's problematic global climate or TerraBlender hooks.
-The Ice Caves biome is still decorated cold caves, not an independent vanilla 26.4 biome.
-For now NeoForge does not carry Ice Caves content; the creative section is inert there.
+The installed mod ID is `vanillabackport`. It declares `ice_caves` under
+Fabric's `provides` aliases for compatibility. There is no additional Ice Caves
+JAR to install. Do not install the old Ice Caves backport alongside this build;
+it registers overlapping features.
 
-Do not confuse a build passing with full-pack gameplay testing. The latest complete
-user modpack is not available in this session. Existing WWOO seed/worldgen checks
-and server smoke tests must continue to pass.
+The merged classes and resources are initialized through VanillaBackport's own
+`fabric.mod.json` entrypoints and `ice_caves.mixins.json`. When running
+inside VanillaBackport, the old standalone Ice Caves creative tab is disabled;
+the content instead appears in VanillaBackport's unified tab and its **Ice Caves**
+sidebar section. The order is ice materials, packed-ice building variants,
+Ice Ball, Frostbite egg, then potion and arrow variants (normal before extended).
+
+The Ice Caves gameplay remains Fabric-only for now; the NeoForge branch is not
+silently given incompatible compiled Fabric code.
+
+**World-generation safety:** No Bananaman global biome climate-map hooks,
+TerraBlender injections, or external noise settings were copied. The existing
+Ice Cave decoration mechanism is retained and the WWOO tests remain active.
+
+**Build dependencies are not runtime dependencies:** CI still uses the pinned
+source repository to compile Ice Caves. The resulting single installable mod JAR
+contains its compiled classes/assets directly. Source has not yet been converted
+to TrueVanillaBackport's shared Mojang-mapped common module.
+
+Client creative UI and the full most-recent modpack still require in-game
+validation; no such testing is claimed.
