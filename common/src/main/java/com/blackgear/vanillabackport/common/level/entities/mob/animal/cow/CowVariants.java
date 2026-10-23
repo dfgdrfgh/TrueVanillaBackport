@@ -16,7 +16,7 @@ public class CowVariants {
     
     public static final RegistryKey<CowVariant> TEMPERATE = register("temperate",
         CowVariant.ModelType.NORMAL,
-        "cow",
+        "temperate_cow",
         SpawnPrioritySelectors.fallback(0));
     public static final RegistryKey<CowVariant> WARM = register("warm",
         CowVariant.ModelType.WARM,

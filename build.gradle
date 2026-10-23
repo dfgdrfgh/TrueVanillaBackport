@@ -27,37 +27,14 @@ subprojects {
     repositories {
         mavenCentral()
         maven { url "https://maven.parchmentmc.org" }
-        // MixinSquared 0.1.1 is also published on JitPack, configured below.
-        // Avoid the unavailable Bawnorton Maven mirror entirely.
-        // Keep CurseForge artifact lookups on CurseMaven; other Maven mirrors can
-        // return transient HTTP errors for curse.maven coordinates.
-        exclusiveContent {
-            forRepository {
-                maven {
-                    url "https://cursemaven.com"
-                }
-            }
-            filter {
-                includeGroup "curse.maven"
-            }
-        }
-        // Modrinth build dependencies must not be queried through unrelated
-        // mirrors; Bawnorton currently returns 530 for Modrinth coordinates.
-        exclusiveContent {
-            forRepository {
-                maven {
-                    url "https://api.modrinth.com/maven"
-                }
-            }
-            filter {
-                includeGroup "maven.modrinth"
-            }
-        }
+        maven { url "https://maven.bawnorton.com/releases" }
+        maven { url "https://cursemaven.com" }
+        maven { url "https://api.modrinth.com/maven" }
         maven { url "https://maven.minecraftforge.net" }
         maven { url "https://jitpack.io" }
 //        maven { url = uri("E:/Modding/Platform/Platform-1.21.1/build/local-repo")}
 
-        flatDir { dirs "${rootProject.projectDir}/libs" }
+        flatDir { dirs rootProject.file("libs") }
     }
 
     loom {

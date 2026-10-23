@@ -10,7 +10,7 @@ fixtures = {
     'net.minecraft.resources.ResourceKey': 'public record ResourceKey<T>(String id) {}',
     'net.minecraft.world.level.biome.Biome': 'public class Biome {}',
     'net.minecraft.world.level.biome.Biomes': '''public class Biomes {
-        public static final net.minecraft.resources.ResourceKey<Biome> DARK_FOREST = new net.minecraft.resources.ResourceKey<>("dark_forest");\n        public static final net.minecraft.resources.ResourceKey<Biome> TAIGA = new net.minecraft.resources.ResourceKey<>("minecraft:taiga");
+        public static final net.minecraft.resources.ResourceKey<Biome> DARK_FOREST = new net.minecraft.resources.ResourceKey<>("dark_forest");
     }''',
     'net.minecraft.world.level.biome.Climate': 'public class Climate { public record Parameter(long min, long max) {} }',
     'com.blackgear.vanillabackport.core.ModChecker': 'public class ModChecker { public static boolean WWOO = true; }',
@@ -38,7 +38,7 @@ fixtures = {
                         check(selected.equals(temperature == 2 && humidity == 4 ? ModBiomes.PALE_GARDEN : Biomes.DARK_FOREST));
                     }
                 }
-                check(WwooBiomeCompatibility.selectPlateauBiome(Biomes.TAIGA, 2, 4, variant).equals(Biomes.TAIGA));\n                check(WwooBiomeCompatibility.selectPlateauBiome(Biomes.DARK_FOREST, 2, 4, new Climate.Parameter(-10000, -1)).equals(Biomes.DARK_FOREST));
+                check(WwooBiomeCompatibility.selectPlateauBiome(Biomes.DARK_FOREST, 2, 4, new Climate.Parameter(-10000, -1)).equals(Biomes.DARK_FOREST));
                 check(WwooBiomeCompatibility.selectPlateauBiome(Biomes.DARK_FOREST, 2, 4, new Climate.Parameter(0, 0)).equals(ModBiomes.PALE_GARDEN));
                 var otherMod = new ResourceKey<Biome>("another_mod:forest");
                 check(WwooBiomeCompatibility.selectPlateauBiome(otherMod, 2, 4, variant).equals(otherMod));

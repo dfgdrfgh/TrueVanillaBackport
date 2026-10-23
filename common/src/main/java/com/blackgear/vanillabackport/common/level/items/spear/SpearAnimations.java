@@ -176,7 +176,7 @@ public class SpearAnimations {
             float raiseProgressStart = SpearAnimations.progress(raiseProgress, 0.0F, 0.5F);
             float raiseProgressMiddle = SpearAnimations.progress(raiseProgress, 0.5F, 0.8F);
             float raiseProgressEnd = SpearAnimations.progress(raiseProgress, 0.8F, 1.0F);
-            float swayProgress = SpearAnimations.progress(time, (float) startSwayingTick, (float) finishSwayingTick);
+            float swayProgress = SpearAnimations.progress(time, (float) startSwayingTick, (float) startLoweringTick);
             float lowerProgress = Ease.outCubic(Ease.inOutElastic(SpearAnimations.progress(time - 20.0F, (float) startLoweringTick, (float) finishLoweringTick)));
             float raiseBackProgress = SpearAnimations.progress(time, (float) (finishRaisingBackTick - 5), (float) finishRaisingBackTick);
             float swayIntensity = 2.0F * Ease.outCirc(swayProgress) - 2.0F * Ease.inCirc(raiseBackProgress);

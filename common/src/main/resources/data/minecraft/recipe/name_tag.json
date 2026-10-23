@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "tiny_takeover_backport:nametag_recipe_enabled"
+    }
+  ],
+  "neoforge:conditions": [
+    {
+      "type": "tiny_takeover_backport:nametag_recipe_enabled"
+    }
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:paper"
+    },
+    "X": {
+      "tag": "minecraft:metal_nuggets"
+    }
+  },
+  "pattern": [
+    " X",
+    "# "
+  ],
+  "result": {
+    "id": "minecraft:name_tag",
+    "count": 1
+  }
+}

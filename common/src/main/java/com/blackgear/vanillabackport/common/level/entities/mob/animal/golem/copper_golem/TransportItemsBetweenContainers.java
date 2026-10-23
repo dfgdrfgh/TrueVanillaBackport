@@ -43,6 +43,7 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class TransportItemsBetweenContainers extends Behavior<PathfinderMob> {
+    private static final Direction[] TARGET_SIDES = Direction.values();
     private final float speedModifier;
     private final int horizontalSearchDistance;
     private final int verticalSearchDistance;
@@ -451,10 +452,14 @@ public class TransportItemsBetweenContainers extends Behavior<PathfinderMob> {
 
     private boolean canSeeAnyTargetSide(TransportItemTarget target, Level level, PathfinderMob entity, Vec3 eyePosition) {
         Vec3 center = target.pos.getCenter();
-        return Direction.stream()
-            .map(direction -> center.add(0.5 * direction.getStepX(), 0.5 * direction.getStepY(), 0.5 * direction.getStepZ()))
-            .map(hitTarget -> level.clip(new ClipContext(eyePosition, hitTarget, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity)))
-            .anyMatch(hitResult -> hitResult.getType() == HitResult.Type.BLOCK && hitResult.getBlockPos().equals(target.pos));
+        for (Direction direction : TARGET_SIDES) {
+            Vec3 hitTarget = center.add(0.5 * direction.getStepX(), 0.5 * direction.getStepY(), 0.5 * direction.getStepZ());
+            var hitResult = level.clip(new ClipContext(eyePosition, hitTarget, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity));
+            if (hitResult.getType() == HitResult.Type.BLOCK && hitResult.getBlockPos().equals(target.pos)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isAnotherMobInteractingWithTarget(TransportItemTarget target, Level level) {

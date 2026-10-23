@@ -11,8 +11,4 @@ rootProject.name = 'vanillabackport'
 
 include 'common'
 include 'fabric'
-// CI can skip NeoForge project configuration when building the Fabric artifact.
-// Normal local builds still include both loaders.
-if (System.getenv("TRUEVANILLA_FABRIC_CI") != "true") {
-    include 'neoforge'
-}
+include 'neoforge'

@@ -6,7 +6,6 @@ import com.blackgear.vanillabackport.common.level.components.AttackRange;
 import com.blackgear.vanillabackport.common.level.components.KineticWeapon;
 import com.blackgear.vanillabackport.common.level.components.SwingAnimation;
 import com.blackgear.vanillabackport.common.registries.enchantment.EnchantmentUtils;
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import net.minecraft.server.level.ServerLevel;
@@ -31,6 +30,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.function.Predicate;
 
@@ -94,17 +94,19 @@ public abstract class LivingEntityMixin extends Entity implements MobSpearHandle
         this.recentKineticEnemies = null;
     }
     
-    @ModifyExpressionValue(
-        method = "getCurrentSwingDuration",
-        at = @At(
-            value = "CONSTANT",
-            args = "intValue=6"
-        ))
-    private int vb$getCurrentSwingDuration(int original) {
-        if (!this.vb$isAttackSwing()) return original;
-        InteractionHand hand = this.swingingArm != null ? this.swingingArm : InteractionHand.MAIN_HAND;
-        ItemStack heldItem = this.getItemInHand(hand);
-        return SwingAnimation.get(heldItem).duration();
+    @Inject(method = "getCurrentSwingDuration", at = @At("RETURN"), cancellable = true)
+    private void vb$getCurrentSwingDuration(CallbackInfoReturnable<Integer> cir) {
+        if (!this.vb$isAttackSwing()) return;
+
+        // 1.21.11 derives the swing duration from the main-hand item's
+        // SwingAnimation component, then applies the normal haste/fatigue
+        // adjustment. Using the returned 1.21.1 value as a delta from its
+        // hard-coded base of 6 keeps those status-effect adjustments intact
+        // without relying on fragile constant replacement.
+        ItemStack heldItem = this.getItemInHand(InteractionHand.MAIN_HAND);
+        int vanillaAdjustment = cir.getReturnValue() - SwingAnimation.DEFAULT.duration();
+        int duration = SwingAnimation.get(heldItem).duration() + vanillaAdjustment;
+        cir.setReturnValue(Math.max(1, duration));
     }
     
     @Override

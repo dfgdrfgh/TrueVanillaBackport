@@ -22,3 +22,13 @@ dependencies {
     modCompileOnly "maven.modrinth:every-compat:1.21-2.11.25-fabric"
     modCompileOnly "com.github.glitchfiend:TerraBlender-common:$rootProject.terrablender_version"
 }
+
+tasks.register('checkDynamicRecipes', Exec) {
+    def recipeClasspath = layout.buildDirectory.file('recipe-test-classpath.txt')
+    doFirst {
+        recipeClasspath.get().asFile.parentFile.mkdirs()
+        recipeClasspath.get().asFile.text = sourceSets.main.compileClasspath.asPath
+    }
+    workingDir rootProject.projectDir
+    commandLine 'python', '.github/scripts/test_dynamic_recipes.py', recipeClasspath.get().asFile.absolutePath
+}

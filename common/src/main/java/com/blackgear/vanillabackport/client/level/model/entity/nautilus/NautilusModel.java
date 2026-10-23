@@ -14,10 +14,13 @@ import net.minecraft.util.Mth;
 public class NautilusModel<T extends AbstractNautilus> extends HierarchicalModel<T> {
     protected final ModelPart body;
     protected final ModelPart nautilus;
+    private final ModelPart[] resetParts;
     
     public NautilusModel(ModelPart root) {
         this.nautilus = root.getChild("root");
         this.body = this.nautilus.getChild("body");
+        // Model parts are fixed for this baked model; resource reloads create a new model.
+        this.resetParts = this.nautilus.getAllParts().toArray(ModelPart[]::new);
     }
     
     public static LayerDefinition createBodyLayer() {
@@ -145,7 +148,9 @@ public class NautilusModel<T extends AbstractNautilus> extends HierarchicalModel
     
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        this.root().getAllParts().forEach(ModelPart::resetPose);
+        for (ModelPart part : this.resetParts) {
+            part.resetPose();
+        }
         this.applyBodyRotation(netHeadYaw, headPitch);
         this.animateWalk(NautilusAnimation.SWIMMING, limbSwing + ageInTicks / 5.0F, limbSwingAmount + 0.2F, 2.0F, 3.0F);
     }

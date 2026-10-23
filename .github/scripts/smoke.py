@@ -88,7 +88,7 @@ with log.open("w") as output:
                 if not content_probe_sent:
                     # Console commands start at the loaded world spawn. WWOO can move
                     # spawn far from (0, 0), so use relative positions for content probes.
-                    process.stdin.write(b"setblock ~ ~2 ~ minecraft:pale_moss_block\n")
+                    process.stdin.write(b"setblock ~ ~2 ~ minecraft:golden_dandelion\n")
                     process.stdin.write(b'summon minecraft:cow ~ ~3 ~ {Age:-24000}\n')
                     process.stdin.flush()
                     content_probe_sent = True
