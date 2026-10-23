@@ -24,6 +24,12 @@ sorting = (root / "fabric/src/main/java/com/blackgear/vanillabackport/core/fabri
 for category in ("NATURAL_BLOCKS","BUILDING_BLOCKS","COMBAT","SPAWN_EGGS","FOOD_AND_DRINKS"):
     assert "CreativeModeTabs."+category in sorting
 assert sorting.count("entries.addAfter(")>=7
+# 1.21.1 vanilla spawn eggs are alphabetically sorted. The Frostbite egg
+# belongs between Frog and Ghast, never after Stray.
+assert 'entries.addAfter(Items.FROG_SPAWN_EGG, item("frostbite_spawn_egg"))' in sorting
+assert 'entries.addAfter(Items.STRAY_SPAWN_EGG, item("frostbite_spawn_egg"))' not in sorting
+assert sorting.count('item("frostbite_spawn_egg")') == 1
+
 assert block.count("Items.TIPPED_ARROW") == 2, "Expected normal and extended arrow, each once"
 assert block.count("Items.POTION, potion") == 2
 assert block.count("Items.SPLASH_POTION, potion") == 2

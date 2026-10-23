@@ -51,7 +51,7 @@ public final class IceCavesCreativeSorting implements ModInitializer {
         });
 
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.SPAWN_EGGS).register(entries ->
-            entries.addAfter(Items.STRAY_SPAWN_EGG, item("frostbite_spawn_egg")));
+            entries.addAfter(Items.FROG_SPAWN_EGG, item("frostbite_spawn_egg")));
 
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.FOOD_AND_DRINKS).register(entries -> {
             entries.addAfter(Items.POTION, List.of(
