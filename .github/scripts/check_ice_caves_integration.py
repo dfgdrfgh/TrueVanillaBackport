@@ -15,7 +15,8 @@ assert len(releases) == 1, releases
 source = (root / "common/src/main/java/com/blackgear/vanillabackport/client/registries/ModBundledTabs.java").read_text()
 block = source.split("public static final BundledTabs ICE_CAVES", 1)[1].split("public static BundledTabs register(", 1)[0]
 expected = ["ice_crystal","icicle","brittle_ice","packed_ice_bricks","packed_ice_brick_stairs","packed_ice_brick_slab","packed_ice_brick_wall","chiseled_packed_ice","ice_door","ice_ball","frostbite_spawn_egg"]
-found = re.findall(r'"(ice_crystal|icicle|brittle_ice|packed_ice_bricks|packed_ice_brick_stairs|packed_ice_brick_slab|packed_ice_brick_wall|chiseled_packed_ice|ice_door|ice_ball|frostbite_spawn_egg)"', block)
+item_list = block.split("for (String name : List.of(", 1)[1].split("))", 1)[0]
+found = re.findall(r'"(ice_crystal|icicle|brittle_ice|packed_ice_bricks|packed_ice_brick_stairs|packed_ice_brick_slab|packed_ice_brick_wall|chiseled_packed_ice|ice_door|ice_ball|frostbite_spawn_egg)"', item_list)
 assert found == expected, (found, expected)
 assert "Items.BLUE_ICE" in block and ".icon(() ->" in block
 assert block.count("Items.TIPPED_ARROW") == 2, "Expected normal and extended arrow, each once"
