@@ -98,6 +98,7 @@
     "common.controllable_mounts.PanicGoalMixin",
     "common.controllable_mounts.RunAroundLikeCrazyGoalMixin",
     "common.controllable_mounts.ServerPlayerMixin",
+    "common.copper_age.ShelfComparatorMixin",
     "common.copper_golem.CarvedPumpkinBlockMixin",
     "common.desert_ambient_sounds.ColoringFallingBlockMixin",
     "common.desert_ambient_sounds.DeadBushBlockMixin",
