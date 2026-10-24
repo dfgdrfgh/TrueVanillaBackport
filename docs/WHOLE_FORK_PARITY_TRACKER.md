@@ -29,6 +29,7 @@ vanilla parity. Each item needs runtime verification before closing.
 - #442: Adventuring Time uses Minecraft 1.21.1 definitions plus the Pale Garden, Dappled Forest and Sulfur Caves criteria from vanilla 26.3 (56 total).
 - #443: Monster Hunter and Monsters Hunted use 1.21.1 definitions plus the five new creature criteria from vanilla 1.21.11 (41 total).
 - #445: Two by Two requires Nautilus breeding (26 total).
+- #398: Happy Ghast ridden movement clamps input to unit length before applying its configured speed, avoiding a diagonal speed boost.
 - #444: How Did We Get Here? includes Breath of the Nautilus.
 - The advancement replacements live in persistent resources rather than generated resources; a datagen pass must not erase them. They are checked in both CI builds.
 - Runtime follow-ups: feature-disabled configurations can intentionally make some parity criteria unreachable; biome-cleaner, WWOO, multiplayer advancements, copper-chest compatibility and all latest-modpack visual tests still require validation.
