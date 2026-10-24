@@ -40,4 +40,20 @@ assert ghast.index(sneak) < ghast.index("player.startRiding(this)"), (
     "Sneaking should bypass mounting"
 )
 
+# The undercoat is an adult model; Tiny Takeover supplies the baby's fur.
+sheep = source("client/level/layer/SheepWoolUndercoatLayer.java")
+assert "sheep.isBaby()" in sheep and "!sheep.isBaby()" in sheep
+
+# Match newer vanilla's Dennis data definition. The 1.21.1 painting tooltip
+# implementation also requires separate runtime testing for title/author display.
+import json
+painting_file = ROOT / "common/src/main/generated/data/minecraft/painting_variant/dennis.json"
+painting = json.loads(painting_file.read_text())
+assert painting["title"] == {"color": "yellow", "translate": "painting.minecraft.dennis.title"}
+assert painting["author"] == {"color": "gray", "translate": "painting.minecraft.dennis.author"}
+language_file = ROOT / "common/src/main/generated/assets/vanillabackport/lang/en_us.json"
+translations = json.loads(language_file.read_text())
+assert translations["painting.minecraft.dennis.title"] == "Dennis"
+assert translations["painting.minecraft.dennis.author"] == "Sarah Boeving"
+
 print("PASS: Garden Awakens, Spring to Life, Copper Age, and Chase the Skies parity guards")
