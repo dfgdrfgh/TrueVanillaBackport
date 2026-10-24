@@ -155,6 +155,16 @@ replace_exact(
     '         }\n'
     '         this.method_37908().method_8421(this, (byte)3);',
 )
+# Snapshot 5 icicles do not collapse randomly in darkness or inflict a
+# potion Freezing effect on contact. The falling damage cap is 40, not 16.
+replace_exact(icicles, "entity.method_6965(1.0F * size, 16);", "entity.method_6965(1.0F * size, 40);")
+replace_exact(icicles, "      } else {\n         if (state.method_11654(field_28050) == class_2350.field_11033\n            && state.method_11654(field_28051) == class_5691.field_28065\n            && random.method_43057() < 0.05F) {\n            this.scheduleColumnFall(level, pos, state, 2);\n         }\n      }", "      }")
+replace_exact(icicles, "         if (entity instanceof class_1309 living) {\n            applyFreezing(level, living);\n         }", "")
+landing_freeze = '      applyFreezingNearby(level, entity);\n'
+if icicles.read_text().count(landing_freeze) != 2:
+    raise RuntimeError("Unexpected icicle landing Freezing hooks")
+icicles.write_text(icicles.read_text().replace(landing_freeze, ''))
+
 # A creature standing *on* Brittle Ice occupies the block above it,
 # not the brittle ice block itself. The old floor-position equality meant
 # the scheduled crack tick never saw the creature's weight.
