@@ -62,6 +62,16 @@ with zipfile.ZipFile(releases[0]) as jar:
         assert all("ice_door" not in path for path in names)
         # No override of packed ice's vanilla Silk Touch-only drop table.
         assert "data/minecraft/loot_table/blocks/packed_ice.json" not in names
+        frostbite_loot = json.loads(jar.read("data/minecraft/loot_table/entities/frostbite.json"))
+        ice_ball_pool = frostbite_loot["pools"][1]
+        assert not ice_ball_pool.get("conditions"), "Ice Balls should not require a fixed 25% chance"
+        assert ice_ball_pool["entries"][0]["name"] == "minecraft:ice_ball"
+        loot_functions = ice_ball_pool["entries"][0]["functions"]
+        assert loot_functions[0]["function"] == "minecraft:set_count"
+        assert loot_functions[0]["count"]["min"] == 0
+        assert loot_functions[0]["count"]["max"] == 3
+        assert loot_functions[1]["function"] == "minecraft:enchanted_count_increase"
+        assert loot_functions[1]["enchantment"] == "minecraft:looting"
         ice_source = root / "vendor/ice-caves/src/main/java/org/zerw/net/icecaves"
         blocks_source = (ice_source / "registry/ModBlocks.java").read_text()
         friction_method = blocks_source.split("private static class_2251 iceBrickProperties()", 1)[1].split("public static class_2248 createPackedIceBricks()", 1)[0]
