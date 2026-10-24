@@ -11,15 +11,15 @@ vanilla parity. Each item needs runtime verification before closing.
 | --- | --- | --- |
 | Bundles of Bravery | Existing basic bundle controls retained | Holding Use should continuously eject stacks at vanilla intervals. Exercise selected-stack logic and client/server synchronization. |
 | The Garden Awakens | Eyeblossom only poisons bees when open and does not switch state in Nether/End | Bee attraction/feeding, creaking/heart/resin behavior, snapshot day/night transitions and full runtime validation |
-| Spring to Life | Firefly brightness rule corrected; undercoat no longer overrides Tiny Takeover babies; fallen-tree support check now uses its ground block position | Remaining fallen-tree frequency/selection, wolf armor sound parity, adult sheep render comparisons, firefly particles in game |
+| Spring to Life | Firefly light check corrected; fireflies now survive non-solid blocks; undercoat leaves Tiny Takeover babies alone; fallen-tree support check corrected | Remaining fallen-tree frequency/selection, wolf armor sounds, adult sheep render comparisons and particles in game |
 | Chase the Skies | Harness data components preserved; guaranteed equipped-harness drop chance; sneaking bypasses Happy Ghast mounting | Verify all equipment drops after save/reload, passenger seat selection and interaction edge cases |
 | Hot as Lava | Dennis painting variant now includes newer title and author JSON metadata | Validate actual 1.21.1 painting tooltip rendering; metadata may require a separate runtime backport. Disc behavior confirmed separately, not modified here |
-| Copper Age | Copper Golem path-height comparison fixed; comparator only reads shelf from its back via narrowly targeted mixin | Validate chest/golem wax conversion and comparator-through-solid-block cases in game |
+| Copper Age | Copper Golem path-height comparison fixed; comparator only reads shelf from its back via narrowly targeted mixin; waxed construction preserves all four copper chest stages | Validate inventory conversions, wax state in-game, and comparator-through-solid-block cases |
 | Mounts of Mayhem | No speculative changes | Zombie spear replacement, six dismount thresholds, Lunge in water, nautilus shift-click bounds require controlled tests |
 | Tiny Takeover | Keep baby sheep geometry untouched | Model dimensions, fox animation, armor-stand helmet scaling, particles require render-state comparisons |
 | Chaos Cubed | No speculative changes | Sulfur spike placement/growth/sounds, cave placement, fog, geyser interactions need fixture worlds and client/server checks |
 | Wilderness Bound | No worldgen changes | Dappled Forest leaf litter and fallen-tree distribution need same-seed worldgen comparisons with WWOO |
-| Fourth Drop | Fabric Ice Caves: Ice Bricks friction, frostbite Ice Ball loot, packed ice vanilla loot, ordinary monster spawning, icicle light threshold | Freezing effect parity and immunity, real ice cave biome placement/crevasses, brittle ice events, full Frostbite AI/conversion, playlist logic (including double chests/negative index) |
+| Fourth Drop | Fabric Ice Caves: ice bricks friction, Frostbite Ice Ball loot, vanilla packed ice loot, ordinary cave monster spawning, icicle light threshold, single-chest playlists, safe negative index | Freezing effect/immunity, real ice cave biome/crevasse placement, brittle ice, Frostbite AI/conversion, other playlist edge cases |
 
 ## Regression requirements
 
