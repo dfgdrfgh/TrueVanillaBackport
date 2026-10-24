@@ -59,6 +59,8 @@ These changes apply **only** to the merged Fabric release:
   areas; Frostbite cave-only restrictions remain.
 - The extra non-vanilla Ice Ball drop is removed by omitting the bundled
   override of Minecraft's packed ice loot table.
+- Frostbite drops now use the vanilla Java 0–3 Ice Ball range with Looting
+  instead of the old 25% chance of exactly one.
 - Icicles check for melting at block light level 5, in line with 26.4.
 
 The packed-ice loot-table removal is intentional: regular packed ice continues
