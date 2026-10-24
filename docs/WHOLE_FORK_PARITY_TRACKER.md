@@ -19,7 +19,7 @@ vanilla parity. Each item needs runtime verification before closing.
 | Tiny Takeover | Keep baby sheep geometry untouched | Model dimensions, fox animation, armor-stand helmet scaling, particles require render-state comparisons |
 | Chaos Cubed | No speculative changes | Sulfur spike placement/growth/sounds, cave placement, fog, geyser interactions need fixture worlds and client/server checks |
 | Wilderness Bound | No worldgen changes | Dappled Forest leaf litter and fallen-tree distribution need same-seed worldgen comparisons with WWOO |
-| Fourth Drop | Fabric Ice Caves: ice bricks friction, Frostbite Ice Ball loot, vanilla packed ice loot, ordinary cave monster spawning, icicle light threshold, single-chest playlists, safe negative index | Freezing effect/immunity, real ice cave biome/crevasse placement, brittle ice, Frostbite AI/conversion, other playlist edge cases |
+| Fourth Drop | Fabric Ice Caves: ice bricks friction, Frostbite Ice Ball loot, vanilla packed ice loot, ordinary cave monster spawning, icicle light threshold, brittle ice standing detection, single-chest playlists and negative-index safety | Freezing effect/immunity, ice cave biome/crevasse placement, other brittle-ice states, Frostbite AI/conversion and playlist edge cases |
 
 ## Regression requirements
 
