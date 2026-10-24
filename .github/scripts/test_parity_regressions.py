@@ -48,6 +48,12 @@ assert ghast.index(sneak) < ghast.index("player.startRiding(this)"), (
     "Sneaking should bypass mounting"
 )
 
+# Tree-ground solidity must be queried at the support block's position,
+# not at the position above it (which affects generated log placement).
+fallen_tree = source("common/level/worldgen/features/FallenTreeFeature.java")
+assert "isFaceSturdy(level, pos.below(), Direction.UP)" in fallen_tree
+assert "isFaceSturdy(level, pos, Direction.UP)" not in fallen_tree
+
 # The undercoat is an adult model; Tiny Takeover supplies the baby's fur.
 sheep = source("client/level/layer/SheepWoolUndercoatLayer.java")
 assert "sheep.isBaby()" in sheep and "!sheep.isBaby()" in sheep
