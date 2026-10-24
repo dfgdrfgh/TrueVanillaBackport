@@ -41,6 +41,12 @@ import json
 mixins = json.loads((ROOT / "common/src/main/resources/vanillabackport.mixins.json").read_text())
 assert "common.copper_age.ShelfComparatorMixin" in mixins["mixins"]
 
+nautilus_menu = source("common/level/inventory/NautilusInventoryMenu.java")
+assert "int i = 2;" in nautilus_menu, "Two visible Nautilus equipment slots precede player slots"
+assert "this.horseContainer.getContainerSize() + 1" not in nautilus_menu
+assert "int k = i + 27;" in nautilus_menu
+assert "int m = k + 9;" in nautilus_menu
+
 copper_chest = source("common/level/blocks/CopperChestBlock.java")
 for copper, waxed_chest in (
     ("WAXED_COPPER_BLOCK", "WAXED_COPPER_CHEST"),
