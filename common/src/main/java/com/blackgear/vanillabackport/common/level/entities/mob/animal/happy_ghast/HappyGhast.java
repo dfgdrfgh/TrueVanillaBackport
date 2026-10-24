@@ -391,7 +391,12 @@ public class HappyGhast extends Animal implements PlayerRideable, LeashableCallb
             upward += 0.5F;
         }
 
-        return new Vec3(forward, upward, strafe).scale(((double) 3.9F * this.getAttributeValue(Attributes.FLYING_SPEED)) * VanillaBackport.COMMON_CONFIG.happyGhastSpeedModifier.get());
+        // Avoid the diagonal speed boost while retaining slower backward movement.
+        Vec3 input = new Vec3(forward, upward, strafe);
+        if (input.lengthSqr() > 1.0D) {
+            input = input.normalize();
+        }
+        return input.scale(((double) 3.9F * this.getAttributeValue(Attributes.FLYING_SPEED)) * VanillaBackport.COMMON_CONFIG.happyGhastSpeedModifier.get());
     }
 
     protected Vec2 getRiddenRotation(LivingEntity controller) {
