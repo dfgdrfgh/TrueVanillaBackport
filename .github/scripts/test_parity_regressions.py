@@ -33,6 +33,17 @@ import json
 mixins = json.loads((ROOT / "common/src/main/resources/vanillabackport.mixins.json").read_text())
 assert "common.copper_age.ShelfComparatorMixin" in mixins["mixins"]
 
+copper_chest = source("common/level/blocks/CopperChestBlock.java")
+for copper, waxed_chest in (
+    ("WAXED_COPPER_BLOCK", "WAXED_COPPER_CHEST"),
+    ("WAXED_EXPOSED_COPPER", "WAXED_EXPOSED_COPPER_CHEST"),
+    ("WAXED_WEATHERED_COPPER", "WAXED_WEATHERED_COPPER_CHEST"),
+    ("WAXED_OXIDIZED_COPPER", "WAXED_OXIDIZED_COPPER_CHEST"),
+):
+    assert f"Blocks.{copper}, ModBlocks.{waxed_chest}" in copper_chest, (
+        f"{copper} must become the waxed chest with matching weather stage"
+    )
+
 golem = source("common/level/entities/mob/animal/golem/copper_golem/CopperGolemPathNavigation.java")
 assert "columnPos.getY() < this.level.getMaxBuildHeight()" in golem
 assert "columnPos.getY() >= this.level.getMaxBuildHeight() &&" not in golem
