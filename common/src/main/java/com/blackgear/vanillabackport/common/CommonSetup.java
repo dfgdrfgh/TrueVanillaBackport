@@ -58,7 +58,6 @@ public class CommonSetup {
             event.register(VanillaBackport.resource("sulfur_cube_archetype"), SulfurCubeArchetypes.REGISTRIES, SulfurCubeArchetype.CODEC);
         });
         
-        DynamicRecipeManager.register(new VanillaDynamicRecipes(), VanillaBackport.MOD_ID);
         MobIntegration.registerIntegrations(MobIntegrations::bootstrap);
         CommandRegistrar.EVENT.register((dispatcher, context, selection) -> WaypointCommand.register(dispatcher, context));
     }
@@ -69,6 +68,8 @@ public class CommonSetup {
             BiomePlacement.registerBiomePlacements(BiomeGeneration::bootstrap);
             BlockIntegration.registerIntegrations(BlockIntegrations::bootstrap);
             TradeIntegration.registerVillagerTrades(TradeIntegrations::bootstrap);
+            // Register after the static registries are available, matching upstream 1.2.1.
+            DynamicRecipeManager.register(new VanillaDynamicRecipes(), VanillaBackport.MOD_ID);
             Parrot.MOB_SOUND_MAP.put(ModEntityTypes.CREAKING.get(), ModSoundEvents.PARROT_IMITATE_CREAKING.get());
             Parrot.MOB_SOUND_MAP.put(ModEntityTypes.PARCHED.get(), ModSoundEvents.PARROT_IMITATE_PARCHED.get());
             Parrot.MOB_SOUND_MAP.put(ModEntityTypes.CAMEL_HUSK.get(), ModSoundEvents.PARROT_IMITATE_CAMEL_HUSK.get());
