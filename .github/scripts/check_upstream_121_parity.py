@@ -60,6 +60,9 @@ for name in ("POPLAR_PLANKS", "POPLAR_SLAB", "POPLAR_STAIRS", "POPLAR_LOG",
              "POPLAR_FENCE", "POPLAR_FENCE_GATE", "POPLAR_SHELF"):
     assert f"event.registerFlammableBlock(ModBlocks.{name}.get()," in integration
 assert "FireBlock fire =" not in common_setup
+assert "|| !ModChecker.CAVERNS_AND_CHASMS" not in integration
+assert integration.count("if (VanillaBackport.COMMON_CONFIG.hasWeatheringLightningRods.get())") == 2
+assert "mod_version = 1.2.1" in (root / "gradle.properties").read_text()
 assert common_setup.index("DynamicRecipeManager.register(") > common_setup.index("public static void asyncSetup(")
 
 nether = java("core/mixin/common/happy_ghast/NetherFossilPieceMixin.java")
