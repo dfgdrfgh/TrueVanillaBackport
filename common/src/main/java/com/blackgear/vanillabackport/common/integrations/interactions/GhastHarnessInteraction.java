@@ -22,6 +22,8 @@ public class GhastHarnessInteraction implements MobInteraction {
                 if (!player.level().isClientSide) {
                     ghast.equipHarness();
                     ghast.setItemSlot(EquipmentSlot.CHEST, stack.copyWithCount(1));
+                    // Vanilla always drops a Happy Ghast's equipped harness.
+                    ghast.setDropChance(EquipmentSlot.CHEST, 2.0F);
                     target.level().gameEvent(target, GameEvent.EQUIP, target.position());
                     if (!player.getAbilities().instabuild) stack.shrink(1);
                 }
