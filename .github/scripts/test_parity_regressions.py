@@ -41,6 +41,14 @@ import json
 mixins = json.loads((ROOT / "common/src/main/resources/vanillabackport.mixins.json").read_text())
 assert "common.copper_age.ShelfComparatorMixin" in mixins["mixins"]
 
+fast_slide = ROOT / "common/src/main/generated/data/minecraft/tags/item/sulfur_cube_archetype/fast_sliding.json"
+import json
+fast_slide_items = json.loads(fast_slide.read_text())["values"]
+for required_item in ("minecraft:packed_ice_bricks", "minecraft:chiseled_packed_ice"):
+    assert required_item in fast_slide_items, (
+        "Sulfur Cube's Fast Sliding archetype must recognize new packed ice blocks"
+    )
+
 nautilus_menu = source("common/level/inventory/NautilusInventoryMenu.java")
 assert "int i = 2;" in nautilus_menu, "Two visible Nautilus equipment slots precede player slots"
 assert "this.horseContainer.getContainerSize() + 1" not in nautilus_menu
