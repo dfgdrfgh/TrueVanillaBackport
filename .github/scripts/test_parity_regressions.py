@@ -41,6 +41,13 @@ import json
 mixins = json.loads((ROOT / "common/src/main/resources/vanillabackport.mixins.json").read_text())
 assert "common.copper_age.ShelfComparatorMixin" in mixins["mixins"]
 
+# 26.4 stew accepts any two mushroom-tag items, not one red plus one brown.
+stew_recipe = ROOT / "common/src/main/resources/data/minecraft/recipe/suspicious_stew_from_golden_dandelion.json"
+import json
+stew_ingredients = json.loads(stew_recipe.read_text())["ingredients"]
+assert sum(ingredient.get("tag") == "minecraft:mushrooms" for ingredient in stew_ingredients) == 2
+assert not any(ingredient.get("item") in ("minecraft:red_mushroom", "minecraft:brown_mushroom") for ingredient in stew_ingredients)
+
 sulfur_spikes = source("common/level/blocks/SpeleothemBlock.java")
 assert "level.getBlockState(pos.above()).is(state.getBlock())" in sulfur_spikes
 assert "level.getBlockState(pos.above()).is(Blocks.POINTED_DRIPSTONE)" not in sulfur_spikes
