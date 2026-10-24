@@ -111,7 +111,7 @@ public class FallenTreeFeature extends Feature<FallenTreeConfiguration> {
     }
 
     private boolean isOverSolidGround(LevelAccessor level, BlockPos pos) {
-        return level.getBlockState(pos.below()).isFaceSturdy(level, pos, Direction.UP);
+        return level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP);
     }
 
     private BlockPos placeLogBlock(
