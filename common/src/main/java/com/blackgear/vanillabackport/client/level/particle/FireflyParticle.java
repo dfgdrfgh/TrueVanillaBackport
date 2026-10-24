@@ -4,7 +4,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 
@@ -40,13 +39,15 @@ public class FireflyParticle extends TextureSheetParticle {
     @Override
     public void tick() {
         super.tick();
-        if (!this.level.getBlockState(BlockPos.containing(this.x, this.y, this.z)).isAir()) {
-            this.remove();
-        } else {
-            this.setAlpha(this.getFadeAmount(this.getLifetimeProgress(this.age), PARTICLE_FADE_IN_ALPHA_TIME, PARTICLE_FADE_OUT_ALPHA_TIME));
-            if (Math.random() > 0.95 || this.age == 1) {
-                this.setParticleSpeed(-0.05 + 0.1F * Math.random(), -0.05 + 0.1F * Math.random(), -0.05 + 0.1F * Math.random());
-            }
+        // Particle.move() already resolves collisions. Non-air blocks such as
+        // flowers, grass and water must not instantly despawn the firefly.
+        this.setAlpha(this.getFadeAmount(this.getLifetimeProgress(this.age), PARTICLE_FADE_IN_ALPHA_TIME, PARTICLE_FADE_OUT_ALPHA_TIME));
+        if (this.random.nextFloat() > 0.95F || this.age == 1) {
+            this.setParticleSpeed(
+                -0.05 + 0.1F * this.random.nextFloat(),
+                -0.05 + 0.1F * this.random.nextFloat(),
+                -0.05 + 0.1F * this.random.nextFloat()
+            );
         }
     }
 
