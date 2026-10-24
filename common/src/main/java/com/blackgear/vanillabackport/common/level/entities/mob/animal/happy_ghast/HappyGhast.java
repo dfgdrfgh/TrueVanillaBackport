@@ -303,6 +303,8 @@ public class HappyGhast extends Animal implements PlayerRideable, LeashableCallb
 
             if (!stack.is(Items.SHEARS) || this.isVehicle() || !this.isHarnessed() && !player.isCreative()) {
                 if (this.isHarnessed()) {
+                    // Sneaking should not accidentally mount the Happy Ghast.
+                    if (player.isShiftKeyDown()) return InteractionResult.PASS;
                     if (!this.level().isClientSide()) player.startRiding(this);
 
                     return InteractionResult.sidedSuccess(this.level().isClientSide());
