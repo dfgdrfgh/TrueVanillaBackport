@@ -15,7 +15,7 @@ vanilla parity. Each item needs runtime verification before closing.
 | Chase the Skies | Harness data components preserved; guaranteed equipped-harness drop chance; sneaking bypasses Happy Ghast mounting | Verify all equipment drops after save/reload, passenger seat selection and interaction edge cases |
 | Hot as Lava | Dennis painting variant now includes newer title and author JSON metadata | Validate actual 1.21.1 painting tooltip rendering; metadata may require a separate runtime backport. Disc behavior confirmed separately, not modified here |
 | Copper Age | Copper Golem path-height comparison fixed; comparator only reads shelf from its back via narrowly targeted mixin; waxed construction preserves all four copper chest stages | Validate inventory conversions, wax state in-game, and comparator-through-solid-block cases |
-| Mounts of Mayhem | No speculative changes | Zombie spear replacement, six dismount thresholds, Lunge in water, nautilus shift-click bounds require controlled tests |
+| Mounts of Mayhem | Correct Nautilus equipment-menu index offset so its 2 visible mount slots are followed by all 36 player slots | Validate Nautilus shift-click behavior in game; other combat movement, mob equipment and underwater behavior still need targeted gameplay tests |
 | Tiny Takeover | Keep baby sheep geometry untouched | Model dimensions, fox animation, armor-stand helmet scaling, particles require render-state comparisons |
 | Chaos Cubed | No speculative changes | Sulfur spike placement/growth/sounds, cave placement, fog, geyser interactions need fixture worlds and client/server checks |
 | Wilderness Bound | No worldgen changes | Dappled Forest leaf litter and fallen-tree distribution need same-seed worldgen comparisons with WWOO |
