@@ -69,6 +69,8 @@ public class EyeblossomBlock extends FlowerBlock {
     }
 
     private boolean tryChangingState(BlockState state, ServerLevel level, BlockPos origin, RandomSource random) {
+        // Eyeblossoms retain their placed state in the Nether and the End.
+        if (!level.dimensionType().natural()) return false;
         boolean shouldBeOpen = EnvironmentUtils.isNaturalNight(level);
         if (shouldBeOpen == this.type.open) {
             return false;
@@ -92,6 +94,7 @@ public class EyeblossomBlock extends FlowerBlock {
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (!level.isClientSide()
+            && this.type.open
             && level.getDifficulty() != Difficulty.PEACEFUL
             && entity instanceof Bee bee
             && !bee.hasEffect(MobEffects.POISON)
