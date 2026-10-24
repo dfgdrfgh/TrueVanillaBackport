@@ -9,7 +9,7 @@ vanilla parity. Each item needs runtime verification before closing.
 
 | Section | Implemented in the current PR | Still open for validation/correction |
 | --- | --- | --- |
-| Bundles of Bravery | Existing basic bundle controls retained | Holding Use should continuously eject stacks at vanilla intervals. Exercise selected-stack logic and client/server synchronization. |
+| Bundles of Bravery | Holding Use now starts a use-duration window and ejects successive bundles of items at eight-tick intervals while held; manual single click retained | Verify client/server held-use packet behavior and selected-stack order in the full modpack |
 | The Garden Awakens | Eyeblossom only poisons bees when open and does not switch state in Nether/End | Bee attraction/feeding, creaking/heart/resin behavior, snapshot day/night transitions and full runtime validation |
 | Spring to Life | Firefly light check corrected; fireflies now survive non-solid blocks; undercoat leaves Tiny Takeover babies alone; fallen-tree support check corrected | Remaining fallen-tree frequency/selection, wolf armor sounds, adult sheep render comparisons and particles in game |
 | Chase the Skies | Harness data components preserved; guaranteed equipped-harness drop chance; sneaking bypasses Happy Ghast mounting | Verify all equipment drops after save/reload, passenger seat selection and interaction edge cases |
