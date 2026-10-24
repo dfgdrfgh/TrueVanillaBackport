@@ -72,6 +72,22 @@ def replace_exact(path: Path, previous: str, replacement: str) -> None:
     path.write_text(original.replace(previous, replacement))
 
 
+# Do not delete overworld hostile spawn entries from every snowy biome.
+# The old module's REMOVALS phase strips them across all cold surface biomes,
+# even at sites without generated ice caves. This broke ordinary world spawning
+# regardless of the biome-local entity rule corrections below.
+remove_vanilla_hostiles = (
+    '      BiomeModifications.create(class_2960.method_60655("minecraft", "clear_vanilla_hostiles"))\\n'
+    '         .add(ModificationPhase.REMOVALS, BiomeSelectors.tag(IceCaveSpawnControl.HAS_ICE_CAVES), (selection, context) -> {\\n'
+    '            for (class_1299<?> type : ICE_CAVE_BLOCKED_HOSTILES) {\\n'
+    '               context.getSpawnSettings().removeSpawnsOfEntityType(type);\\n'
+    '            }\\n'
+    '         });\\n'
+)
+replace_exact(MAIN, remove_vanilla_hostiles, '')
+if 'removeSpawnsOfEntityType' in MAIN.read_text():
+    raise RuntimeError("Global spawn-list removal survived the ice cave fix")
+
 blocks = SOURCE / "registry/ModBlocks.java"
 replace_exact(
     blocks,
