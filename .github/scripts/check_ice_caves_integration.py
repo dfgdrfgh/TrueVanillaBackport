@@ -86,6 +86,10 @@ with zipfile.ZipFile(releases[0]) as jar:
         assert "Math.floorMod(start, size)" in playlist_source, (
             "Negative playlist positions must wrap safely"
         )
+        brittle_source = (ice_source / "block/BrittleIceBlock.java").read_text()
+        assert "entity.method_23312().equals(pos.method_10084())" in brittle_source, (
+            "Brittle Ice must detect a creature standing in the block above it"
+        )
         icicle_source = (ice_source / "block/IcicleBlock.java").read_text()
         assert "private static final int MELT_LIGHT_LEVEL = 5;" in icicle_source
         assert "pos) >= MELT_LIGHT_LEVEL;" in icicle_source
