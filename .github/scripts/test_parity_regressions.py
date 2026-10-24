@@ -41,6 +41,10 @@ import json
 mixins = json.loads((ROOT / "common/src/main/resources/vanillabackport.mixins.json").read_text())
 assert "common.copper_age.ShelfComparatorMixin" in mixins["mixins"]
 
+sulfur_spikes = source("common/level/blocks/SpeleothemBlock.java")
+assert "level.getBlockState(pos.above()).is(state.getBlock())" in sulfur_spikes
+assert "level.getBlockState(pos.above()).is(Blocks.POINTED_DRIPSTONE)" not in sulfur_spikes
+
 fast_slide = ROOT / "common/src/main/generated/data/minecraft/tags/item/sulfur_cube_archetype/fast_sliding.json"
 import json
 fast_slide_items = json.loads(fast_slide.read_text())["values"]
