@@ -44,6 +44,8 @@ jobs:
             caches/architectury-loom
       - name: Prepare pinned dependencies
         run: python .github/scripts/prepare_dependencies.py vendor/platform 1.21.1
+      - name: Check cross-section gameplay parity guards
+        run: python .github/scripts/test_parity_regressions.py
       - name: Check nautilus inventory packet ordering
         env:
           JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
