@@ -21,6 +21,38 @@ vanilla parity. Each item needs runtime verification before closing.
 | Wilderness Bound | Golden Dandelion stew now accepts any two items from the preexisting Minecraft mushrooms tag | Dappled Forest leaf litter and fallen-tree distribution need same-seed worldgen comparisons with WWOO |
 | Fourth Drop | Fabric Ice Caves: non-slippery ice bricks, vanilla packed-ice loot, Frostbite Ice Ball loot, restored hostile cold-biome spawn lists, Frostbite surface spawns, Ice Crystal self-drop, icicle melting/falling/damage fixes, brittle ice standing detection, Ice Ball impact changes, Freezing thaw compensation, single-chest playlists and negative-index safety | Full status-effect immunity/damage, actual ice-cave biome/crevasse placement, growth models, Frostbite AI/conversion and playlist edge cases still open |
 
+## VanillaBackport upstream 1.2.1 corrections
+
+Upstream reference commit: `ItsBlackGear/VanillaBackport@88865d0`
+(October 23, 2026). The following have been applied on this branch
+without changing WWOO climate noise or biome placement:
+
+- Wool/concrete slabs: all 32 generated loot tables and their generator
+  count two blocks for double slabs and use vanilla explosion-decay semantics.
+- Poplar wood set: flammability and wooden-shelf values registered through the
+  cross-loader BlockIntegration API rather than a loader-specific direct map.
+- Dried Ghast fossil placement: Nether eligibility determined using
+  `BiomeTags.IS_NETHER` at the structure origin instead of dimension flags.
+- Mounted mobs: Camel Husk riders and Zombie Horse riders select a vanilla iron
+  sword instead of a spear when the spear content toggle is disabled. The
+  corresponding Piglin and Zombified Piglin spawn paths also respect it.
+- Dyeing: all 64 harness, cushion, wool slab and stair recipes refer to
+  `#minecraft:harnesses`, `#minecraft:cushions`,
+  `#minecraft:wool_slabs`, or `#minecraft:wool_stairs`. The data generator
+  emits tag-based recipes, and the tag files already exist.
+- Registry fallback: no longer registers the global duplicate-key and
+  duplicate-holder mixins. Invalid duplicates now surface as actual errors;
+  server/client startup and world migration still need verification.
+- Lunge: no longer inserts duplicate enchanted books into the extra
+  Mounts of Mayhem bundled tab; vanilla creative tabs retain responsibility
+  for enchanted book displays.
+- Dynamic recipes: registration moved to the post-registry setup path, matching
+  upstream initialization order.
+
+Static verification: `.github/scripts/check_upstream_121_parity.py` on both
+loader jobs. This does **not** imply full in-game testing; the newest complete
+modpack is not mounted in this conversation.
+
 ## Regression requirements
 
 1. `.github/scripts/test_parity_regressions.py` — static parity guards for
