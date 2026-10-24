@@ -85,12 +85,20 @@ with zipfile.ZipFile(releases[0]) as jar:
             "Ice Caves must not erase vanilla hostile entries across entire cold biomes"
         )
         spawn_source = (ice_source / "worldgen/IceCaveSpawnControl.java").read_text()
-        assert "return mob instanceof FrostbiteZombie && !isIceCaveInterior(level, pos);" in spawn_source
-        assert "return isFrostbiteType(type) && !isIceCaveInterior(level, pos);" in spawn_source
+        assert "return mob instanceof FrostbiteZombie && isBelowSurface(level, pos) && !isIceCaveInterior(level, pos);" in spawn_source
+        assert "return isFrostbiteType(type) && isBelowSurface(level, pos) && !isIceCaveInterior(level, pos);" in spawn_source
         playlist_source = (ice_source / "block/JukeboxChestPlaylist.java").read_text()
         assert "container != null && container.method_5439() == 27 ? container : null;" in playlist_source, (
             "Jukebox playlists must not consume music discs from double chests"
         )
+        freezing_source = (ice_source / "effect/FreezingMobEffect.java").read_text()
+        assert "current + (mob.field_27857 ? 1 : 3)" in freezing_source
+        iceball_source = (ice_source / "entity/IceBall.java").read_text()
+        assert "ModEffects.applyFreezing(living" not in iceball_source
+        icicle_source = (ice_source / "block/IcicleBlock.java").read_text()
+        assert "entity.method_6965(1.0F * size, 40)" in icicle_source
+        assert "random.method_43057() < 0.05F" not in icicle_source
+        assert "applyFreezingNearby(level, entity);" not in icicle_source
         assert "Math.floorMod(start, size)" in playlist_source, (
             "Negative playlist positions must wrap safely"
         )
