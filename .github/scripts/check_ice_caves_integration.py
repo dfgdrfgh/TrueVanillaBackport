@@ -79,6 +79,13 @@ with zipfile.ZipFile(releases[0]) as jar:
         spawn_source = (ice_source / "worldgen/IceCaveSpawnControl.java").read_text()
         assert "return mob instanceof FrostbiteZombie && !isIceCaveInterior(level, pos);" in spawn_source
         assert "return isFrostbiteType(type) && !isIceCaveInterior(level, pos);" in spawn_source
+        playlist_source = (ice_source / "block/JukeboxChestPlaylist.java").read_text()
+        assert "container != null && container.method_5439() == 27 ? container : null;" in playlist_source, (
+            "Jukebox playlists must not consume music discs from double chests"
+        )
+        assert "Math.floorMod(start, size)" in playlist_source, (
+            "Negative playlist positions must wrap safely"
+        )
         icicle_source = (ice_source / "block/IcicleBlock.java").read_text()
         assert "private static final int MELT_LIGHT_LEVEL = 5;" in icicle_source
         assert "pos) >= MELT_LIGHT_LEVEL;" in icicle_source
