@@ -44,6 +44,12 @@ for copper, waxed_chest in (
         f"{copper} must become the waxed chest with matching weather stage"
     )
 
+fireflies = source("client/level/particle/FireflyParticle.java")
+assert "if (!this.level.getBlockState" not in fireflies, (
+    "Fireflies must survive non-solid blocks, leaving collision to Particle.move"
+)
+assert "this.random.nextFloat()" in fireflies
+
 golem = source("common/level/entities/mob/animal/golem/copper_golem/CopperGolemPathNavigation.java")
 assert "columnPos.getY() < this.level.getMaxBuildHeight()" in golem
 assert "columnPos.getY() >= this.level.getMaxBuildHeight() &&" not in golem
