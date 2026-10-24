@@ -122,6 +122,18 @@ replace_exact(
     'return level.method_8314(class_1944.field_9282, pos) >= MELT_LIGHT_LEVEL;',
 )
 
+# 1.21.1 thaws two ticks every game tick outside powder snow. Snapshot
+# Freezing blocks that thaw path and adds one tick; we compensate locally
+# without adding a global Entity/baseTick mixin that could affect other mods.
+# In powder snow vanilla 1.21.1 already increments freezing, so add only
+# the extra one tick that the new effect contributes.
+freezing_effect = SOURCE / "effect/FreezingMobEffect.java"
+replace_exact(
+    freezing_effect,
+    'mob.method_32317(Math.min(threshold + 3 + Math.max(0, amplification), current + 2));',
+    'mob.method_32317(Math.min(threshold, current + (mob.field_27857 ? 1 : 3)));',
+)
+
 # In Snapshot 5 the Ice Ball is a kinetic projectile, not a source of
 # the Freezing potion effect. The pinned module added an extra 20 tick effect.
 ice_ball = SOURCE / "entity/IceBall.java"
