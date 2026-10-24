@@ -13,6 +13,14 @@ def source(path: str) -> str:
     assert target.is_file(), target
     return target.read_text()
 
+bundle_use = source("core/mixin/common/bundle_ui/BundleItemMixin.java")
+assert "public int getUseDuration(ItemStack stack, LivingEntity entity)" in bundle_use
+assert "BundleFeatures.onBundleUpdate() ? 72000" in bundle_use
+assert 'method = "use", at = @At("RETURN")' in bundle_use
+assert "player.startUsingItem(hand)" in bundle_use
+assert "remainingUseDuration % 8 == 0" in bundle_use
+assert "BundleItemHandler.dropContents(stack, player)" in bundle_use
+
 eyeblossom = source("common/level/blocks/EyeblossomBlock.java")
 assert "if (!level.dimensionType().natural()) return false;" in eyeblossom, (
     "Eyeblossoms must not change states in the Nether or End"
