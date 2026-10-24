@@ -110,6 +110,12 @@ replace_exact(
     'return isFrostbiteType(type) && !isIceCaveInterior(level, pos);',
 )
 
+# Frostbites spawn in cold surface biomes as well as ice caves.
+# Only apply the ice-cave interior test when spawning below ground.
+replace_exact(spawns, "return mob instanceof FrostbiteZombie && !isIceCaveInterior(level, pos);", "return mob instanceof FrostbiteZombie && isBelowSurface(level, pos) && !isIceCaveInterior(level, pos);")
+replace_exact(spawns, "return isFrostbiteType(type) && !isIceCaveInterior(level, pos);", "return isFrostbiteType(type) && isBelowSurface(level, pos) && !isIceCaveInterior(level, pos);")
+replace_exact(spawns, "   private static boolean isIceCaveInterior(class_1936 level, class_2338 pos) {", "   // Frozen surface biomes may naturally spawn Frostbites above ground,\n   // even where no ice cave decorator has run.\n   private static boolean isBelowSurface(class_1936 level, class_2338 pos) {\n      int surfaceY = Math.max(\n         level.method_8624(class_2903.field_13202, pos.method_10263(), pos.method_10260()),\n         level.method_8624(class_2903.field_13197, pos.method_10263(), pos.method_10260())\n      );\n      return pos.method_10264() < surfaceY - 1;\n   }\n\n   private static boolean isIceCaveInterior(class_1936 level, class_2338 pos) {")
+
 icicles = SOURCE / "block/IcicleBlock.java"
 replace_exact(
     icicles,
