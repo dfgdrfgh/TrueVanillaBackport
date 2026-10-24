@@ -76,6 +76,10 @@ with zipfile.ZipFile(releases[0]) as jar:
         blocks_source = (ice_source / "registry/ModBlocks.java").read_text()
         friction_method = blocks_source.split("private static class_2251 iceBrickProperties()", 1)[1].split("public static class_2248 createPackedIceBricks()", 1)[0]
         assert ".method_9628(0.98F)" not in friction_method, "Packed ice bricks must not be slippery"
+        startup_source = (ice_source / "IceCavesFabric.java").read_text()
+        assert "removeSpawnsOfEntityType" not in startup_source, (
+            "Ice Caves must not erase vanilla hostile entries across entire cold biomes"
+        )
         spawn_source = (ice_source / "worldgen/IceCaveSpawnControl.java").read_text()
         assert "return mob instanceof FrostbiteZombie && !isIceCaveInterior(level, pos);" in spawn_source
         assert "return isFrostbiteType(type) && !isIceCaveInterior(level, pos);" in spawn_source
