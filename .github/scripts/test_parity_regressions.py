@@ -49,8 +49,8 @@ fast_slide = ROOT / "common/src/main/generated/data/minecraft/tags/item/sulfur_c
 import json
 fast_slide_items = json.loads(fast_slide.read_text())["values"]
 for required_item in ("minecraft:packed_ice_bricks", "minecraft:chiseled_packed_ice"):
-    assert required_item in fast_slide_items, (
-        "Sulfur Cube's Fast Sliding archetype must recognize new packed ice blocks"
+    assert {"id": required_item, "required": False} in fast_slide_items, (
+        "Fabric-only ice brick items must be optional in the shared tag for NeoForge"
     )
 
 nautilus_menu = source("common/level/inventory/NautilusInventoryMenu.java")
