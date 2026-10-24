@@ -111,3 +111,19 @@ assert "models.bakeLayer(ModModelLayers.SHEEP_WOOL_UNDERCOAT)" in undercoat
 assert "models.bakeLayer(ModelLayers.SHEEP)" not in undercoat
 assert "public boolean canBreatheUnderwater()" in java("common/level/entities/mob/animal/golem/copper_golem/CopperGolem.java")
 print("PASS: copper nugget tag, sheep undercoat model and copper golem breathing regressions")
+
+# Conventional cross-mod item/block tag compatibility (#510, #95).
+c = root / "common/src/main/resources/data/c/tags"
+for part, filename, marker in (
+    ("item", "chains", "#minecraft:chains"),
+    ("block", "chains", "#minecraft:chains"),
+    ("item", "bricks", "#c:bricks/resin"),
+    ("item", "bricks/resin", "minecraft:resin_brick"),
+    ("item", "clumps", "#c:clumps/resin"),
+    ("item", "clumps/resin", "minecraft:resin_clump"),
+    ("item", "storage_blocks", "#c:storage_blocks/resin"),
+    ("block", "storage_blocks", "#c:storage_blocks/resin"),
+):
+    tag = json.loads((c / part / f"{filename}.json").read_text())
+    assert not tag["replace"] and marker in tag["values"], filename
+print("PASS: additive cross-mod chain, resin brick/clump and resin storage tags")

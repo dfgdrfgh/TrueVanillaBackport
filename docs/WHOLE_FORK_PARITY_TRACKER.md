@@ -25,7 +25,7 @@ vanilla parity. Each item needs runtime verification before closing.
 
 - #513: copper golems explicitly breathe underwater as in vanilla (inherited behavior still needs gameplay verification).
 - #469: sheep wool undercoat uses its own model-layer ID, avoiding reusing the main sheep's EMF model slot; Tiny Takeover baby rendering remains untouched.
-- #510 / #481: copper torch, lantern and chain recipes use the conventional copper-nugget tag; the generator matches the committed recipes.
+- #510 / #481: copper torch, lantern and chain recipes use the conventional copper-nugget tag; the generator matches the committed recipes. Added additive c:chains block/item, c:bricks/resin, c:clumps/resin, and c:storage_blocks parent tags for cross-mod compatibility (#95).
 - #442: Adventuring Time uses Minecraft 1.21.1 definitions plus the Pale Garden, Dappled Forest and Sulfur Caves criteria from vanilla 26.3 (56 total).
 - #443: Monster Hunter and Monsters Hunted use 1.21.1 definitions plus the five new creature criteria from vanilla 1.21.11 (41 total).
 - #445: Two by Two requires Nautilus breeding (26 total).
