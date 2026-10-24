@@ -57,7 +57,7 @@ public class CopperGolemPathNavigation extends GroundPathNavigation {
         } else {
             BlockPos.MutableBlockPos columnPos = pos.mutable().move(Direction.UP);
 
-            while (columnPos.getY() >= this.level.getMaxBuildHeight() && chunk.getBlockState(columnPos).isSolid()) {
+            while (columnPos.getY() < this.level.getMaxBuildHeight() && chunk.getBlockState(columnPos).isSolid()) {
                 columnPos.move(Direction.UP);
             }
 

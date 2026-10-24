@@ -10,6 +10,8 @@ public class ModModelLayers {
     public static final ModelLayerLocation CUSTOM_CHEST_BOAT = register("custom_chest_boat");
 
     // Spring to Life
+    // Distinct layer prevents EMF sheep.jem from being baked twice as an undercoat.
+    public static final ModelLayerLocation SHEEP_WOOL_UNDERCOAT = register("sheep_wool_undercoat");
     public static final ModelLayerLocation TEMPERATE_PIG = register("temperate_pig");
     public static final ModelLayerLocation TEMPERATE_COW = register("temperate_cow");
     public static final ModelLayerLocation COLD_PIG = register("cold_pig");

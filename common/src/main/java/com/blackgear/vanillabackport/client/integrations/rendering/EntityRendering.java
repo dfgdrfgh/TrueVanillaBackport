@@ -46,6 +46,7 @@ public class EntityRendering {
         event.register(ModModelLayers.CUSTOM_BOAT, BoatModel::createBodyModel);
         event.register(ModModelLayers.CUSTOM_CHEST_BOAT, ChestBoatModel::createBodyModel);
         
+        event.register(ModModelLayers.SHEEP_WOOL_UNDERCOAT, SheepModel::createBodyLayer);
         event.register(ModModelLayers.TEMPERATE_PIG, PigVariantModel::createBodyLayer);
         event.register(ModModelLayers.TEMPERATE_COW, CowVariantModel::createBodyLayer);
         event.register(ModModelLayers.COLD_PIG, ColdPigModel::createBodyLayer);

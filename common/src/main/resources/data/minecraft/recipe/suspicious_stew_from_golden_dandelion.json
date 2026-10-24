@@ -7,10 +7,10 @@
       "item": "minecraft:bowl"
     },
     {
-      "item": "minecraft:brown_mushroom"
+      "tag": "minecraft:mushrooms"
     },
     {
-      "item": "minecraft:red_mushroom"
+      "tag": "minecraft:mushrooms"
     },
     {
       "item": "minecraft:golden_dandelion"

@@ -44,6 +44,14 @@ jobs:
             caches/architectury-loom
       - name: Prepare pinned dependencies
         run: python .github/scripts/prepare_dependencies.py vendor/platform 1.21.1
+      - name: Check Python build and parity scripts compile
+        run: python -m py_compile .github/scripts/prepare_ice_caves_namespace.py .github/scripts/check_ice_caves_integration.py .github/scripts/test_parity_regressions.py
+      - name: Check VanillaBackport 1.2.1 parity regression data
+        run: python .github/scripts/check_upstream_121_parity.py
+      - name: Check latest-vanilla advancement criteria and requirements
+        run: python .github/scripts/check_upstream_issue_advancements.py
+      - name: Check cross-section gameplay parity guards
+        run: python .github/scripts/test_parity_regressions.py
       - name: Check nautilus inventory packet ordering
         env:
           JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
