@@ -59,6 +59,64 @@ for line in ('      class_1935 iceDoor,\n','         new class_1799(iceDoor),\n'
         raise RuntimeError("Standalone creative method changed")
     tabs=tabs.replace(line,"")
 TABS.write_text(tabs)
+# Snapshot 5 parity corrections, applied only to the pinned Fabric build.
+# These are deliberately source-checked, small changes; no biome source
+# replacement or global terrain noise hooks are introduced.
+def replace_exact(path: Path, previous: str, replacement: str) -> None:
+    original = path.read_text()
+    if original.count(previous) != 1:
+        raise RuntimeError(
+            f"Pinned Ice Caves source changed: {path.relative_to(ROOT)} "
+            f"has {original.count(previous)} copies of the expected snippet"
+        )
+    path.write_text(original.replace(previous, replacement))
+
+
+blocks = SOURCE / "registry/ModBlocks.java"
+replace_exact(
+    blocks,
+    'return class_2251.method_9637().method_31710(class_3620.field_16016).method_9628(0.98F).method_9632(0.5F).method_9626(ModSounds.ICE);',
+    # Packed Ice Bricks have normal block friction, unlike ordinary packed ice.
+    'return class_2251.method_9637().method_31710(class_3620.field_16016).method_9632(0.5F).method_9626(ModSounds.ICE);',
+)
+
+spawns = SOURCE / "worldgen/IceCaveSpawnControl.java"
+replace_exact(
+    spawns,
+    'return !isIceCaveInterior(level, pos) ? mob instanceof FrostbiteZombie : isMonster(mob) && !isAllowedCaveHostile(mob);',
+    # Only prevent Frostbites spawning outside decorated ice-cave interiors.
+    # Spiders, creepers, skeletons, etc. retain their normal cave rules.
+    'return mob instanceof FrostbiteZombie && !isIceCaveInterior(level, pos);',
+)
+replace_exact(
+    spawns,
+    'return isIceCaveInterior(level, pos) ? !isAllowedCaveHostileType(type) : isFrostbiteType(type);',
+    'return isFrostbiteType(type) && !isIceCaveInterior(level, pos);',
+)
+
+icicles = SOURCE / "block/IcicleBlock.java"
+replace_exact(
+    icicles,
+    'private static final int MELT_LIGHT_LEVEL = 8;',
+    'private static final int MELT_LIGHT_LEVEL = 5;',
+)
+replace_exact(
+    icicles,
+    'return level.method_8314(class_1944.field_9282, pos) >= 8;',
+    'return level.method_8314(class_1944.field_9282, pos) >= MELT_LIGHT_LEVEL;',
+)
+
+# The bundled version used to replace vanilla packed ice's drop table,
+# adding a non-vanilla 25% Ice Ball drop. Keep vanilla's own loot untouched.
+import json
+packed_ice_loot = ROOT / "vendor/ice-caves/src/main/resources/data/minecraft/loot_table/blocks/packed_ice.json"
+if not packed_ice_loot.is_file():
+    raise RuntimeError("Expected pinned packed ice loot override was not found")
+loot = json.loads(packed_ice_loot.read_text())
+if len(loot.get("pools", [])) != 2 or "ice_caves:ice_ball" not in packed_ice_loot.read_text():
+    raise RuntimeError("Pinned packed ice loot override changed; refusing to remove it blindly")
+packed_ice_loot.unlink()
+
 assert "ICE_DOOR_ITEM" not in MAIN.read_text()
 assert "ICE_DOOR" not in CLIENT.read_text()
 assert "iceDoor" not in TABS.read_text()
