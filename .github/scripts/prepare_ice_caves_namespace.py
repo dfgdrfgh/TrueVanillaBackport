@@ -155,6 +155,20 @@ if len(loot.get("pools", [])) != 2 or "ice_caves:ice_ball" not in packed_ice_loo
     raise RuntimeError("Pinned packed ice loot override changed; refusing to remove it blindly")
 packed_ice_loot.unlink()
 
+# Snapshot 5 crystals self-drop; pinned source did not ship any
+# blocks/ice_crystal loot table (so survival mining yields nothing).
+crystal_loot = ROOT / "vendor/ice-caves/src/main/resources/data/ice_caves/loot_table/blocks/ice_crystal.json"
+if crystal_loot.exists():
+    raise RuntimeError("Pinned Ice Crystal loot table unexpectedly exists; audit it first")
+crystal_loot.write_text(json.dumps({
+    "type": "minecraft:block",
+    "pools": [{
+        "rolls": 1,
+        "entries": [{"type": "minecraft:item", "name": "minecraft:ice_crystal"}],
+        "conditions": [{"condition": "minecraft:survives_explosion"}]
+    }]
+}, indent=2) + "\n")
+
 # In vanilla Java 26.4 a Frostbite drops 0-3 Ice Balls, with Looting
 # increasing the count. The pinned backport incorrectly drops 1 at 25%.
 frostbite_loot = ROOT / "vendor/ice-caves/src/main/resources/data/ice_caves/loot_table/entities/frostbite.json"
