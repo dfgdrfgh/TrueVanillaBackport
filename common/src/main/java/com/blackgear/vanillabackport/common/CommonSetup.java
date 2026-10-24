@@ -38,14 +38,11 @@ import com.blackgear.vanillabackport.common.level.entities.mob.monster.sulfur_cu
 import com.blackgear.vanillabackport.common.level.entities.mob.monster.sulfur_cube.SulfurCubeArchetypes;
 import com.blackgear.vanillabackport.common.level.recipes.VanillaDynamicRecipes;
 import com.blackgear.vanillabackport.common.registries.entities.ModEntityTypes;
-import com.blackgear.vanillabackport.common.registries.blocks.ModBlocks;
 import com.blackgear.vanillabackport.common.integrations.worldgen.WorldGeneration;
 import com.blackgear.vanillabackport.common.registries.items.ModItems;
 import com.blackgear.vanillabackport.core.VanillaBackport;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.animal.Parrot;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.FireBlock;
 
 public class CommonSetup {
     public static void setup() {
@@ -68,25 +65,6 @@ public class CommonSetup {
 
     public static void asyncSetup(ParallelDispatch dispatch) {
         dispatch.enqueueWork(() -> {
-            // Match other overworld woods. Register once after all poplar blocks
-            // exist, for both Fabric and NeoForge (including server fire spread).
-            FireBlock fire = (FireBlock) Blocks.FIRE;
-            fire.setFlammable(ModBlocks.POPLAR_LOG.get(), 5, 5);
-            fire.setFlammable(ModBlocks.STRIPPED_POPLAR_LOG.get(), 5, 5);
-            fire.setFlammable(ModBlocks.POPLAR_WOOD.get(), 5, 5);
-            fire.setFlammable(ModBlocks.STRIPPED_POPLAR_WOOD.get(), 5, 5);
-            fire.setFlammable(ModBlocks.POPLAR_PLANKS.get(), 5, 20);
-            fire.setFlammable(ModBlocks.POPLAR_SLAB.get(), 5, 20);
-            fire.setFlammable(ModBlocks.POPLAR_STAIRS.get(), 5, 20);
-            fire.setFlammable(ModBlocks.POPLAR_FENCE.get(), 5, 20);
-            fire.setFlammable(ModBlocks.POPLAR_FENCE_GATE.get(), 5, 20);
-            fire.setFlammable(ModBlocks.POPLAR_DOOR.get(), 5, 20);
-            fire.setFlammable(ModBlocks.POPLAR_TRAPDOOR.get(), 5, 20);
-            fire.setFlammable(ModBlocks.POPLAR_SHELF.get(), 5, 20);
-            fire.setFlammable(ModBlocks.POPLAR_SAPLING.get(), 60, 100);
-            fire.setFlammable(ModBlocks.RED_POPLAR_LEAVES.get(), 30, 60);
-            fire.setFlammable(ModBlocks.ORANGE_POPLAR_LEAVES.get(), 30, 60);
-            fire.setFlammable(ModBlocks.YELLOW_POPLAR_LEAVES.get(), 30, 60);
             BiomeManager.add(WorldGeneration::bootstrap);
             BiomePlacement.registerBiomePlacements(BiomeGeneration::bootstrap);
             BlockIntegration.registerIntegrations(BlockIntegrations::bootstrap);

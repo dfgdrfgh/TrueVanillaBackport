@@ -140,8 +140,6 @@
     "common.mob_variants.WolfMixin",
     "common.monsters_on_peaceful.NaturalSpawnerMixin",
     "common.registry.BuildStateMixin",
-    "common.registry.HolderReferenceMixin",
-    "common.registry.MappedRegistryMixin",
     "common.spear_behavior.EnchantmentHelperMixin",
     "common.spear_behavior.LivingEntityMixin",
     "common.spear_behavior.MobMixin",

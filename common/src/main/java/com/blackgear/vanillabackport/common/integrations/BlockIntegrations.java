@@ -52,7 +52,33 @@ public class BlockIntegrations {
         event.registerFlammableBlock(ModBlocks.TALL_DRY_GRASS.get(), 60, 100);
         event.registerFlammableBlock(ModBlocks.LEAF_LITTER.get(), 60, 100);
         
+        // Copper Age
+        event.registerFlammableBlock(ModBlocks.ACACIA_SHELF.get(), 30, 20);
+        event.registerFlammableBlock(ModBlocks.BAMBOO_SHELF.get(), 30, 20);
+        event.registerFlammableBlock(ModBlocks.BIRCH_SHELF.get(), 30, 20);
+        event.registerFlammableBlock(ModBlocks.CHERRY_SHELF.get(), 30, 20);
+        event.registerFlammableBlock(ModBlocks.DARK_OAK_SHELF.get(), 30, 20);
+        event.registerFlammableBlock(ModBlocks.JUNGLE_SHELF.get(), 30, 20);
+        event.registerFlammableBlock(ModBlocks.MANGROVE_SHELF.get(), 30, 20);
+        event.registerFlammableBlock(ModBlocks.POPLAR_SHELF.get(), 30, 20);
+        event.registerFlammableBlock(ModBlocks.OAK_SHELF.get(), 30, 20);
+        event.registerFlammableBlock(ModBlocks.PALE_OAK_SHELF.get(), 30, 20);
+        event.registerFlammableBlock(ModBlocks.SPRUCE_SHELF.get(), 30, 20);
+
         // Wilderness Bound
+        event.registerFlammableBlock(ModBlocks.POPLAR_PLANKS.get(), 5, 20);
+        event.registerFlammableBlock(ModBlocks.POPLAR_SLAB.get(), 5, 20);
+        event.registerFlammableBlock(ModBlocks.POPLAR_FENCE_GATE.get(), 5, 20);
+        event.registerFlammableBlock(ModBlocks.POPLAR_FENCE.get(), 5, 20);
+        event.registerFlammableBlock(ModBlocks.POPLAR_STAIRS.get(), 5, 20);
+        event.registerFlammableBlock(ModBlocks.POPLAR_LOG.get(), 5, 5);
+        event.registerFlammableBlock(ModBlocks.STRIPPED_POPLAR_LOG.get(), 5, 5);
+        event.registerFlammableBlock(ModBlocks.STRIPPED_POPLAR_WOOD.get(), 5, 5);
+        event.registerFlammableBlock(ModBlocks.POPLAR_WOOD.get(), 5, 5);
+        event.registerFlammableBlock(ModBlocks.RED_POPLAR_LEAVES.get(), 30, 60);
+        event.registerFlammableBlock(ModBlocks.ORANGE_POPLAR_LEAVES.get(), 30, 60);
+        event.registerFlammableBlock(ModBlocks.YELLOW_POPLAR_LEAVES.get(), 30, 60);
+        event.registerFlammableBlock(ModBlocks.RED_SHRUB.get(), 60, 100);
         event.registerFlammableBlock(ModBlocks.STRAW_BED.get(), 30, 60);
         
         event.registerFlammableBlock(ModBlocks.WHITE_WOOL_STAIRS.get(), 30, 60);

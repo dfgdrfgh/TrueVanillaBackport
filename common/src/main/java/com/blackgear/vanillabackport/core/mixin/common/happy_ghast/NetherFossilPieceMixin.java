@@ -44,8 +44,8 @@ public abstract class NetherFossilPieceMixin extends TemplateStructurePiece {
     ) {
         if (VanillaBackport.COMMON_CONFIG.hasDriedGhasts.get()) {
             BoundingBox template = this.template().getBoundingBox(this.placeSettings(), this.templatePosition());
-            // Check the biome at the actual fossil, not the global dimension type.
-            if (!level.getBiome(template.getCenter()).is(BiomeTags.IS_NETHER)) return;
+            // Use the Nether biome tag instead of dimension-type flags.
+            if (!level.getBiome(origin).is(BiomeTags.IS_NETHER)) return;
             RandomSource random = RandomSource.create(level.getSeed()).forkPositional().at(template.getCenter());
             if (random.nextFloat() < 0.5F) {
                 int x = template.minX() + random.nextInt(template.getXSpan());

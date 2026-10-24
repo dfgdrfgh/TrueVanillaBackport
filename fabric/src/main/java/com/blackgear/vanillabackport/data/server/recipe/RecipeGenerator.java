@@ -339,9 +339,9 @@ public class RecipeGenerator extends VanillaRecipeProvider {
             Item result = variants.get(i);
             ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, result)
                 .requires(dyes.get(i))
-                .requires(recolorable)
+                .requires(Ingredient.of(recolorable))
                 .group(group)
-                .unlockedBy("has_" + group, has(recolorable))
+                .unlockedBy("has_needed_dye", has(dyes.get(i)))
                 .save(output, "dye_" + getItemName(result));
         }
     }
