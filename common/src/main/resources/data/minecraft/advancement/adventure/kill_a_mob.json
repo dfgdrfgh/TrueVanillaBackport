@@ -625,7 +625,12 @@
       "minecraft:zoglin",
       "minecraft:zombie_villager",
       "minecraft:zombie",
-      "minecraft:zombified_piglin"
+      "minecraft:zombified_piglin",
+      "minecraft:camel_husk",
+      "minecraft:creaking",
+      "minecraft:parched",
+      "minecraft:zombie_horse",
+      "minecraft:zombie_nautilus"
     ]
   ],
   "sends_telemetry_event": true
