@@ -106,6 +106,18 @@ replace_exact(
     'return level.method_8314(class_1944.field_9282, pos) >= MELT_LIGHT_LEVEL;',
 )
 
+# Java 26.4 playlists accept a *single* chest (including trapped/copper).
+# ChestBlock.getContainer returns 54 slots for a connected double chest;
+# never treat those as a playlist, including after joining two single chests.
+playlist = SOURCE / "block/JukeboxChestPlaylist.java"
+replace_exact(
+    playlist,
+    'return state.method_26204() instanceof class_2281 chest ? class_2281.method_17458(chest, state, level, above, true) : null;',
+    'if (!(state.method_26204() instanceof class_2281 chest)) return null;\n'
+    '      class_1263 container = class_2281.method_17458(chest, state, level, above, true);\n'
+    '      return container != null && container.method_5439() == 27 ? container : null;',
+)
+
 # The bundled version used to replace vanilla packed ice's drop table,
 # adding a non-vanilla 25% Ice Ball drop. Keep vanilla's own loot untouched.
 import json
