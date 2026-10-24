@@ -77,6 +77,12 @@ public class CopperGolem extends AbstractGolem implements ContainerUser, Shearab
         this.getBrain().setMemory(ModMemoryModuleTypes.TRANSPORT_ITEMS_COOLDOWN_TICKS.get(), this.getRandom().nextInt(60, 100));
     }
     
+    // Copper golems are immune to drowning in vanilla and can walk underwater.
+    @Override
+    public boolean canBreatheUnderwater() {
+        return true;
+    }
+
     @Override
     protected PathNavigation createNavigation(Level level) {
         CopperGolemPathNavigation navigation = new CopperGolemPathNavigation(this, level);

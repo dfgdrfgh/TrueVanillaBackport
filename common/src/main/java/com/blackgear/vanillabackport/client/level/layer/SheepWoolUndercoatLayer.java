@@ -6,7 +6,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.model.SheepFurModel;
 import net.minecraft.client.model.SheepModel;
 import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.model.geom.ModelLayers;
+import com.blackgear.vanillabackport.client.registries.ModModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
@@ -23,7 +23,7 @@ public class SheepWoolUndercoatLayer extends RenderLayer<Sheep, SheepModel<Sheep
 
     public SheepWoolUndercoatLayer(RenderLayerParent<Sheep, SheepModel<Sheep>> renderer, EntityModelSet models) {
         super(renderer);
-        this.model = new SheepFurModel<>(models.bakeLayer(ModelLayers.SHEEP));
+        this.model = new SheepFurModel<>(models.bakeLayer(ModModelLayers.SHEEP_WOOL_UNDERCOAT));
     }
 
     @Override

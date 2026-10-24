@@ -4,6 +4,7 @@ import com.blackgear.vanillabackport.common.api.modules.bundle_ui.BundleColoring
 import com.blackgear.vanillabackport.common.registries.blocks.ModBlocks;
 import com.blackgear.vanillabackport.common.registries.items.ModItems;
 import com.blackgear.vanillabackport.core.data.tags.ModItemTags;
+import com.blackgear.vanillabackport.core.data.tags.loader.ConventionalItemTags;
 import com.blackgear.vanillabackport.core.data.BlockFamilies;
 import com.google.common.collect.ImmutableMap;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -160,7 +161,7 @@ public class RecipeGenerator extends VanillaRecipeProvider {
         shaped(RecipeCategory.DECORATIONS, ModBlocks.COPPER_TORCH.getFirst().get(), 4)
             .define('X', Ingredient.of(Items.COAL, Items.CHARCOAL))
             .define('#', Items.STICK)
-            .define('C', ModItems.COPPER_NUGGET.get())
+            .define('C', ConventionalItemTags.NUGGETS_COPPER)
             .pattern("C")
             .pattern("X")
             .pattern("#")
@@ -168,7 +169,7 @@ public class RecipeGenerator extends VanillaRecipeProvider {
             .save(output);
         shaped(RecipeCategory.DECORATIONS, ModBlocks.COPPER_LANTERN.unaffected().get())
             .define('#', ModBlocks.COPPER_TORCH.getFirst().get())
-            .define('X', ModItems.COPPER_NUGGET.get())
+            .define('X', ConventionalItemTags.NUGGETS_COPPER)
             .pattern("XXX")
             .pattern("X#X")
             .pattern("XXX")
@@ -182,7 +183,7 @@ public class RecipeGenerator extends VanillaRecipeProvider {
             .save(output);
         shaped(RecipeCategory.DECORATIONS, ModBlocks.COPPER_CHAIN.unaffected().get())
             .define('I', Items.COPPER_INGOT)
-            .define('N', ModItems.COPPER_NUGGET.get())
+            .define('N', ConventionalItemTags.NUGGETS_COPPER)
             .pattern("N")
             .pattern("I")
             .pattern("N")

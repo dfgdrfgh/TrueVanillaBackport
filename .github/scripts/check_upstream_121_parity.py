@@ -95,3 +95,19 @@ harvest_tag = json.loads((data / "tags/item/cluster_max_harvestables.json").read
 assert "minecraft:copper_pickaxe" in harvest_tag["values"]
 
 print("PASS: VanillaBackport 1.2.1 upstream loot, dye, fire, ghast, spear, creative and registry corrections")
+
+# Copper nugget tag, sheep undercoat layer and copper golem water behavior.
+for recipe_id in ("copper_torch", "copper_lantern", "copper_chain"):
+    recipe = json.loads((data / f"recipe/{recipe_id}.json").read_text())
+    assert any(value == {"tag": "c:nuggets/copper"} for value in recipe["key"].values()), recipe_id
+assert (root / "common/src/main/generated/data/c/tags/item/nuggets/copper.json").exists()
+assert recipe_gen.count("ConventionalItemTags.NUGGETS_COPPER") == 3
+layers = java("client/registries/ModModelLayers.java")
+entity_rendering = java("client/integrations/rendering/EntityRendering.java")
+undercoat = java("client/level/layer/SheepWoolUndercoatLayer.java")
+assert 'SHEEP_WOOL_UNDERCOAT = register("sheep_wool_undercoat")' in layers
+assert "event.register(ModModelLayers.SHEEP_WOOL_UNDERCOAT, SheepModel::createBodyLayer)" in entity_rendering
+assert "models.bakeLayer(ModModelLayers.SHEEP_WOOL_UNDERCOAT)" in undercoat
+assert "models.bakeLayer(ModelLayers.SHEEP)" not in undercoat
+assert "public boolean canBreatheUnderwater()" in java("common/level/entities/mob/animal/golem/copper_golem/CopperGolem.java")
+print("PASS: copper nugget tag, sheep undercoat model and copper golem breathing regressions")
