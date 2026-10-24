@@ -17,9 +17,9 @@ vanilla parity. Each item needs runtime verification before closing.
 | Copper Age | Copper Golem path-height comparison fixed; comparator only reads shelf from its back via narrowly targeted mixin; waxed construction preserves all four copper chest stages | Validate inventory conversions, wax state in-game, and comparator-through-solid-block cases |
 | Mounts of Mayhem | Correct Nautilus equipment-menu index offset so its 2 visible mount slots are followed by all 36 player slots | Validate Nautilus shift-click behavior in game; other combat movement, mob equipment and underwater behavior still need targeted gameplay tests |
 | Tiny Takeover | Keep baby sheep geometry untouched | Model dimensions, fox animation, armor-stand helmet scaling, particles require render-state comparisons |
-| Chaos Cubed | No speculative changes | Sulfur spike placement/growth/sounds, cave placement, fog, geyser interactions need fixture worlds and client/server checks |
-| Wilderness Bound | No worldgen changes | Dappled Forest leaf litter and fallen-tree distribution need same-seed worldgen comparisons with WWOO |
-| Fourth Drop | Fabric Ice Caves: ice bricks friction, Frostbite Ice Ball loot, vanilla packed ice loot, ordinary cave monster spawning, icicle light threshold, brittle ice standing detection, single-chest playlists and negative-index safety | Freezing effect/immunity, ice cave biome/crevasse placement, other brittle-ice states, Frostbite AI/conversion and playlist edge cases |
+| Chaos Cubed | Sulfur spike growth starter now checks for its own block rather than pointed dripstone; the Fast Sliding archetype accepts both new packed ice item IDs when present (optional on NeoForge) | Sulfur spike maximum height, specialized sounds, cave placement, fog, geyser interactions still need verified parity |
+| Wilderness Bound | Golden Dandelion stew now accepts any two items from the preexisting Minecraft mushrooms tag | Dappled Forest leaf litter and fallen-tree distribution need same-seed worldgen comparisons with WWOO |
+| Fourth Drop | Fabric Ice Caves: non-slippery ice bricks, vanilla packed-ice loot, Frostbite Ice Ball loot, restored hostile cold-biome spawn lists, Frostbite surface spawns, Ice Crystal self-drop, icicle melting/falling/damage fixes, brittle ice standing detection, Ice Ball impact changes, Freezing thaw compensation, single-chest playlists and negative-index safety | Full status-effect immunity/damage, actual ice-cave biome/crevasse placement, growth models, Frostbite AI/conversion and playlist edge cases still open |
 
 ## Regression requirements
 
@@ -31,7 +31,7 @@ vanilla parity. Each item needs runtime verification before closing.
    worldgen, Tiny Takeover integration, dedicated server and WWOO smoke checks.
 4. Before merging: no changes to global biome noise, biome cleaner
    compatibility, or WWOO placement except when backed by same-seed fixtures.
-5. Full newest user modpack wasn't available with this task. **Passing CI is
+5. Earlier Modpack 1.0.1 Library records exist, but raw-byte materialization was denied for them; the full newest pack cannot be staged with current access. **Passing CI is
    not full gameplay parity and does not replace real client testing.**
 
 References used: official Minecraft Java release/snapshot notes, Minecraft
