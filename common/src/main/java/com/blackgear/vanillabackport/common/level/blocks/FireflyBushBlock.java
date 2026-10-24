@@ -37,7 +37,7 @@ public class FireflyBushBlock extends BushBlock implements SpreadableBonemealabl
             level.playLocalSound(pos, ModSoundEvents.FIREFLY_BUSH_IDLE.get(), SoundSource.AMBIENT, 1.0F, 1.0F, false);
         }
 
-        if (EnvironmentUtils.isNaturalNight(level) || level.getMaxLocalRawBrightness(pos) <= FIREFLY_SPAWN_MAX_BRIGHTNESS_LEVEL) {
+        if (level.getMaxLocalRawBrightness(pos) <= FIREFLY_SPAWN_MAX_BRIGHTNESS_LEVEL) {
             if (random.nextDouble() <= FIREFLY_CHANCE_PER_TICK) {
                 double fireflyX = pos.getX() + random.nextDouble() * FIREFLY_HORIZONTAL_RANGE - FIREFLY_VERTICAL_RANGE;
                 double fireflyY = pos.getY() + random.nextDouble() * FIREFLY_VERTICAL_RANGE;
