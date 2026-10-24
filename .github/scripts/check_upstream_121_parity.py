@@ -82,4 +82,13 @@ mixins = json.loads((root / "common/src/main/resources/vanillabackport.mixins.js
 for retired in ("common.registry.HolderReferenceMixin", "common.registry.MappedRegistryMixin"):
     assert retired not in mixins["mixins"], "Never hide duplicate registrations with a fallback mixin"
 
+# Also guard upstream copper-tool tag generation and a discovered dye tag typo.
+tags_source = (root / "fabric/src/main/java/com/blackgear/vanillabackport/data/server/tags/ItemTagGenerator.java").read_text()
+assert ".add(ModItems.COPPER_PICKAXE.get());" in tags_source
+assert "ModItems.GREEN_BUNDLE.get(), ModItems.GREEN_HARNESS.get(), ModItems.GREEN_CUSHION.get()" in tags_source
+green_tag = json.loads((root / "common/src/main/generated/data/c/tags/item/dyed/green.json").read_text())
+assert "minecraft:green_cushion" in green_tag["values"] and "minecraft:gray_cushion" not in green_tag["values"]
+harvest_tag = json.loads((data / "tags/item/cluster_max_harvestables.json").read_text())
+assert "minecraft:copper_pickaxe" in harvest_tag["values"]
+
 print("PASS: VanillaBackport 1.2.1 upstream loot, dye, fire, ghast, spear, creative and registry corrections")
