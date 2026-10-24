@@ -283,12 +283,14 @@ public class ModBundledTabs {
                 output.accept(ModItems.PARCHED_SPAWN_EGG.get());
                 output.accept(ModItems.ZOMBIE_NAUTILUS_SPAWN_EGG.get());
                 
-                provider.lookup(Registries.ENCHANTMENT).ifPresent(enchantments -> {
-                    enchantments.listElements()
-                        .filter(holder -> holder.is(ModEnchantments.LUNGE))
-                        .flatMap(reference -> IntStream.rangeClosed(reference.value().getMinLevel(), reference.value().getMaxLevel()).mapToObj(level -> EnchantedBookItem.createForEnchantment(new EnchantmentInstance(reference, level))))
-                        .forEach(output::accept);
-                });
+                // Add one book per Lunge level, exactly once, and only when spears are enabled.
+                if (VanillaBackport.COMMON_CONFIG.hasSpears.get()) {
+                    provider.lookup(Registries.ENCHANTMENT).ifPresent(enchantments ->
+                        enchantments.get(ModEnchantments.LUNGE).ifPresent(reference ->
+                            IntStream.rangeClosed(reference.value().getMinLevel(), reference.value().getMaxLevel())
+                                .mapToObj(level -> EnchantedBookItem.createForEnchantment(new EnchantmentInstance(reference, level)))
+                                .forEach(output::accept)));
+                }
             })
             .build()
     );
