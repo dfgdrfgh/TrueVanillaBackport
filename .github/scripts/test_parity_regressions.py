@@ -94,6 +94,7 @@ assert "new ItemStack(stack.getItem())" not in harness
 ghast = source("common/level/entities/mob/animal/happy_ghast/HappyGhast.java")
 sneak = "if (player.isShiftKeyDown()) return InteractionResult.PASS;"
 assert sneak in ghast
+assert "if (input.lengthSqr() > 1.0D)" in ghast and "input = input.normalize();" in ghast, "Mounted Happy Ghast diagonals must not exceed the single-axis input speed"
 assert ghast.index(sneak) < ghast.index("player.startRiding(this)"), (
     "Sneaking should bypass mounting"
 )
