@@ -11,7 +11,7 @@ vanilla parity. Each item needs runtime verification before closing.
 | --- | --- | --- |
 | Bundles of Bravery | Existing basic bundle controls retained | Holding Use should continuously eject stacks at vanilla intervals. Exercise selected-stack logic and client/server synchronization. |
 | The Garden Awakens | Eyeblossom only poisons bees when open and does not switch state in Nether/End | Bee attraction/feeding, creaking/heart/resin behavior, snapshot day/night transitions and full runtime validation |
-| Spring to Life | Firefly brightness rule corrected; undercoat no longer overrides Tiny Takeover babies | Fallen-tree placement/selection, wolf armor sound parity, adult sheep render comparisons, firefly particles in game |
+| Spring to Life | Firefly brightness rule corrected; undercoat no longer overrides Tiny Takeover babies; fallen-tree support check now uses its ground block position | Remaining fallen-tree frequency/selection, wolf armor sound parity, adult sheep render comparisons, firefly particles in game |
 | Chase the Skies | Harness data components preserved; guaranteed equipped-harness drop chance; sneaking bypasses Happy Ghast mounting | Verify all equipment drops after save/reload, passenger seat selection and interaction edge cases |
 | Hot as Lava | Dennis painting variant now includes newer title and author JSON metadata | Validate actual 1.21.1 painting tooltip rendering; metadata may require a separate runtime backport. Disc behavior confirmed separately, not modified here |
 | Copper Age | Copper Golem path-height comparison fixed; comparator only reads shelf from its back via narrowly targeted mixin | Validate chest/golem wax conversion and comparator-through-solid-block cases in game |
