@@ -4,6 +4,12 @@ import com.blackgear.vanillabackport.common.api.modules.bundle_ui.BundleFeatures
 import com.blackgear.vanillabackport.common.api.modules.bundle_ui.BundleItemHandler;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.level.Level;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.BundleContents;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
@@ -22,7 +28,37 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.List;
 
 @Mixin(BundleItem.class)
-public abstract class BundleItemMixin {
+public abstract class BundleItemMixin extends Item {
+    protected BundleItemMixin(Item.Properties properties) {
+        super(properties);
+    }
+
+    // 1.21.1 BundleItem only empties once because Item#getUseDuration is zero.
+    // Keep the long use window enabled exclusively for the modern bundle mode.
+    @Override
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
+        return BundleFeatures.onBundleUpdate() ? 72000 : super.getUseDuration(stack, entity);
+    }
+
+    @Inject(method = "use", at = @At("RETURN"))
+    private void vb$startContinuousEmpty(Level level, Player player, InteractionHand hand,
+                                         CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir) {
+        if (!BundleFeatures.onBundleUpdate() || !cir.getReturnValue().getResult().consumesAction()) return;
+        BundleContents contents = player.getItemInHand(hand).get(DataComponents.BUNDLE_CONTENTS);
+        if (contents != null && !contents.isEmpty()) {
+            player.startUsingItem(hand);
+        }
+    }
+
+    // One bundle stack on initial use, then subsequent stacks while Use is held.
+    @Override
+    public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int remainingUseDuration) {
+        if (BundleFeatures.onBundleUpdate() && !level.isClientSide() && entity instanceof Player player) {
+            if (remainingUseDuration % 8 == 0 && !BundleItemHandler.dropContents(stack, player)) {
+                player.stopUsingItem();
+            }
+        }
+    }
     @Shadow protected abstract void playInsertSound(Entity entity);
     @Shadow protected abstract void playRemoveOneSound(Entity entity);
 
