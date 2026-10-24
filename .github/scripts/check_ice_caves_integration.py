@@ -62,6 +62,10 @@ with zipfile.ZipFile(releases[0]) as jar:
         assert all("ice_door" not in path for path in names)
         # No override of packed ice's vanilla Silk Touch-only drop table.
         assert "data/minecraft/loot_table/blocks/packed_ice.json" not in names
+        crystal = "data/minecraft/loot_table/blocks/ice_crystal.json"
+        assert crystal in names, "Ice Crystal must drop itself when mined"
+        crystal_loot = json.loads(jar.read(crystal))
+        assert crystal_loot["pools"][0]["entries"][0]["name"] == "minecraft:ice_crystal"
         frostbite_loot = json.loads(jar.read("data/minecraft/loot_table/entities/frostbite.json"))
         ice_ball_pool = frostbite_loot["pools"][1]
         assert not ice_ball_pool.get("conditions"), "Ice Balls should not require a fixed 25% chance"
