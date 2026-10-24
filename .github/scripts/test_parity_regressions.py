@@ -25,6 +25,14 @@ firefly = source("common/level/blocks/FireflyBushBlock.java")
 assert "if (level.getMaxLocalRawBrightness(pos) <= FIREFLY_SPAWN_MAX_BRIGHTNESS_LEVEL)" in firefly
 assert "FIREFLY_SPAWN_MAX_BRIGHTNESS_LEVEL = 13;" in firefly
 
+mixin = source("core/mixin/common/copper_age/ShelfComparatorMixin.java")
+assert "@Mixin(ComparatorBlock.class)" in mixin
+assert "behindState.getBlock() instanceof ShelfBlock" in mixin
+assert "behindState.getValue(ShelfBlock.FACING) != comparatorFacing.getOpposite()" in mixin
+import json
+mixins = json.loads((ROOT / "common/src/main/resources/vanillabackport.mixins.json").read_text())
+assert "common.copper_age.ShelfComparatorMixin" in mixins["mixins"]
+
 golem = source("common/level/entities/mob/animal/golem/copper_golem/CopperGolemPathNavigation.java")
 assert "columnPos.getY() < this.level.getMaxBuildHeight()" in golem
 assert "columnPos.getY() >= this.level.getMaxBuildHeight() &&" not in golem
