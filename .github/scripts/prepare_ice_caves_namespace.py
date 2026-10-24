@@ -117,6 +117,31 @@ if len(loot.get("pools", [])) != 2 or "ice_caves:ice_ball" not in packed_ice_loo
     raise RuntimeError("Pinned packed ice loot override changed; refusing to remove it blindly")
 packed_ice_loot.unlink()
 
+# In vanilla Java 26.4 a Frostbite drops 0-3 Ice Balls, with Looting
+# increasing the count. The pinned backport incorrectly drops 1 at 25%.
+frostbite_loot = ROOT / "vendor/ice-caves/src/main/resources/data/ice_caves/loot_table/entities/frostbite.json"
+frostbite_table = json.loads(frostbite_loot.read_text())
+if len(frostbite_table.get("pools", [])) != 2:
+    raise RuntimeError("Unexpected Frostbite loot table structure")
+ice_ball_pool = frostbite_table["pools"][1]
+if (ice_ball_pool.get("conditions") != [{"condition": "minecraft:random_chance", "chance": 0.25}]
+        or len(ice_ball_pool.get("entries", [])) != 1
+        or ice_ball_pool["entries"][0].get("name") != "ice_caves:ice_ball"):
+    raise RuntimeError("Unexpected pinned Frostbite Ice Ball loot source")
+ice_ball_pool.pop("conditions")
+ice_ball_pool["entries"][0]["functions"] = [
+    {
+        "function": "minecraft:set_count",
+        "count": {"type": "minecraft:uniform", "min": 0.0, "max": 3.0},
+    },
+    {
+        "function": "minecraft:enchanted_count_increase",
+        "enchantment": "minecraft:looting",
+        "count": {"type": "minecraft:uniform", "min": 0.0, "max": 1.0},
+    },
+]
+frostbite_loot.write_text(json.dumps(frostbite_table, indent=2) + "\n")
+
 assert "ICE_DOOR_ITEM" not in MAIN.read_text()
 assert "ICE_DOOR" not in CLIENT.read_text()
 assert "iceDoor" not in TABS.read_text()
