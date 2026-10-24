@@ -60,6 +60,18 @@ with zipfile.ZipFile(releases[0]) as jar:
         assert "assets/minecraft/models/item/tipped_arrow.json" in names
         assert "com/blackgear/vanillabackport/core/fabric/IceCavesCreativeSorting.class" in names
         assert all("ice_door" not in path for path in names)
+        # No override of packed ice's vanilla Silk Touch-only drop table.
+        assert "data/minecraft/loot_table/blocks/packed_ice.json" not in names
+        ice_source = root / "vendor/ice-caves/src/main/java/org/zerw/net/icecaves"
+        blocks_source = (ice_source / "registry/ModBlocks.java").read_text()
+        friction_method = blocks_source.split("private static class_2251 iceBrickProperties()", 1)[1].split("public static class_2248 createPackedIceBricks()", 1)[0]
+        assert ".method_9628(0.98F)" not in friction_method, "Packed ice bricks must not be slippery"
+        spawn_source = (ice_source / "worldgen/IceCaveSpawnControl.java").read_text()
+        assert "return mob instanceof FrostbiteZombie && !isIceCaveInterior(level, pos);" in spawn_source
+        assert "return isFrostbiteType(type) && !isIceCaveInterior(level, pos);" in spawn_source
+        icicle_source = (ice_source / "block/IcicleBlock.java").read_text()
+        assert "private static final int MELT_LIGHT_LEVEL = 5;" in icicle_source
+        assert "pos) >= MELT_LIGHT_LEVEL;" in icicle_source
         lang = json.loads(jar.read("assets/minecraft/lang/en_us.json"))
         assert lang["block.minecraft.ice_crystal"] == "Ice Crystal"
         assert "block.minecraft.ice_door" not in lang
