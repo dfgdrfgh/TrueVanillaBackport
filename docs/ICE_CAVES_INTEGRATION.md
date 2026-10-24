@@ -47,3 +47,24 @@ Ice Caves filter is retained and lists the same items without an Ice Door.
 **Existing worlds:** Previously placed `ice_caves:` block/entity/item IDs are
 not automatically remapped. Back up old saves and migrate content IDs before
 loading important worlds made with the earlier experimental release.
+
+## Snapshot 5 parity pass (Fabric only)
+
+The pinned Ice Caves source is adjusted during the existing CI preparation step.
+These changes apply **only** to the merged Fabric release:
+
+- Packed Ice Bricks and all related variants use normal block friction rather
+  than inheriting the slippery ice setting.
+- Ordinary cave monsters keep vanilla spawning rules inside decorated ice cave
+  areas; Frostbite cave-only restrictions remain.
+- The extra non-vanilla Ice Ball drop is removed by omitting the bundled
+  override of Minecraft's packed ice loot table.
+- Icicles check for melting at block light level 5, in line with 26.4.
+
+The packed-ice loot-table removal is intentional: regular packed ice continues
+to use Minecraft's built-in loot table. No global climate noise, biome selector,
+or WWOO placement changes are made by this pass.
+
+The packaged-JAR integration check covers these source invariants. Dedicated
+server and WWOO smoke tests remain in the build workflow, but a passing CI
+build alone does not establish complete 26.4 parity or full modpack coverage.
