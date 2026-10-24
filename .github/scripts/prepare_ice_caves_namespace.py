@@ -122,6 +122,27 @@ replace_exact(
     'return level.method_8314(class_1944.field_9282, pos) >= MELT_LIGHT_LEVEL;',
 )
 
+# In Snapshot 5 the Ice Ball is a kinetic projectile, not a source of
+# the Freezing potion effect. The pinned module added an extra 20 tick effect.
+ice_ball = SOURCE / "entity/IceBall.java"
+replace_exact(
+    ice_ball,
+    '            ModEffects.applyFreezing(living, 20, this.method_24921());\n',
+    '',
+)
+# Play the dedicated Ice Ball impact sound for block hits as well as entities.
+replace_exact(
+    ice_ball,
+    '      if (!this.method_37908().method_8608()) {\n         this.method_37908().method_8421(this, (byte)3);',
+    '      if (!this.method_37908().method_8608()) {\n'
+    '         if (!(hitResult instanceof class_3966)) {\n'
+    '            class_3414 impact = ModSounds.iceBallHit();\n'
+    '            if (impact != null) {\n'
+    '               this.method_37908().method_43128(null, this.method_23317(), this.method_23318(), this.method_23321(), impact, class_3419.field_15254, 1.0F, 1.0F);\n'
+    '            }\n'
+    '         }\n'
+    '         this.method_37908().method_8421(this, (byte)3);',
+)
 # A creature standing *on* Brittle Ice occupies the block above it,
 # not the brittle ice block itself. The old floor-position equality meant
 # the scheduled crack tick never saw the creature's weight.
