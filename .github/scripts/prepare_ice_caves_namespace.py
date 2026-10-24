@@ -106,6 +106,16 @@ replace_exact(
     'return level.method_8314(class_1944.field_9282, pos) >= MELT_LIGHT_LEVEL;',
 )
 
+# A creature standing *on* Brittle Ice occupies the block above it,
+# not the brittle ice block itself. The old floor-position equality meant
+# the scheduled crack tick never saw the creature's weight.
+brittle_ice = SOURCE / "block/BrittleIceBlock.java"
+replace_exact(
+    brittle_ice,
+    'if (isWeight(entity) && entity.method_23312().equals(pos)) {',
+    'if (isWeight(entity) && entity.method_23312().equals(pos.method_10084())) {',
+)
+
 # Java 26.4 playlists accept a *single* chest (including trapped/copper).
 # ChestBlock.getContainer returns 54 slots for a connected double chest;
 # never treat those as a playlist, including after joining two single chests.
