@@ -28,7 +28,9 @@ public class SheepWoolUndercoatLayer extends RenderLayer<Sheep, SheepModel<Sheep
 
     @Override
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, Sheep sheep, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (sheep.getType() == EntityType.SHEEP && !sheep.isInvisible()) {
+        // Tiny Takeover supplies its own baby sheep geometry; this adult-shaped
+        // undercoat would otherwise render over it and distort the baby model.
+        if (sheep.getType() == EntityType.SHEEP && !sheep.isBaby() && !sheep.isInvisible()) {
             int color;
             if (sheep.hasCustomName() && "jeb_".equals(sheep.getName().getString())) {
                 int offset = sheep.tickCount / 25 + sheep.getId();
