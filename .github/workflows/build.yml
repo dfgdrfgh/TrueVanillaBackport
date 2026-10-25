@@ -142,3 +142,51 @@ jobs:
           name: VanillaBackport-1.21.1-${{ matrix.loader }}
           path: dist/*
           if-no-files-found: error
+
+  client-smoke:
+    name: Minecraft 1.21.1 ${{ matrix.loader }} client smoke
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        loader: [fabric, neoforge]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Download tested production JAR
+        uses: actions/download-artifact@v5
+        with:
+          name: VanillaBackport-1.21.1-${{ matrix.loader }}
+          path: run/mods
+      - name: Verify exact JAR and loadout
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t jars < <(find run/mods -maxdepth 1 -name '*.jar' -type f | sort)
+          test "${#jars[@]}" -eq 1
+          jar tf "${jars[0]}" >/dev/null
+          sha256sum "${jars[0]}"
+          printf 'Minecraft 1.21.1 %s: %s\n' '${{ matrix.loader }}' "${jars[0]}" >> "$GITHUB_STEP_SUMMARY"
+      - name: Install software OpenGL for virtual display
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y xvfb libgl1-mesa-dri libglx-mesa0
+      - name: Start a real Minecraft client and enter a test world
+        uses: headlesshq/mc-runtime-test@645691de43520240e1d1e45b4b9a4d9cd9c294a4 # v4.5.2
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        with:
+          mc: '1.21.1'
+          modloader: ${{ matrix.loader }}
+          mc-runtime-test: ${{ matrix.loader }}
+          java: '21'
+          fabric-api: ${{ matrix.loader == 'fabric' && '0.115.4+1.21.1' || 'none' }}
+          fabric-gametest-api: none
+          xvfb: true
+          headlessmc-command: '--retries 3 --jvm -Djava.awt.headless=true -DMcRuntimeGameTest=false'
+          cache-mc: github
