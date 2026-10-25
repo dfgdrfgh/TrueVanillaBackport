@@ -183,6 +183,7 @@ jobs:
         with:
           mc: '1.21.1'
           modloader: ${{ matrix.loader }}
+          regex: .*${{ matrix.loader }}.*
           mc-runtime-test: ${{ matrix.loader }}
           java: '21'
           fabric-api: ${{ matrix.loader == 'fabric' && '0.115.4+1.21.1' || 'none' }}
