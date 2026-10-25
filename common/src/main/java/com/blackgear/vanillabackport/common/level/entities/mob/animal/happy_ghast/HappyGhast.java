@@ -303,6 +303,8 @@ public class HappyGhast extends Animal implements PlayerRideable, LeashableCallb
 
             if (!stack.is(Items.SHEARS) || this.isVehicle() || !this.isHarnessed() && !player.isCreative()) {
                 if (this.isHarnessed()) {
+                    // Sneaking should not accidentally mount the Happy Ghast.
+                    if (player.isShiftKeyDown()) return InteractionResult.PASS;
                     if (!this.level().isClientSide()) player.startRiding(this);
 
                     return InteractionResult.sidedSuccess(this.level().isClientSide());
@@ -389,7 +391,12 @@ public class HappyGhast extends Animal implements PlayerRideable, LeashableCallb
             upward += 0.5F;
         }
 
-        return new Vec3(forward, upward, strafe).scale(((double) 3.9F * this.getAttributeValue(Attributes.FLYING_SPEED)) * VanillaBackport.COMMON_CONFIG.happyGhastSpeedModifier.get());
+        // Avoid the diagonal speed boost while retaining slower backward movement.
+        Vec3 input = new Vec3(forward, upward, strafe);
+        if (input.lengthSqr() > 1.0D) {
+            input = input.normalize();
+        }
+        return input.scale(((double) 3.9F * this.getAttributeValue(Attributes.FLYING_SPEED)) * VanillaBackport.COMMON_CONFIG.happyGhastSpeedModifier.get());
     }
 
     protected Vec2 getRiddenRotation(LivingEntity controller) {

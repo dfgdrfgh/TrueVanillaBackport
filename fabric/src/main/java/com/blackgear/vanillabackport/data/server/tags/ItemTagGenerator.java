@@ -183,6 +183,10 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
                 Items.RED_MUSHROOM,
                 ModBlocks.SHELF_MUSHROOM.get().asItem()
             ).addOptionalTag(ConventionalItemTags.MUSHROOMS);
+
+        // Copper pickaxes harvest amethyst clusters just like iron-tier pickaxes.
+        this.getOrCreateTagBuilder(ItemTags.CLUSTER_MAX_HARVESTABLES)
+            .add(ModItems.COPPER_PICKAXE.get());
     }
 
     private void handleArchetypes() {
@@ -385,7 +389,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
             .add(ModItems.GRAY_BUNDLE.get(), ModItems.GRAY_HARNESS.get(), ModItems.GRAY_CUSHION.get());
 
         this.getOrCreateTagBuilder(ConventionalItemTags.DYED_GREEN)
-            .add(ModItems.GREEN_BUNDLE.get(), ModItems.GREEN_HARNESS.get(), ModItems.GRAY_CUSHION.get());
+            .add(ModItems.GREEN_BUNDLE.get(), ModItems.GREEN_HARNESS.get(), ModItems.GREEN_CUSHION.get());
 
         this.getOrCreateTagBuilder(ConventionalItemTags.DYED_LIGHT_BLUE)
             .add(ModItems.LIGHT_BLUE_BUNDLE.get(), ModItems.LIGHT_BLUE_HARNESS.get(), ModItems.LIGHT_BLUE_CUSHION.get());

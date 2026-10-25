@@ -4,6 +4,7 @@ import com.blackgear.vanillabackport.common.registries.blocks.ModBlocks;
 import com.blackgear.vanillabackport.core.VanillaBackport;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
@@ -41,8 +42,10 @@ public abstract class NetherFossilPieceMixin extends TemplateStructurePiece {
         BlockPos origin,
         CallbackInfo ci
     ) {
-        if (VanillaBackport.COMMON_CONFIG.hasDriedGhasts.get() && level.dimensionType().ultraWarm() && level.dimensionType().piglinSafe()) { // Check for Nether dimension
+        if (VanillaBackport.COMMON_CONFIG.hasDriedGhasts.get()) {
             BoundingBox template = this.template().getBoundingBox(this.placeSettings(), this.templatePosition());
+            // Use the Nether biome tag instead of dimension-type flags.
+            if (!level.getBiome(origin).is(BiomeTags.IS_NETHER)) return;
             RandomSource random = RandomSource.create(level.getSeed()).forkPositional().at(template.getCenter());
             if (random.nextFloat() < 0.5F) {
                 int x = template.minX() + random.nextInt(template.getXSpan());

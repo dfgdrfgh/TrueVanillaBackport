@@ -271,7 +271,7 @@ public class SpeleothemBlock extends Block implements Fallable, SimpleWaterlogge
     }
 
     private static boolean isStalactiteStartPos(BlockState state, LevelReader level, BlockPos pos) {
-        return isStalactite(state) && !level.getBlockState(pos.above()).is(Blocks.POINTED_DRIPSTONE);
+        return isStalactite(state) && !level.getBlockState(pos.above()).is(state.getBlock());
     }
 
     public void tryGrowStalactiteOrStalagmiteIfPossible(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {

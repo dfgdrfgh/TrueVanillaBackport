@@ -6,7 +6,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.model.SheepFurModel;
 import net.minecraft.client.model.SheepModel;
 import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.model.geom.ModelLayers;
+import com.blackgear.vanillabackport.client.registries.ModModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
@@ -23,12 +23,14 @@ public class SheepWoolUndercoatLayer extends RenderLayer<Sheep, SheepModel<Sheep
 
     public SheepWoolUndercoatLayer(RenderLayerParent<Sheep, SheepModel<Sheep>> renderer, EntityModelSet models) {
         super(renderer);
-        this.model = new SheepFurModel<>(models.bakeLayer(ModelLayers.SHEEP));
+        this.model = new SheepFurModel<>(models.bakeLayer(ModModelLayers.SHEEP_WOOL_UNDERCOAT));
     }
 
     @Override
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, Sheep sheep, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (sheep.getType() == EntityType.SHEEP && !sheep.isInvisible()) {
+        // Tiny Takeover supplies its own baby sheep geometry; this adult-shaped
+        // undercoat would otherwise render over it and distort the baby model.
+        if (sheep.getType() == EntityType.SHEEP && !sheep.isBaby() && !sheep.isInvisible()) {
             int color;
             if (sheep.hasCustomName() && "jeb_".equals(sheep.getName().getString())) {
                 int offset = sheep.tickCount / 25 + sheep.getId();

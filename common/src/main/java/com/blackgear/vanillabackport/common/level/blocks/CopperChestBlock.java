@@ -32,10 +32,10 @@ public class CopperChestBlock extends ChestBlock {
         Blocks.EXPOSED_COPPER, ModBlocks.EXPOSED_COPPER_CHEST,
         Blocks.WEATHERED_COPPER, ModBlocks.WEATHERED_COPPER_CHEST,
         Blocks.OXIDIZED_COPPER, ModBlocks.OXIDIZED_COPPER_CHEST,
-        Blocks.WAXED_COPPER_BLOCK, ModBlocks.COPPER_CHEST,
-        Blocks.WAXED_EXPOSED_COPPER, ModBlocks.EXPOSED_COPPER_CHEST,
-        Blocks.WAXED_WEATHERED_COPPER, ModBlocks.WEATHERED_COPPER_CHEST,
-        Blocks.WAXED_OXIDIZED_COPPER, ModBlocks.OXIDIZED_COPPER_CHEST
+        Blocks.WAXED_COPPER_BLOCK, ModBlocks.WAXED_COPPER_CHEST,
+        Blocks.WAXED_EXPOSED_COPPER, ModBlocks.WAXED_EXPOSED_COPPER_CHEST,
+        Blocks.WAXED_WEATHERED_COPPER, ModBlocks.WAXED_WEATHERED_COPPER_CHEST,
+        Blocks.WAXED_OXIDIZED_COPPER, ModBlocks.WAXED_OXIDIZED_COPPER_CHEST
     ));
     private final WeatherState weatherState;
     private final SoundEvent openSound;

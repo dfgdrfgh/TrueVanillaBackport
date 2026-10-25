@@ -75,7 +75,10 @@ public class NautilusInventoryMenu extends AbstractContainerMenu {
 		if (slot != null && slot.hasItem()) {
 			ItemStack itemStack2 = slot.getItem();
 			itemStack = itemStack2.copy();
-			int i = this.horseContainer.getContainerSize() + 1;
+			// The GUI exposes two mount slots: saddle (0) and body armor (1).
+			// The backing container has two slots but only its saddle is shown;
+			// counting its unused slot shifts all quick-move inventory ranges.
+			int i = 2;
 			if (index < i) {
 				if (!this.moveItemStackTo(itemStack2, i, this.slots.size(), true)) {
 					return ItemStack.EMPTY;
