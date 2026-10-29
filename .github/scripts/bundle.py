@@ -1,4 +1,4 @@
-"""Bundle the pinned Platform jar using each loader's native jar-in-jar format."""
+"""Assemble VanillaBackport with Platform as a separate runtime dependency."""
 import hashlib
 import json
 import sys
@@ -16,16 +16,10 @@ def production_jar(directory, prefix):
     return jars[0]
 
 main = production_jar(root / loader / "build/libs", "VanillaBackport-")
-platform = production_jar(root / "vendor/platform" / loader / "build/libs", f"Platform-{loader}-")
 output = root / "dist" / main.name
 output.parent.mkdir(exist_ok=True)
 with zipfile.ZipFile(main) as source:
     data = {name: source.read(name) for name in source.namelist()}
-properties = dict((key.strip(), value.strip()) for line in (root / "gradle.properties").read_text().splitlines()
-                  if "=" in line and not line.strip().startswith("#")
-                  for key, value in [line.split("=", 1)])
-platform_version = properties["platform_indev_version"]
-nested = [(platform, "com.blackgear", "platform", platform_version)]
 
 def merge_tag(previous, incoming, name):
     """Keep both mods' block tags when collapsing two datapacks into one."""
@@ -41,7 +35,7 @@ def merge_tag(previous, incoming, name):
 
 # Fabric: integrate Ice Caves into the SAME mod, not as a separately loaded
 # nested Fabric mod. Classes, resources, entrypoints and mixins live in the
-# outer TrueVanillaBackport jar; Platform remains a real bundled dependency.
+# outer TrueVanillaBackport jar; Platform is installed as a separate mod.
 if loader == "fabric":
     ice_build = root / "vendor/ice-caves/build/libs"
     ice_mod = production_jar(ice_build, "ice-caves-backport-fabric-")
@@ -122,22 +116,24 @@ if loader == "fabric":
         metadata["mixins"].append(config)
     data["fabric.mod.json"] = json.dumps(metadata, indent=2).encode()
 
+# Keep the loader-level Platform dependency, but never nest/shade its binary.
 if loader == "fabric":
     metadata = json.loads(data["fabric.mod.json"])
-    for jar, _, _, _ in nested:
-        path = f"META-INF/jars/{jar.name}"
-        metadata.setdefault("jars", []).append({"file": path})
-        data[path] = jar.read_bytes()
-    data["fabric.mod.json"] = json.dumps(metadata, indent=2).encode()
+    assert "platform" in metadata.get("depends", {}), "Missing external Platform dependency"
+    assert not any("platform" in entry.get("file", "").lower()
+                   for entry in metadata.get("jars", []))
 else:
-    metadata = json.loads(data.get("META-INF/jarjar/metadata.json", b'{"jars":[]}'))
-    for jar, group, artifact, artifact_version in nested:
-        path = f"META-INF/jarjar/{jar.name}"
-        metadata["jars"].append({"identifier": {"group": group, "artifact": artifact},
-            "version": {"range": f"[{artifact_version},)", "artifactVersion": artifact_version},
-            "path": path, "isObfuscated": loader == "forge"})
-        data[path] = jar.read_bytes()
-    data["META-INF/jarjar/metadata.json"] = json.dumps(metadata, indent=2).encode()
+    assert 'modId = "platform"' in data["META-INF/neoforge.mods.toml"].decode()
+    if "META-INF/jarjar/metadata.json" in data:
+        jarjar = json.loads(data["META-INF/jarjar/metadata.json"])
+        assert not any(entry.get("identifier", {}).get("artifact") == "platform"
+                       for entry in jarjar.get("jars", []))
+assert not any(name.startswith("com/blackgear/platform/") or
+               name.startswith("META-INF/jars/Platform-") or
+               name.startswith("META-INF/jarjar/Platform-") for name in data), (
+    "Platform must be installed separately, never embedded"
+)
+
 with zipfile.ZipFile(output, "w", zipfile.ZIP_DEFLATED) as result:
     for name, content in data.items():
         result.writestr(name, content)

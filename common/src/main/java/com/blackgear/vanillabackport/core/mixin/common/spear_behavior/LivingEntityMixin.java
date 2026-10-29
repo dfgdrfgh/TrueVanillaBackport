@@ -5,6 +5,8 @@ import com.blackgear.vanillabackport.common.api.extensions.entity.spear.SpearSwi
 import com.blackgear.vanillabackport.common.level.components.AttackRange;
 import com.blackgear.vanillabackport.common.level.components.KineticWeapon;
 import com.blackgear.vanillabackport.common.level.components.SwingAnimation;
+import com.blackgear.vanillabackport.common.level.components.SwingAnimationType;
+import com.blackgear.vanillabackport.core.ModChecker;
 import com.blackgear.vanillabackport.common.registries.enchantment.EnchantmentUtils;
 import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
@@ -96,7 +98,7 @@ public abstract class LivingEntityMixin extends Entity implements MobSpearHandle
     
     @Inject(method = "getCurrentSwingDuration", at = @At("RETURN"), cancellable = true)
     private void vb$getCurrentSwingDuration(CallbackInfoReturnable<Integer> cir) {
-        if (!this.vb$isAttackSwing()) return;
+        if (ModChecker.BETTER_COMBAT || !this.vb$isAttackSwing()) return;
 
         // 1.21.11 derives the swing duration from the main-hand item's
         // SwingAnimation component, then applies the normal haste/fatigue
@@ -104,8 +106,10 @@ public abstract class LivingEntityMixin extends Entity implements MobSpearHandle
         // hard-coded base of 6 keeps those status-effect adjustments intact
         // without relying on fragile constant replacement.
         ItemStack heldItem = this.getItemInHand(InteractionHand.MAIN_HAND);
+        SwingAnimation animation = SwingAnimation.get(heldItem);
+        if (animation == null || animation.type() != SwingAnimationType.STAB) return;
         int vanillaAdjustment = cir.getReturnValue() - SwingAnimation.DEFAULT.duration();
-        int duration = SwingAnimation.get(heldItem).duration() + vanillaAdjustment;
+        int duration = animation.duration() + vanillaAdjustment;
         cir.setReturnValue(Math.max(1, duration));
     }
     

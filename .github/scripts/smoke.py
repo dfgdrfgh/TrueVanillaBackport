@@ -23,6 +23,14 @@ mods.mkdir(exist_ok=True)
 jars = list((root / "dist").glob("*.jar"))
 assert len(jars) == 1, jars
 shutil.copy2(jars[0], mods / jars[0].name)
+# Test the external Platform mod next to the assembled backport JAR.
+# CI builds the pinned dependency, but the release JAR never embeds it.
+platform_version = properties["platform_indev_version"]
+platform_file = root / "vendor/platform" / loader / "build/libs" / (
+    f"Platform-{loader}-{version}-{platform_version}.jar"
+)
+assert platform_file.is_file(), f"Missing external Platform mod: {platform_file}"
+shutil.copy2(platform_file, mods / platform_file.name)
 (runtime / "eula.txt").write_text("eula=true\n")
 (runtime / "server.properties").write_text("online-mode=false\nlevel-type=" +
     ("minecraft:normal" if wwoo else "minecraft:flat") +
