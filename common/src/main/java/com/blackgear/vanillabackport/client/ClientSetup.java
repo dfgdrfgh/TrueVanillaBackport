@@ -14,7 +14,6 @@ import com.blackgear.vanillabackport.client.api.modules.bundle_ui.BundleMouseAct
 import com.blackgear.vanillabackport.client.api.bundled_tabs.BundledTabSelector;
 import com.blackgear.vanillabackport.client.api.modules.leaf_litter.DryLeafColorReloadListener;
 import com.blackgear.vanillabackport.client.api.modules.waypoints.ClientWaypointManager;
-import com.blackgear.vanillabackport.client.api.modules.waypoints.LocatorBarRenderer;
 import com.blackgear.vanillabackport.client.api.modules.waypoints.WaypointStyleManager;
 import com.blackgear.vanillabackport.client.integrations.*;
 import com.blackgear.vanillabackport.client.integrations.rendering.ColorRendering;
@@ -42,8 +41,6 @@ public class ClientSetup {
             event.register(ResourceLocation.withDefaultNamespace("waypoint_style_manager"), WaypointStyleManager.INSTANCE);
             event.register(ResourceLocation.withDefaultNamespace("ghast_equipment"), GhastEquipmentManager.INSTANCE);
         });
-        
-        LocatorBarRenderer.bootstrap();
         
         GameRendering.registerParticleFactories(ParticleRendering::factories);
         GameRendering.registerModelLayers(EntityRendering::modelLayers);

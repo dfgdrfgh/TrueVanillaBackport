@@ -1,7 +1,5 @@
 package com.blackgear.vanillabackport.client.api.modules.waypoints;
 
-import com.blackgear.platform.client.event.screen.hud.HudElementRegistryImpl;
-import com.blackgear.platform.client.event.screen.hud.VanillaHudElements;
 import com.blackgear.vanillabackport.common.api.modules.waypoints.TrackedWaypoint;
 import com.blackgear.vanillabackport.common.api.modules.waypoints.TrackedWaypoint.*;
 import com.blackgear.vanillabackport.common.api.modules.waypoints.Waypoint.Icon;
@@ -36,20 +34,6 @@ public class LocatorBarRenderer {
     private static final ResourceLocation LOCATOR_BAR_ARROW_DOWN = ResourceLocation.withDefaultNamespace("hud/locator_bar_arrow_down");
     
     private final Minecraft minecraft = Minecraft.getInstance();
-    
-    public static void bootstrap() {
-        HudElementRegistryImpl.attachElementBefore(
-            VanillaHudElements.EXPERIENCE_LEVEL,
-            ResourceLocation.withDefaultNamespace("locator_bar_background"),
-            LocatorBarRenderer.INSTANCE::renderBackground
-        );
-        
-        HudElementRegistryImpl.attachElementAfter(
-            VanillaHudElements.EXPERIENCE_LEVEL,
-            ResourceLocation.withDefaultNamespace("locator_bar_icons"),
-            LocatorBarRenderer.INSTANCE::renderWaypoints
-        );
-    }
     
     public void renderBackground(GuiGraphics graphics, DeltaTracker tracker) {
         if (this.shouldSkipRendering()) return;
