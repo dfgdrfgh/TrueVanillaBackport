@@ -1,5 +1,7 @@
 package com.blackgear.vanillabackport.common.level.entities.mob.animal.wolf;
 
+import com.blackgear.vanillabackport.common.api.RegistryCompatibility;
+
 import com.blackgear.platform.core.BuiltInCoreRegistry;
 import com.blackgear.platform.core.api.RegistryKey;
 import com.blackgear.vanillabackport.common.api.modules.mob_variant.ClientAsset;
@@ -23,7 +25,7 @@ public class WolfDataVariants {
         ResourceLocation wild = ResourceLocation.withDefaultNamespace("entity/wolf/" + assetId);
         ResourceLocation tame = ResourceLocation.withDefaultNamespace("entity/wolf/" + assetId + "_tame");
         ResourceLocation angry = ResourceLocation.withDefaultNamespace("entity/wolf/" + assetId + "_angry");
-        return REGISTRIES.register(
+        return RegistryCompatibility.register(REGISTRIES, 
             key,
             ignored -> new WolfDataVariant(
                 new WolfDataVariant.AssetInfo(new ClientAsset(wild), new ClientAsset(tame), new ClientAsset(angry)),

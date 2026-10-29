@@ -1,5 +1,7 @@
 package com.blackgear.vanillabackport.common.level.entities.mob.animal.pig;
 
+import com.blackgear.vanillabackport.common.api.RegistryCompatibility;
+
 import com.blackgear.platform.core.BuiltInCoreRegistry;
 import com.blackgear.platform.core.api.RegistryKey;
 import com.blackgear.vanillabackport.common.api.modules.mob_variant.ModelAndTexture;
@@ -33,6 +35,6 @@ public class PigVariants {
 
     private static RegistryKey<PigVariant> register(String key, PigVariant.ModelType type, String assetId, SpawnPrioritySelectors selectors) {
         ResourceLocation path = ResourceLocation.withDefaultNamespace("entity/pig/" + assetId);
-        return REGISTRIES.register(key, ignored -> new PigVariant(new ModelAndTexture<>(type, path), selectors));
+        return RegistryCompatibility.register(REGISTRIES, key, ignored -> new PigVariant(new ModelAndTexture<>(type, path), selectors));
     }
 }
