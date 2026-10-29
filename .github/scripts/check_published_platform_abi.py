@@ -14,7 +14,7 @@ from pathlib import Path
 
 loader = sys.argv[1]
 assert loader in ("fabric", "neoforge"), loader
-release = "1.4.2"
+release = next(line.split("=", 1)[1].strip() for line in Path("gradle.properties").read_text().splitlines() if line.startswith("platform_release_version"))
 minecraft = "1.21.1"
 name = f"Platform-{loader}-{minecraft}-{release}.jar"
 with urllib.request.urlopen("https://api.modrinth.com/v2/project/i6fiqm5y/version", timeout=90) as response:
