@@ -28,7 +28,7 @@ modId = "vanillabackport"
 [[dependencies.vanillabackport]]
     modId = "platform"
     type = "required"
-    versionRange = "[1.4.0.2640.1,)"
+    versionRange = "[1.4.2,)"
     ordering = "NONE"
     side = "BOTH"
 
