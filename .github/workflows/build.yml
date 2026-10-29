@@ -109,6 +109,8 @@ jobs:
         env:
           JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
         run: bash gradlew :common:checkDynamicRecipes --stacktrace
+      - name: Check cow textures and slab loot parity
+        run: python .github/scripts/check_cow_and_slab_parity.py
       - name: Assemble installable mod
         run: python .github/scripts/bundle.py 1.21.1 ${{ matrix.loader }}
       - name: Verify bundled Platform API and minimum compatible version

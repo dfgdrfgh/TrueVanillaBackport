@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:sulfur_spike",
+    {
+      "id": "minecraft:icicle",
+      "required": false
+    }
+  ]
+}
