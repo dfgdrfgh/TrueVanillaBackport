@@ -38,6 +38,9 @@ public class ModBabyTextureRegistry {
 
         if (Platform.isModLoaded("vanillabackport") && VanillaBackportCompat.hasFarmAnimalVariants()) {
             switch (path) {
+                case "textures/entity/cow/temperate_cow.png" -> {
+                    return Constants.vanillaLocation("textures/entity/cow/cow_temperate_baby.png");
+                }
                 case "textures/entity/cow/warm_cow.png" -> {
                     return Constants.vanillaLocation("textures/entity/cow/cow_warm_baby.png");
                 }
