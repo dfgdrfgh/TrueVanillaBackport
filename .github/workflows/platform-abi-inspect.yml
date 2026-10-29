@@ -1,0 +1,39 @@
+name: Inspect published Platform 1.4.2 ABI
+on:
+  workflow_dispatch:
+  push:
+    branches: ["1.21.1"]
+    paths: [".github/workflows/platform-abi-inspect.yml"]
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+      - name: Inspect actual published Fabric and NeoForge Platform classes
+        run: |
+          python - <<'PY'
+          import hashlib, json, subprocess, urllib.request
+          url = "https://api.modrinth.com/v2/project/i6fiqm5y/version"
+          with urllib.request.urlopen(url, timeout=90) as response:
+              versions = json.load(response)
+          for loader in ("fabric", "neoforge"):
+              name = f"Platform-{loader}-1.21.1-1.4.2.jar"
+              files = [file for v in versions if "1.21.1" in v.get("game_versions", []) and loader in v.get("loaders", [])
+                       for file in v["files"] if file["filename"] == name]
+              assert len(files) == 1, f"Expected exactly one {name}; found {len(files)}"
+              with urllib.request.urlopen(files[0]["url"], timeout=90) as response:
+                  data = response.read()
+              assert hashlib.sha512(data).hexdigest() == files[0]["hashes"]["sha512"], name
+              with open(name, "wb") as output:
+                  output.write(data)
+              print(f"\\n=== {name} (sha512 verified) ===", flush=True)
+              for cls in ("com.blackgear.platform.core.BuiltInCoreRegistry", "com.blackgear.platform.core.api.RegistryKey"):
+                  print(f"=== {cls} ===", flush=True)
+                  subprocess.run(["javap", "-p", "-s", "-classpath", name, cls], check=True)
+          PY
