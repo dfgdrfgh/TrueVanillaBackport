@@ -58,6 +58,9 @@ with zipfile.ZipFile(releases[0]) as jar:
             "assets/minecraft/lang/en_us.json"
         ))
         assert "assets/minecraft/models/item/tipped_arrow.json" in names
+        for skin in ("frostbite", "frostbite_baby", "frostbite_outer_layer"):
+            assert f"assets/minecraft/textures/entity/zombie/{skin}.png" in names
+            assert f"assets/minecraft/textures/entity/{skin}.png" not in names
         assert "com/blackgear/vanillabackport/core/fabric/IceCavesCreativeSorting.class" in names
         assert all("ice_door" not in path for path in names)
         lang = json.loads(jar.read("assets/minecraft/lang/en_us.json"))

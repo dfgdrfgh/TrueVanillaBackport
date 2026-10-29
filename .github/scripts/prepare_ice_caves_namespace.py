@@ -18,6 +18,8 @@ for path in sorted(SOURCE.rglob("*.java")):
     content=path.read_text()
     changed=content.replace('method_60655("ice_caves",', 'method_60655("minecraft",')
     changed=changed.replace('"ice_caves:', '"minecraft:')
+    # Match the vanilla 26.4 Frostbite resource-pack texture paths.
+    changed=changed.replace('"textures/entity/frostbite', '"textures/entity/zombie/frostbite')
     if changed != content:
         path.write_text(changed)
 

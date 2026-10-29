@@ -58,6 +58,8 @@ if loader == "fabric":
             # Materialize the data and assets in vanilla's own minecraft namespace.
             if "ice_door" in name:
                 return None, None
+            if name.startswith("assets/ice_caves/textures/entity/frostbite"):
+                name = name.replace("textures/entity/frostbite", "textures/entity/zombie/frostbite", 1)
             for prefix in ("assets/ice_caves/", "data/ice_caves/"):
                 if name.startswith(prefix):
                     name = prefix.split("/")[0] + "/minecraft/" + name[len(prefix):]

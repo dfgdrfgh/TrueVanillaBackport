@@ -39,7 +39,17 @@ public class CowVariantRenderer extends AbstractVariantRenderer<Cow, CowModel<Co
     // the default variant or the original 1.21.1 cow texture/model wins.
     @Override
     public Optional<ResourceLocation> getTexture(Cow cow) {
-        return this.getVariant(cow).map(variant -> this.getTexture(cow, variant));
+        if (ClientCompat.hasQuarkCowTexture(cow)) return Optional.empty();
+        // Old saved cows may have no variant: use the updated temperate skin anyway.
+        return Optional.of(this.getVariant(cow)
+            .map(variant -> variant.modelAndTexture().asset().path())
+            .orElseGet(() -> ResourceLocation.withDefaultNamespace("textures/entity/cow/temperate_cow.png")));
+    }
+
+    @Override
+    public Optional<CowModel<Cow>> getModel(Cow cow) {
+        return super.getModel(cow)
+            .or(() -> Optional.ofNullable(this.modelByVariant.get(CowVariant.ModelType.NORMAL)));
     }
 
     @Override
