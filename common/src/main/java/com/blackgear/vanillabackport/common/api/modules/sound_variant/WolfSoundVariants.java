@@ -1,6 +1,5 @@
 package com.blackgear.vanillabackport.common.api.modules.sound_variant;
 
-import com.blackgear.vanillabackport.common.api.RegistryCompatibility;
 
 import com.blackgear.platform.core.BuiltInCoreRegistry;
 import com.blackgear.platform.core.api.RegistryKey;
@@ -22,7 +21,7 @@ public class WolfSoundVariants {
     public static final RegistryKey<WolfSoundVariant> CUTE = register(SoundSet.CUTE, ModSoundEvents.WOLF_CUTE_AMBIENT.get(), ModSoundEvents.WOLF_CUTE_DEATH.get(), ModSoundEvents.WOLF_CUTE_GROWL.get(), ModSoundEvents.WOLF_CUTE_HURT.get(), ModSoundEvents.WOLF_CUTE_PANT.get(), ModSoundEvents.WOLF_CUTE_WHINE.get());
 
     private static RegistryKey<WolfSoundVariant> register(SoundSet soundSet, SoundEvent ambient, SoundEvent death, SoundEvent growl, SoundEvent hurt, SoundEvent pant, SoundEvent whine) {
-        return RegistryCompatibility.register(REGISTRIES, soundSet.getIdentifier(), ignored -> new WolfSoundVariant(ambient, death, growl, hurt, pant, whine));
+        return REGISTRIES.registerKey(soundSet.getIdentifier(), ignored -> new WolfSoundVariant(ambient, death, growl, hurt, pant, whine));
     }
 
     public enum SoundSet {

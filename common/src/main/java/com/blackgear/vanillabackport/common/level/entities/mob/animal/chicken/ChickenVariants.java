@@ -1,6 +1,5 @@
 package com.blackgear.vanillabackport.common.level.entities.mob.animal.chicken;
 
-import com.blackgear.vanillabackport.common.api.RegistryCompatibility;
 
 import com.blackgear.platform.core.BuiltInCoreRegistry;
 import com.blackgear.platform.core.api.RegistryKey;
@@ -35,6 +34,6 @@ public class ChickenVariants {
     }
 
     private static RegistryKey<ChickenVariant> register(String key, ChickenVariant.ModelType type, ResourceLocation assetId, SpawnPrioritySelectors selectors) {
-        return RegistryCompatibility.register(REGISTRIES, key, ignored -> new ChickenVariant(new ModelAndTexture<>(type, assetId), selectors));
+        return REGISTRIES.registerKey(key, ignored -> new ChickenVariant(new ModelAndTexture<>(type, assetId), selectors));
     }
 }

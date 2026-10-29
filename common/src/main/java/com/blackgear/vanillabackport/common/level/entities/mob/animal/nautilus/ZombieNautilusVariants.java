@@ -1,6 +1,5 @@
 package com.blackgear.vanillabackport.common.level.entities.mob.animal.nautilus;
 
-import com.blackgear.vanillabackport.common.api.RegistryCompatibility;
 
 import com.blackgear.platform.core.BuiltInCoreRegistry;
 import com.blackgear.platform.core.api.RegistryKey;
@@ -31,6 +30,6 @@ public class ZombieNautilusVariants {
 
     private static RegistryKey<ZombieNautilusVariant> register(String key, ZombieNautilusVariant.ModelType type, String identifier, SpawnPrioritySelectors selectors) {
         ResourceLocation texture = ResourceLocation.withDefaultNamespace("entity/nautilus/" + identifier);
-        return RegistryCompatibility.register(REGISTRIES, key, ignored -> new ZombieNautilusVariant(new ModelAndTexture<>(type, texture), selectors));
+        return REGISTRIES.registerKey(key, ignored -> new ZombieNautilusVariant(new ModelAndTexture<>(type, texture), selectors));
     }
 }

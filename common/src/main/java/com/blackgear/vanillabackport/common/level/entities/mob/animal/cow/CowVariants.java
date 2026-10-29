@@ -1,6 +1,5 @@
 package com.blackgear.vanillabackport.common.level.entities.mob.animal.cow;
 
-import com.blackgear.vanillabackport.common.api.RegistryCompatibility;
 
 import com.blackgear.platform.core.BuiltInCoreRegistry;
 import com.blackgear.platform.core.api.RegistryKey;
@@ -35,6 +34,6 @@ public class CowVariants {
 
     private static RegistryKey<CowVariant> register(String key, CowVariant.ModelType type, String assetId, SpawnPrioritySelectors selectors) {
         ResourceLocation path = ResourceLocation.withDefaultNamespace("entity/cow/" + assetId);
-        return RegistryCompatibility.register(REGISTRIES, key, ignored -> new CowVariant(new ModelAndTexture<>(type, path), selectors));
+        return REGISTRIES.registerKey(key, ignored -> new CowVariant(new ModelAndTexture<>(type, path), selectors));
     }
 }

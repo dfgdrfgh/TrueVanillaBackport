@@ -1,6 +1,5 @@
 package com.blackgear.vanillabackport.common.level.entities.mob.animal.frog;
 
-import com.blackgear.vanillabackport.common.api.RegistryCompatibility;
 
 import com.blackgear.platform.core.BuiltInCoreRegistry;
 import com.blackgear.platform.core.api.RegistryKey;
@@ -23,6 +22,6 @@ public class FrogDataVariants {
 
     private static RegistryKey<FrogDataVariant> register(String key, SpawnPrioritySelectors selectors) {
         ResourceLocation texture = ResourceLocation.withDefaultNamespace("entity/frog/" + key + "_frog");
-        return RegistryCompatibility.register(REGISTRIES, key, ignored -> new FrogDataVariant(new ClientAsset(texture), selectors));
+        return REGISTRIES.registerKey(key, ignored -> new FrogDataVariant(new ClientAsset(texture), selectors));
     }
 }

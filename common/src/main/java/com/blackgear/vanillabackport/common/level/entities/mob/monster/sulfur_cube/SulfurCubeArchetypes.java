@@ -1,6 +1,5 @@
 package com.blackgear.vanillabackport.common.level.entities.mob.monster.sulfur_cube;
 
-import com.blackgear.vanillabackport.common.api.RegistryCompatibility;
 
 import com.blackgear.platform.core.BuiltInCoreRegistry;
 import com.blackgear.platform.core.api.RegistryKey;
@@ -173,7 +172,7 @@ public class SulfurCubeArchetypes {
         KnockbackModifiers knockbackModifiers,
         SoundSettings soundSettings
     ) {
-        return RegistryCompatibility.register(REGISTRIES, 
+        return REGISTRIES.registerKey(
             name,
             key ->
             new SulfurCubeArchetype(
