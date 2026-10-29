@@ -126,3 +126,7 @@ runs/
 /libs/
 /vendor/
 /dist/
+
+# Python regression harness caches
+__pycache__/
+*.pyc

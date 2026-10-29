@@ -57,6 +57,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.ConditionalEffect;
+import net.minecraft.world.item.enchantment.EnchantedItemInUse;
+import net.minecraft.world.item.enchantment.effects.EnchantmentLocationBasedEffect;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Blocks;
@@ -84,6 +91,7 @@ public class SulfurCube extends AbstractCubeMob implements Bucketable, Shearable
     private KnockbackModifiers knockbackModifier = DEFAULT_KNOCKBACK_MODIFIERS;
     private SulfurCubeArchetype.SoundSettings soundSettings = SulfurCubeArchetype.DEFAULT_SOUND_SETTINGS;
     private int fuse = -1;
+    private final Set<EnchantmentLocationBasedEffect> activeLocationDependentEffects = new HashSet<>();
     private final List<ContactDamage> contactDamages = new ArrayList<>();
 
     @Nullable private DamageSource pendingKnockbackSource = null;
@@ -328,6 +336,34 @@ public class SulfurCube extends AbstractCubeMob implements Bucketable, Shearable
         super.tick();
     }
 
+    @Override
+    protected void onChangedBlock(ServerLevel level, BlockPos pos) {
+        super.onChangedBlock(level, pos);
+        ItemStack item = this.getContainedBlock();
+        EnchantedItemInUse itemInUse = new EnchantedItemInUse(item, EquipmentSlot.CHEST, this);
+        for (SulfurCubeArchetype archetype : this.matchingArchetypes(item)) {
+            for (ConditionalEffect<EnchantmentLocationBasedEffect> effect : archetype.locationBasedEffects()) {
+                boolean active = this.activeLocationDependentEffects.contains(effect.effect());
+                if (effect.matches(this.locationEffectContext(level, active))) {
+                    effect.effect().onChangedBlock(level, 1, itemInUse, this, this.position(), false);
+                    this.activeLocationDependentEffects.add(effect.effect());
+                } else if (active) {
+                    this.activeLocationDependentEffects.remove(effect.effect());
+                }
+            }
+        }
+    }
+
+    private LootContext locationEffectContext(ServerLevel level, boolean active) {
+        LootParams params = new LootParams.Builder(level)
+            .withParameter(LootContextParams.THIS_ENTITY, this)
+            .withParameter(LootContextParams.ENCHANTMENT_LEVEL, 1)
+            .withParameter(LootContextParams.ORIGIN, this.position())
+            .withParameter(LootContextParams.ENCHANTMENT_ACTIVE, active)
+            .create(LootContextParamSets.ENCHANTED_LOCATION);
+        return new LootContext.Builder(params).create(Optional.empty());
+    }
+
     private void tickFuse() {
         if (this.fuse > 0) {
             this.fuse--;
@@ -447,6 +483,24 @@ public class SulfurCube extends AbstractCubeMob implements Bucketable, Shearable
                     AttributeInstance attribute = this.getAttribute(entry.attribute());
                     if (attribute != null) {
                         attribute.addOrUpdateTransientModifier(entry.modifier());
+                    }
+                }
+            }
+            if (this.level() instanceof ServerLevel level) {
+                EnchantedItemInUse previousUse = new EnchantedItemInUse(previous, EquipmentSlot.CHEST, this);
+                for (EnchantmentLocationBasedEffect effect : this.activeLocationDependentEffects) {
+                    effect.onDeactivated(previousUse, this, this.position(), 1);
+                }
+                this.activeLocationDependentEffects.clear();
+                EnchantedItemInUse currentUse = new EnchantedItemInUse(current, EquipmentSlot.CHEST, this);
+                List<SulfurCubeArchetype> previousArchetypes = this.matchingArchetypes(previous);
+                for (SulfurCubeArchetype archetype : this.matchingArchetypes(current)) {
+                    if (previousArchetypes.contains(archetype)) continue;
+                    for (ConditionalEffect<EnchantmentLocationBasedEffect> effect : archetype.locationBasedEffects()) {
+                        if (effect.matches(this.locationEffectContext(level, false))) {
+                            effect.effect().onChangedBlock(level, 1, currentUse, this, this.position(), true);
+                            this.activeLocationDependentEffects.add(effect.effect());
+                        }
                     }
                 }
             }

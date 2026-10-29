@@ -55,7 +55,10 @@
     "client.waypoints.LocalPlayerMixin",
     "compat.backports.LayerDefinitionsMixin",
     "client.game_patches.RenderSectionMixin",
-    "client.horse_armor.HorseArmorLayerMixin"
+    "client.horse_armor.HorseArmorLayerMixin",
+    "client.explorer_maps.ItemInHandRendererMixin",
+    "client.explorer_maps.ItemFrameRendererMixin",
+    "client.explorer_maps.CartographyTableScreenMixin"
   ],
   "mixins": [
     "common.access.AbstractMinecartAccessor",
@@ -176,7 +179,15 @@
     "compat.jer.BiomeHelperMixin",
     "compat.mousetweaks.MainMixin",
     "common.access.NoiseGeneratorSettingsAccessor",
-    "compat.wwoo.OverworldBiomeBuilderMixin"
+    "compat.wwoo.OverworldBiomeBuilderMixin",
+    "common.explorer_maps.ExplorationMapFunctionMixin",
+    "common.explorer_maps.TreasureMapForEmeraldsMixin",
+    "common.explorer_maps.ItemStackMixin",
+    "common.explorer_maps.MapCloningRecipeMixin",
+    "common.explorer_maps.MapExtendingRecipeMixin",
+    "common.explorer_maps.CartographyTableMenuMixin",
+    "common.explorer_maps.CartographyMapSlotMixin",
+    "common.explorer_maps.ItemFrameMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -21,6 +21,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.component.BundleContents;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.component.MapDecorations;
 
 import java.util.function.Supplier;
 
@@ -357,6 +358,41 @@ public class ModItems {
         () -> ItemRegistry.createSpawnEgg(ModEntityTypes.SULFUR_CUBE, 15528848, 13948048, new Properties()));
     
     // Wilderness Bound
+
+    // Explorer maps are intentionally absent from the vanilla Creative inventory.
+    public static final Supplier<Item> OCEAN_MONUMENT_MAP = REGISTRIES.register("ocean_monument_map",
+        MapItem::new, new Properties().component(DataComponents.MAP_DECORATIONS, MapDecorations.EMPTY));
+    public static final Supplier<Item> WOODLAND_MANSION_MAP = REGISTRIES.register("woodland_mansion_map",
+        MapItem::new, new Properties().component(DataComponents.MAP_DECORATIONS, MapDecorations.EMPTY));
+    public static final Supplier<Item> BURIED_TRIAL_CHAMBERS_MAP = REGISTRIES.register("buried_trial_chambers_map",
+        MapItem::new, new Properties().component(DataComponents.MAP_DECORATIONS, MapDecorations.EMPTY));
+    public static final Supplier<Item> JUNGLE_PYRAMID_MAP = REGISTRIES.register("jungle_pyramid_map",
+        MapItem::new, new Properties().component(DataComponents.MAP_DECORATIONS, MapDecorations.EMPTY));
+    public static final Supplier<Item> SWAMP_HUT_MAP = REGISTRIES.register("swamp_hut_map",
+        MapItem::new, new Properties().component(DataComponents.MAP_DECORATIONS, MapDecorations.EMPTY));
+    public static final Supplier<Item> DESERT_VILLAGE_MAP = REGISTRIES.register("desert_village_map",
+        MapItem::new, new Properties().component(DataComponents.MAP_DECORATIONS, MapDecorations.EMPTY));
+    public static final Supplier<Item> PLAINS_VILLAGE_MAP = REGISTRIES.register("plains_village_map",
+        MapItem::new, new Properties().component(DataComponents.MAP_DECORATIONS, MapDecorations.EMPTY));
+    public static final Supplier<Item> SAVANNA_VILLAGE_MAP = REGISTRIES.register("savanna_village_map",
+        MapItem::new, new Properties().component(DataComponents.MAP_DECORATIONS, MapDecorations.EMPTY));
+    public static final Supplier<Item> SNOWY_VILLAGE_MAP = REGISTRIES.register("snowy_village_map",
+        MapItem::new, new Properties().component(DataComponents.MAP_DECORATIONS, MapDecorations.EMPTY));
+    public static final Supplier<Item> TAIGA_VILLAGE_MAP = REGISTRIES.register("taiga_village_map",
+        MapItem::new, new Properties().component(DataComponents.MAP_DECORATIONS, MapDecorations.EMPTY));
+    public static final Supplier<Item> BURIED_TREASURE_MAP = REGISTRIES.register("buried_treasure_map",
+        MapItem::new, new Properties().component(DataComponents.MAP_DECORATIONS, MapDecorations.EMPTY));
+    public static final Supplier<Item> BURIED_ANCIENT_CITY_MAP = REGISTRIES.register("buried_ancient_city_map",
+        MapItem::new, new Properties().component(DataComponents.MAP_DECORATIONS, MapDecorations.EMPTY));
+    public static final Supplier<Item> BURIED_MINESHAFT_MAP = REGISTRIES.register("buried_mineshaft_map",
+        MapItem::new, new Properties().component(DataComponents.MAP_DECORATIONS, MapDecorations.EMPTY));
+    public static final Supplier<Item> DESERT_PYRAMID_MAP = REGISTRIES.register("desert_pyramid_map",
+        MapItem::new, new Properties().component(DataComponents.MAP_DECORATIONS, MapDecorations.EMPTY));
+    public static final Supplier<Item> ABANDONED_CAMP_MAP = REGISTRIES.register("abandoned_camp_map",
+        MapItem::new, new Properties().component(DataComponents.MAP_DECORATIONS, MapDecorations.EMPTY));
+    public static final Supplier<Item> WARM_OCEAN_RUINS_MAP = REGISTRIES.register("warm_ocean_ruins_map",
+        MapItem::new, new Properties().component(DataComponents.MAP_DECORATIONS, MapDecorations.EMPTY));
+
     
     public static final Supplier<Item> POPLAR_BOAT = REGISTRIES.register("poplar_boat",
         () -> new CustomBoatItem(ModBoatTypes.POPLAR, false, new Properties().stacksTo(1)));

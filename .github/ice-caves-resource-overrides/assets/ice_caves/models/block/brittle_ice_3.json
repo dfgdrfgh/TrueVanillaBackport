@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "ice_caves:block/brittle_ice_3"
+  }
+}

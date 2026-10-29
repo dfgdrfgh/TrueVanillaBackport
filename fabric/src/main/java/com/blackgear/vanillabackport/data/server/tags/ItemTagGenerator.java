@@ -306,7 +306,10 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 
         this.getOrCreateTagBuilder(ModItemTags.SULFUR_CUBE_ARCHETYPE_FAST_SLIDING)
             // Frosty Blocks
-            .add(Items.BLUE_ICE, Items.PACKED_ICE, Items.SNOW_BLOCK);
+            .add(Items.PACKED_ICE, Items.SNOW_BLOCK, ModBlocks.SNOW_BRICKS.get().asItem())
+            .addOptional(net.minecraft.resources.ResourceLocation.withDefaultNamespace("packed_ice_bricks"))
+            .addOptional(net.minecraft.resources.ResourceLocation.withDefaultNamespace("chiseled_packed_ice"));
+        this.getOrCreateTagBuilder(ModItemTags.SULFUR_CUBE_ARCHETYPE_COLD).add(Items.BLUE_ICE);
 
         this.getOrCreateTagBuilder(ModItemTags.SULFUR_CUBE_ARCHETYPE_HIGH_RESISTANCE)
             // Soul Blocks
@@ -365,6 +368,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
             .forceAddTag(ModItemTags.SULFUR_CUBE_ARCHETYPE_HIGH_RESISTANCE)
             .forceAddTag(ModItemTags.SULFUR_CUBE_ARCHETYPE_STICKY)
             .forceAddTag(ModItemTags.SULFUR_CUBE_ARCHETYPE_EXPLOSIVE)
+            .forceAddTag(ModItemTags.SULFUR_CUBE_ARCHETYPE_COLD)
             .forceAddTag(ModItemTags.SULFUR_CUBE_ARCHETYPE_HOT);
     }
 

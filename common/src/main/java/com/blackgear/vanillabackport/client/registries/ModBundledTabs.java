@@ -495,6 +495,19 @@ public class ModBundledTabs {
             .build()
     );
 
+    public static final BundledTabs SNOW = register(
+        BundledTabs.builder()
+            .title(Component.translatable("bundled_tab.snow.title"))
+            .icon(() -> new ItemStack(ModBlocks.SNOW_BRICKS.get()))
+            .displayItems((provider, output) -> {
+                output.accept(ModBlocks.SNOW_BRICKS.get());
+                output.accept(ModBlocks.SNOW_BRICK_STAIRS.get());
+                output.accept(ModBlocks.SNOW_BRICK_SLAB.get());
+                output.accept(ModBlocks.SNOW_BRICK_WALL.get());
+            })
+            .build()
+    );
+
     public static BundledTabs register(BundledTabs builder) {
         FILTERS.add(builder);
         return builder;
