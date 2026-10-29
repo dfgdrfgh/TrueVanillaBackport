@@ -23,14 +23,10 @@ mods.mkdir(exist_ok=True)
 jars = list((root / "dist").glob("*.jar"))
 assert len(jars) == 1, jars
 shutil.copy2(jars[0], mods / jars[0].name)
-# Test the external Platform mod next to the assembled backport JAR.
-# CI builds the pinned dependency, but the release JAR never embeds it.
-platform_version = properties["platform_indev_version"]
-platform_file = root / "vendor/platform" / loader / "build/libs" / (
-    f"Platform-{loader}-{version}-{platform_version}.jar"
-)
-assert platform_file.is_file(), f"Missing external Platform mod: {platform_file}"
-shutil.copy2(platform_file, mods / platform_file.name)
+# Test the external public Platform release instead of the pinned development
+# build used to compile the mod. This catches linkage errors that compilation
+# against a different Platform ABI would miss in users' modpacks.
+published_platform_version = "1.4.2"
 (runtime / "eula.txt").write_text("eula=true\n")
 (runtime / "server.properties").write_text("online-mode=false\nlevel-type=" +
     ("minecraft:normal" if wwoo else "minecraft:flat") +
@@ -41,6 +37,24 @@ def download(url, destination):
     if not destination.exists():
         with urllib.request.urlopen(url, timeout=90) as response, destination.open("wb") as output:
             shutil.copyfileobj(response, output)
+
+# Platform must remain a separate mod: download the published artifact that
+# users install, and verify its SHA-512 before launching the production server.
+platform_filename = f"Platform-{loader}-{version}-{published_platform_version}.jar"
+with urllib.request.urlopen("https://api.modrinth.com/v2/project/i6fiqm5y/version", timeout=90) as response:
+    platform_releases = json.load(response)
+platform_artifact = next((
+    artifact
+    for release in platform_releases
+    if version in release.get("game_versions", []) and loader in release.get("loaders", [])
+    for artifact in release.get("files", [])
+    if artifact["filename"].lower() == platform_filename.lower()
+), None)
+assert platform_artifact, f"Could not locate published external Platform {platform_filename}"
+platform_destination = mods / platform_artifact["filename"]
+download(platform_artifact["url"], platform_destination)
+assert hashlib.sha512(platform_destination.read_bytes()).hexdigest() == platform_artifact["hashes"]["sha512"], platform_destination
+print(f"Testing released external Platform: {platform_destination.name}")
 
 if loader == "fabric":
     fabric_loader = "0.18.5" if wwoo else properties["fabric_loader_version"]
