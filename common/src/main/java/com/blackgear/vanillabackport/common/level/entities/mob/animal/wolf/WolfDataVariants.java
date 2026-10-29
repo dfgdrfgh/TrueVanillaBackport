@@ -25,7 +25,7 @@ public class WolfDataVariants {
         ResourceLocation angry = ResourceLocation.withDefaultNamespace("entity/wolf/" + assetId + "_angry");
         return REGISTRIES.register(
             key,
-            new WolfDataVariant(
+            ignored -> new WolfDataVariant(
                 new WolfDataVariant.AssetInfo(new ClientAsset(wild), new ClientAsset(tame), new ClientAsset(angry)),
                 selectors
             )
