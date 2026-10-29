@@ -123,6 +123,8 @@ jobs:
         run: python .github/scripts/check_packaged_worldgen.py
       - name: Check integrated Tiny Takeover content
         run: python .github/scripts/check_tiny_integration.py ${{ matrix.loader }}
+      - name: Verify binary linkage against published external Platform 1.4.2
+        run: python .github/scripts/check_published_platform_abi.py ${{ matrix.loader }}
       - name: Check production server startup
         env:
           JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
