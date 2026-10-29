@@ -12,10 +12,10 @@ properties = dict((k.strip(), v.strip())
                   for line in (root / "gradle.properties").read_text().splitlines()
                   if "=" in line and not line.lstrip().startswith("#")
                   for k, v in [line.split("=", 1)])
-minimum = properties["platform_indev_version"]
+minimum = properties["platform_release_version"]
 jars = sorted((root / "dist").glob("*.jar"))
 assert len(jars) == 1, jars
-external = root / "vendor/platform" / loader / "build/libs" / f"Platform-{loader}-1.21.1-{minimum}.jar"
+external = root / "libs" / f"Platform-{loader}-1.21.1-{minimum}.jar"
 assert external.is_file(), f"Missing external Platform mod: {external}"
 with zipfile.ZipFile(external) as api:
     assert "com/blackgear/platform/core/BuiltInCoreRegistry.class" in api.namelist()
