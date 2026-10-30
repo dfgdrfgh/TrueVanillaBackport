@@ -30,6 +30,7 @@ public class ModItemTags {
     public static final TagKey<Item> SULFUR_CUBE_ARCHETYPE_HIGH_RESISTANCE = TAGS.register("sulfur_cube_archetype/high_resistance");
     public static final TagKey<Item> SULFUR_CUBE_ARCHETYPE_STICKY = TAGS.register("sulfur_cube_archetype/sticky");
     public static final TagKey<Item> SULFUR_CUBE_ARCHETYPE_EXPLOSIVE = TAGS.register("sulfur_cube_archetype/explosive");
+    public static final TagKey<Item> SULFUR_CUBE_ARCHETYPE_COLD = TAGS.register("sulfur_cube_archetype/cold");
     public static final TagKey<Item> SULFUR_CUBE_ARCHETYPE_HOT = TAGS.register("sulfur_cube_archetype/hot");
 
     public static final TagKey<Item> SULFUR_CUBE_SWALLOWABLE = TAGS.register("sulfur_cube_swallowable");

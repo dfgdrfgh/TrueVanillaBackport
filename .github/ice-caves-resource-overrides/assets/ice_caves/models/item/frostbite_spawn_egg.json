@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "ice_caves:item/frostbite_spawn_egg"
+  }
+}

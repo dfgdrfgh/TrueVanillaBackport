@@ -27,6 +27,21 @@ import java.util.function.Supplier;
 
 public class ModBlocks {
     public static final BlockRegistry REGISTRIES = BlockRegistry.create(VanillaBackport.NAMESPACE);
+
+    // 26.4 Snapshot 6: Snow Bricks use ordinary block behavior (no melting).
+    public static final Supplier<Block> SNOW_BRICKS = REGISTRIES.register("snow_bricks",
+        Properties.of()
+            .mapColor(MapColor.SNOW)
+            .friction(0.6F)
+            .requiresCorrectToolForDrops()
+            .strength(0.6F)
+            .sound(SoundType.SNOW));
+    public static final Supplier<Block> SNOW_BRICK_SLAB = REGISTRIES.register("snow_brick_slab",
+        () -> new SlabBlock(Properties.ofFullCopy(SNOW_BRICKS.get())));
+    public static final Supplier<Block> SNOW_BRICK_STAIRS = REGISTRIES.register("snow_brick_stairs",
+        () -> new StairBlock(SNOW_BRICKS.get().defaultBlockState(), Properties.ofFullCopy(SNOW_BRICKS.get())));
+    public static final Supplier<Block> SNOW_BRICK_WALL = REGISTRIES.register("snow_brick_wall",
+        () -> new WallBlock(Properties.ofFullCopy(SNOW_BRICKS.get()).forceSolidOn()));
     
     // The Garden Awakens
     

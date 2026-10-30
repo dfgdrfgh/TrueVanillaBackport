@@ -9,5 +9,6 @@ public class ModNoises {
     public static final NoiseRegistrar REGISTRIES = NoiseRegistrar.create(VanillaBackport.NAMESPACE);
 
     public static final ResourceKey<NoiseParameters> SULFUR_CAVE_GRADIENT = REGISTRIES.register("sulfur_cave_gradient", -5, 1.0, 0.0, 1.0);
+    public static final ResourceKey<NoiseParameters> ICE_CAVE_GRADIENT = REGISTRIES.register("ice_cave_gradient", -4, 1.0, 0.0, 1.0);
     public static final ResourceKey<NoiseParameters> SMALL_PATCH = REGISTRIES.register("small_patch", -3, 3.0);
 }

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "ice_caves:block/packed_ice_bricks",
+    "side": "ice_caves:block/packed_ice_bricks",
+    "top": "ice_caves:block/packed_ice_bricks"
+  }
+}

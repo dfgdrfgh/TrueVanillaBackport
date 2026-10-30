@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "id": "vanillabackport_parity_tests",
+  "version": "1",
+  "name": "VanillaBackport runtime parity tests",
+  "environment": "server",
+  "entrypoints": {"main": ["com.blackgear.vanillabackport.tests.ParityTestMod"]},
+  "depends": {"fabricloader": ">=0.16.12", "fabric-api": "*", "minecraft": "~1.21.1", "vanillabackport": "*"}
+}

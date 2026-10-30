@@ -37,6 +37,7 @@ assert block.count("Items.LINGERING_POTION, potion") == 2
 
 with zipfile.ZipFile(releases[0]) as jar:
     names = set(jar.namelist())
+    assert not any(n.startswith("com/blackgear/vanillabackport/tests/") for n in names), "CI test mod leaked into release"
     assert "com/blackgear/vanillabackport/client/registries/ModBundledTabs.class" in names
     if loader == "fabric":
         metadata = json.loads(jar.read("fabric.mod.json"))

@@ -38,6 +38,10 @@ public class BlockLootGenerator extends FabricBlockLootTableProvider {
 
     @Override
     public void generate() {
+        this.dropSelf(ModBlocks.SNOW_BRICKS.get());
+        this.dropSelf(ModBlocks.SNOW_BRICK_STAIRS.get());
+        this.dropSelf(ModBlocks.SNOW_BRICK_WALL.get());
+        this.add(ModBlocks.SNOW_BRICK_SLAB.get(), this::createSlabItemTable);
         HolderLookup.RegistryLookup<Enchantment> enchantments = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
         this.dropSelf(ModBlocks.PALE_OAK_PLANKS.get());
         this.dropSelf(ModBlocks.PALE_OAK_SAPLING.get());

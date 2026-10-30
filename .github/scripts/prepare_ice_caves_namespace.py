@@ -5,12 +5,24 @@ Original upstream source remains unchanged for standalone users.
 """
 from pathlib import Path
 import re
+import shutil
 
 ROOT=Path(__file__).resolve().parents[2]
 SOURCE=ROOT / "vendor/ice-caves/src/main/java/org/zerw/net/icecaves"
 MAIN=SOURCE / "IceCavesFabric.java"
 CLIENT=SOURCE / "client/IceCavesFabricClient.java"
 TABS=SOURCE / "registry/ModCreativeTabs.java"
+
+# Reviewed local overrides are applied to the pinned implementation before normalization.
+for path in sorted((ROOT / ".github/ice-caves-overrides").rglob("*.java")):
+    target = SOURCE / path.relative_to(ROOT / ".github/ice-caves-overrides")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(path, target)
+for path in sorted((ROOT / ".github/ice-caves-resource-overrides").rglob("*")):
+    if path.is_file():
+        target = ROOT / "vendor/ice-caves/src/main/resources" / path.relative_to(ROOT / ".github/ice-caves-resource-overrides")
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(path, target)
 
 for path in sorted(SOURCE.rglob("*.java")):
     if path.name.endswith(("_forge.java", "_neoforge.java")) or "forgelike" in path.parts:
@@ -65,3 +77,9 @@ assert "ICE_DOOR_ITEM" not in MAIN.read_text()
 assert "ICE_DOOR" not in CLIENT.read_text()
 assert "iceDoor" not in TABS.read_text()
 print("PASS: minecraft: Ice Caves registry IDs; Ice Door and old creative insertion removed")
+
+# Apply version-specific mechanics after namespace normalization.
+import runpy
+runpy.run_path(str(ROOT / ".github/scripts/prepare_ice_caves_parity.py"), run_name="__main__")
+
+runpy.run_path(str(ROOT / ".github/scripts/prepare_ice_biome.py"), run_name="__main__")

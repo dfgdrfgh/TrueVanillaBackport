@@ -1,6 +1,7 @@
 package com.blackgear.vanillabackport.common.worldgen.surface;
 
 import com.blackgear.vanillabackport.common.registries.worldgen.ModBiomes;
+import com.blackgear.vanillabackport.common.registries.worldgen.IceCavesBiomes;
 import com.blackgear.vanillabackport.common.registries.blocks.ModBlocks;
 import com.blackgear.vanillabackport.common.registries.worldgen.ModNoises;
 import com.blackgear.vanillabackport.common.level.worldgen.surface.SpatialNoiseThresholdConditionSource;
@@ -22,6 +23,14 @@ public class ModSurfaceRuleData {
         SurfaceRules.RuleSource coarse_dirt = makeStateRule(Blocks.COARSE_DIRT);
 
         return SurfaceRules.sequence(
+            SurfaceRules.ifTrue(SurfaceRules.isBiome(IceCavesBiomes.ICE_CAVES),
+                SurfaceRules.sequence(
+                    bedrock("bedrock_floor"),
+                    SurfaceRules.ifTrue(SurfaceRules.abovePreliminarySurface(),
+                        SurfaceRules.sequence(iceCaveBands(), stone)),
+                    iceCaveBands()
+                )
+            ),
             SurfaceRules.ifTrue(
                 SurfaceRules.isBiome(ModBiomes.DAPPLED_FOREST),
                 SurfaceRules.ifTrue(SurfaceRules.noiseCondition(ModNoises.SMALL_PATCH, 1.2F), coarse_dirt)
@@ -39,6 +48,19 @@ public class ModSurfaceRuleData {
         );
     }
 
+    /** Snapshot 26.4-snapshot-6 bands, with first matching inclusive range winning. */
+    public static SurfaceRules.RuleSource iceCaveBands() {
+        SurfaceRules.RuleSource calcite = makeStateRule(Blocks.CALCITE);
+        SurfaceRules.RuleSource packedIce = makeStateRule(Blocks.PACKED_ICE);
+        return SurfaceRules.sequence(
+            SurfaceRules.ifTrue(noiseCondition3d(ModNoises.ICE_CAVE_GRADIENT, -0.6F, -0.5F), calcite),
+            SurfaceRules.ifTrue(noiseCondition3d(ModNoises.ICE_CAVE_GRADIENT, -0.5F, 0.2F), packedIce),
+            SurfaceRules.ifTrue(noiseCondition3d(ModNoises.ICE_CAVE_GRADIENT, 0.2F, 0.3F), calcite),
+            SurfaceRules.ifTrue(noiseCondition3d(ModNoises.ICE_CAVE_GRADIENT, 0.3F, 0.5F), packedIce),
+            SurfaceRules.ifTrue(noiseCondition3d(ModNoises.ICE_CAVE_GRADIENT, 0.5F, 0.7F), calcite)
+        );
+    }
+
     public static SurfaceRules.ConditionSource noiseCondition3d(ResourceKey<NormalNoise.NoiseParameters> noise, double minRange, double maxRange) {
         return new SpatialNoiseThresholdConditionSource(noise, minRange, maxRange);
     }
@@ -52,8 +74,12 @@ public class ModSurfaceRuleData {
     }
     
     private static SurfaceRules.RuleSource bedrock() {
+        return bedrock("bedrock");
+    }
+
+    private static SurfaceRules.RuleSource bedrock(String randomName) {
         SurfaceRules.RuleSource bedrock = SurfaceRules.state(Blocks.BEDROCK.defaultBlockState());
-        SurfaceRules.ConditionSource bedrockCondition = SurfaceRules.verticalGradient("bedrock", VerticalAnchor.bottom(), VerticalAnchor.aboveBottom(5));
+        SurfaceRules.ConditionSource bedrockCondition = SurfaceRules.verticalGradient(randomName, VerticalAnchor.bottom(), VerticalAnchor.aboveBottom(5));
         return SurfaceRules.ifTrue(bedrockCondition, bedrock);
     }
     

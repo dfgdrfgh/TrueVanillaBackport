@@ -25,6 +25,13 @@ public class BiomeTagGenerator extends FabricTagProvider<Biome> {
         this.addFeaturePlacementTags(provider);
         this.addStructureTags(provider);
         this.addBiomeConventionalTags(provider);
+        // Ice Caves are Fabric-only; optional entries keep the shared data valid on NeoForge.
+        for (String name : java.util.List.of("has_structure/mineshaft", "has_structure/ruined_portal_standard", "has_structure/trial_chambers", "is_cave", "is_overworld", "spawns_cold_variant_farm_animals", "spawns_cold_variant_frogs", "spawns_cold_variants_underground", "spawns_snow_foxes", "spawns_white_rabbits", "stronghold_biased_to")) {
+            this.getOrCreateTagBuilder(net.minecraft.tags.TagKey.create(Registries.BIOME,
+                net.minecraft.resources.ResourceLocation.withDefaultNamespace(name)))
+                .addOptional(net.minecraft.resources.ResourceLocation.withDefaultNamespace("ice_caves"));
+        }
+
 
         this.getOrCreateTagBuilder(BiomeTags.IS_FOREST)
             .add(ModBiomes.PALE_GARDEN)

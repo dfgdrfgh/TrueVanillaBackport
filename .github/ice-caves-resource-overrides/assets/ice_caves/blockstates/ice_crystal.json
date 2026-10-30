@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "ice_caves:block/ice_crystal",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "ice_caves:block/ice_crystal",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "ice_caves:block/ice_crystal",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "ice_caves:block/ice_crystal",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "ice_caves:block/ice_crystal"
+    },
+    "facing=west": {
+      "model": "ice_caves:block/ice_crystal",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

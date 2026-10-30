@@ -282,13 +282,6 @@ public class ModBundledTabs {
                 output.accept(ModItems.NAUTILUS_SPAWN_EGG.get());
                 output.accept(ModItems.PARCHED_SPAWN_EGG.get());
                 output.accept(ModItems.ZOMBIE_NAUTILUS_SPAWN_EGG.get());
-                
-                provider.lookup(Registries.ENCHANTMENT).ifPresent(enchantments -> {
-                    enchantments.listElements()
-                        .filter(holder -> holder.is(ModEnchantments.LUNGE))
-                        .flatMap(reference -> IntStream.rangeClosed(reference.value().getMinLevel(), reference.value().getMaxLevel()).mapToObj(level -> EnchantedBookItem.createForEnchantment(new EnchantmentInstance(reference, level))))
-                        .forEach(output::accept);
-                });
             })
             .build()
     );
@@ -498,6 +491,19 @@ public class ModBundledTabs {
                     freezing.ifPresent(potion -> output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(Items.TIPPED_ARROW, potion)));
                     longFreezing.ifPresent(potion -> output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(Items.TIPPED_ARROW, potion)));
                 });
+            })
+            .build()
+    );
+
+    public static final BundledTabs SNOW = register(
+        BundledTabs.builder()
+            .title(Component.translatable("bundled_tab.snow.title"))
+            .icon(() -> new ItemStack(ModBlocks.SNOW_BRICKS.get()))
+            .displayItems((provider, output) -> {
+                output.accept(ModBlocks.SNOW_BRICKS.get());
+                output.accept(ModBlocks.SNOW_BRICK_STAIRS.get());
+                output.accept(ModBlocks.SNOW_BRICK_SLAB.get());
+                output.accept(ModBlocks.SNOW_BRICK_WALL.get());
             })
             .build()
     );

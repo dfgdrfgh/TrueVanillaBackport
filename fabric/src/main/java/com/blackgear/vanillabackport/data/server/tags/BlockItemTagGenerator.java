@@ -70,6 +70,7 @@ public abstract class BlockItemTagGenerator {
 
         this.tag(BlockTags.SLABS, ItemTags.SLABS)
             .add(
+                ModBlocks.SNOW_BRICK_SLAB.get(),
                 ModBlocks.RESIN_BRICK_SLAB.get(),
                 ModBlocks.CINNABAR_SLAB.get(),
                 ModBlocks.POLISHED_CINNABAR_SLAB.get(),
@@ -82,6 +83,7 @@ public abstract class BlockItemTagGenerator {
 
         this.tag(BlockTags.WALLS, ItemTags.WALLS)
             .add(
+                ModBlocks.SNOW_BRICK_WALL.get(),
                 ModBlocks.RESIN_BRICK_WALL.get(),
                 ModBlocks.CINNABAR_WALL.get(),
                 ModBlocks.POLISHED_CINNABAR_WALL.get(),
@@ -93,6 +95,7 @@ public abstract class BlockItemTagGenerator {
 
         this.tag(BlockTags.STAIRS, ItemTags.STAIRS)
             .add(
+                ModBlocks.SNOW_BRICK_STAIRS.get(),
                 ModBlocks.RESIN_BRICK_STAIRS.get(),
                 ModBlocks.CINNABAR_STAIRS.get(),
                 ModBlocks.POLISHED_CINNABAR_STAIRS.get(),

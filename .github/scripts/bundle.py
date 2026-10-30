@@ -29,7 +29,10 @@ def merge_tag(previous, incoming, name):
         raise RuntimeError(f"Conflicting replacement tag cannot be safely merged: {name}")
     if not isinstance(left.get("values"), list) or not isinstance(right.get("values"), list):
         raise RuntimeError(f"Unsupported tag merge: {name}")
-    left["values"] = list(dict.fromkeys(left["values"] + right["values"]))
+    # Registry tags may contain optional {id, required} entries as well as strings.
+    for value in right["values"]:
+        if value not in left["values"]:
+            left["values"].append(value)
     left["replace"] = False
     return (json.dumps(left, indent=2) + "\n").encode()
 
@@ -94,6 +97,10 @@ if loader == "fabric":
             if name is None:
                 continue
             if name in data:
+                # Both modules carry the official jukebox textures. Collapse exact
+                # duplicates; a differing asset must still fail for review below.
+                if data[name] == content:
+                    continue
                 if name.startswith("data/") and "/tags/" in name and name.endswith(".json"):
                     data[name] = merge_tag(data[name], content, name)
                     continue

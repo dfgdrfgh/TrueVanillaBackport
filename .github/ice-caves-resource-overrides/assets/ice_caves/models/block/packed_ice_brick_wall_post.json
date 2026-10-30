@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_wall_post",
+  "textures": {
+    "wall": "ice_caves:block/packed_ice_bricks"
+  }
+}

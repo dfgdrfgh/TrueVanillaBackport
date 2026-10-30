@@ -18,6 +18,11 @@ public class LangGenerator extends FabricLanguageProvider {
 
     @Override
     public void generateTranslations(HolderLookup.Provider provider, TranslationBuilder builder) {
+        builder.add(ModBlocks.SNOW_BRICKS.get(), "Snow Bricks");
+        builder.add(ModBlocks.SNOW_BRICK_STAIRS.get(), "Snow Brick Stairs");
+        builder.add(ModBlocks.SNOW_BRICK_SLAB.get(), "Snow Brick Slab");
+        builder.add(ModBlocks.SNOW_BRICK_WALL.get(), "Snow Brick Wall");
+        builder.add("bundled_tab.snow.title", "Snow");
         // THE GARDEN AWAKENS
 
         // Biomes
@@ -662,6 +667,22 @@ public class LangGenerator extends FabricLanguageProvider {
         builder.add("subtitles.block.poplar_leaves.ambient", "Leaves rustling");
         builder.add("subtitles.block.shelf_mushroom.bounce", "Something bounces on a Shelf Mushroom");
         
+        builder.add("item.minecraft.ocean_monument_map", "Ocean Monument Map");
+        builder.add("item.minecraft.woodland_mansion_map", "Woodland Mansion Map");
+        builder.add("item.minecraft.buried_trial_chambers_map", "Buried Trial Chambers Map");
+        builder.add("item.minecraft.jungle_pyramid_map", "Jungle Pyramid Map");
+        builder.add("item.minecraft.swamp_hut_map", "Swamp Hut Map");
+        builder.add("item.minecraft.desert_village_map", "Desert Village Map");
+        builder.add("item.minecraft.plains_village_map", "Plains Village Map");
+        builder.add("item.minecraft.savanna_village_map", "Savanna Village Map");
+        builder.add("item.minecraft.snowy_village_map", "Snowy Village Map");
+        builder.add("item.minecraft.taiga_village_map", "Taiga Village Map");
+        builder.add("item.minecraft.buried_treasure_map", "Buried Treasure Map");
+        builder.add("item.minecraft.buried_ancient_city_map", "Buried Ancient City Map");
+        builder.add("item.minecraft.buried_mineshaft_map", "Buried Mineshaft Map");
+        builder.add("item.minecraft.desert_pyramid_map", "Desert Pyramid Map");
+        builder.add("item.minecraft.abandoned_camp_map", "Abandoned Camp Map");
+        builder.add("item.minecraft.warm_ocean_ruins_map", "Warm Ocean Ruins Map");
         builder.add("filled_map.bamboo_camp_map", "Bamboo Camp Map");
         builder.add("filled_map.bamboo_jungle_abandoned_camp", "Bamboo Jungle Abandoned Camp Map");
         builder.add("filled_map.birch_forest_abandoned_camp", "Birch Forest Abandoned Camp Map");

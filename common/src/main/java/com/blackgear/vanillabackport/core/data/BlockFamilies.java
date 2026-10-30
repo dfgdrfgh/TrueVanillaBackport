@@ -14,6 +14,12 @@ import java.util.stream.Stream;
 public class BlockFamilies {
     private static final Map<Block, BlockFamily> MAP = Maps.newHashMap();
 
+    public static final BlockFamily SNOW_BRICKS = familyBuilder(ModBlocks.SNOW_BRICKS.get())
+        .stairs(ModBlocks.SNOW_BRICK_STAIRS.get())
+        .slab(ModBlocks.SNOW_BRICK_SLAB.get())
+        .wall(ModBlocks.SNOW_BRICK_WALL.get())
+        .getFamily();
+
     public static final BlockFamily PALE_OAK_PLANKS = familyBuilder(ModBlocks.PALE_OAK_PLANKS.get())
         .button(ModBlocks.PALE_OAK_BUTTON.get())
         .fence(ModBlocks.PALE_OAK_FENCE.get())

@@ -66,6 +66,10 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
             .add(ModBlocks.CREAKING_HEART.get())
             .addTag(ModBlockTags.WOODEN_SHELVES);
 
+        this.getOrCreateTagBuilder(BlockTags.MINEABLE_WITH_SHOVEL)
+            .add(ModBlocks.SNOW_BRICKS.get(), ModBlocks.SNOW_BRICK_SLAB.get(),
+                ModBlocks.SNOW_BRICK_STAIRS.get(), ModBlocks.SNOW_BRICK_WALL.get());
+
         this.getOrCreateTagBuilder(BlockTags.MINEABLE_WITH_HOE)
             .add(
                 ModBlocks.PALE_OAK_LEAVES.get(),

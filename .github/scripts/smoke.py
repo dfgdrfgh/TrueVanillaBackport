@@ -13,16 +13,20 @@ from pathlib import Path
 
 loader = sys.argv[1]
 wwoo = len(sys.argv) > 2 and sys.argv[2] == "wwoo"
+parity = len(sys.argv) > 2 and sys.argv[2] == "parity"
+assert not parity or loader == "fabric"
 root = Path.cwd()
 properties = dict(re.findall(r"^([\w_]+)\s*=\s*(.*?)\s*$", (root / "gradle.properties").read_text(), re.M))
 version = properties["minecraft_version"]
-runtime = root / "build" / ("wwoo-smoke" if wwoo else "production-smoke")
+runtime = root / "build" / ("parity-smoke" if parity else "wwoo-smoke" if wwoo else "production-smoke")
 runtime.mkdir(parents=True, exist_ok=True)
 mods = runtime / "mods"
 mods.mkdir(exist_ok=True)
 jars = list((root / "dist").glob("*.jar"))
 assert len(jars) == 1, jars
 shutil.copy2(jars[0], mods / jars[0].name)
+if parity:
+    shutil.copy2(root / "fabric/build/test-mods/vanillabackport-parity-tests.jar", mods / "vanillabackport-parity-tests.jar")
 # Run with the exact SHA-512-verified published Platform binary used to compile.
 published_platform_version = properties["platform_release_version"]
 (runtime / "eula.txt").write_text("eula=true\n")
@@ -74,7 +78,7 @@ if wwoo:
         download(artifact["url"], destination)
         assert hashlib.sha512(destination.read_bytes()).hexdigest() == artifact["hashes"]["sha512"], destination
 
-log = root / ("smoke-wwoo-server.log" if wwoo else "smoke-server.log")
+log = root / ("smoke-parity-server.log" if parity else "smoke-wwoo-server.log" if wwoo else "smoke-server.log")
 passed = False
 with log.open("w") as output:
     process = subprocess.Popen(command, cwd=runtime, stdin=subprocess.PIPE, stdout=output,
@@ -103,21 +107,21 @@ with log.open("w") as output:
                 if wwoo and not locate_sent:
                     if "WWOO compatibility: using native Pale Garden plateau placement" not in content:
                         raise RuntimeError("Pre-sync WWOO Pale Garden plateau placement was not activated")
-                    for name, y in [("pale_garden", 80), ("dappled_forest", 80), ("sulfur_caves", -40)]:
+                    for name, y in [("pale_garden", 80), ("dappled_forest", 80), ("sulfur_caves", -40)] + ([("ice_caves", -20)] if loader == "fabric" else []):
                         process.stdin.write(f"execute positioned 0 {y} 0 run locate biome minecraft:{name}\n".encode())
                     process.stdin.flush()
                     locate_sent = True
                 if wwoo and ("Could not find a biome" in content or "Unknown biome" in content):
                     raise RuntimeError("A required backported biome was not found in the seeded WWOO normal world")
                 located = not wwoo or all(re.search(r"nearest .*" + name + r".* is at", content)
-                    for name in ("pale_garden", "dappled_forest", "sulfur_caves"))
+                    for name in (("pale_garden", "dappled_forest", "sulfur_caves", "ice_caves") if loader == "fabric" else ("pale_garden", "dappled_forest", "sulfur_caves")))
                 content_registered = "Changed the block at" in content and "Summoned new Cow" in content
                 if not wwoo and content_registered and not reload_sent:
                     process.stdin.write(b"reload\n")
                     process.stdin.flush()
                     reload_sent = True
                 reload_checked = wwoo or len(re.findall(r"Loaded \d+ recipes", content)) >= 2
-                if time.monotonic() - ready >= 5 and located and content_registered and reload_checked:
+                if time.monotonic() - ready >= 5 and located and content_registered and reload_checked and (not parity or "TVB_PARITY_RUNTIME_OK:" in content):
                     passed = True
                     break
             time.sleep(1)

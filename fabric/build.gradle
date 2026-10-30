@@ -86,3 +86,21 @@ remapJar {
     injectAccessWidener = true
     inputFile.set shadowJar.archiveFile
 }
+// A separate CI-only mod exercises the transformed production implementation.
+sourceSets {
+    parityTest {
+        compileClasspath += sourceSets.main.compileClasspath + sourceSets.main.output
+        runtimeClasspath += output + compileClasspath
+    }
+}
+tasks.register('parityTestJar', Jar) {
+    from sourceSets.parityTest.output
+    archiveFileName = 'vanillabackport-parity-tests-dev.jar'
+    destinationDirectory = layout.buildDirectory.dir('test-mods')
+}
+tasks.register('remapParityTestJar', net.fabricmc.loom.task.RemapJarTask) {
+    dependsOn tasks.named('parityTestJar')
+    inputFile.set(tasks.named('parityTestJar', Jar).flatMap { it.archiveFile })
+    archiveFileName = 'vanillabackport-parity-tests.jar'
+    destinationDirectory = layout.buildDirectory.dir('test-mods')
+}

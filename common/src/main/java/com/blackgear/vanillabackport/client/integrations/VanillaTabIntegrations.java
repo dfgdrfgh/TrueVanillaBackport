@@ -12,6 +12,10 @@ import java.util.function.Supplier;
 
 public class VanillaTabIntegrations {
     public static void bootstrap(Event event) {
+        // Snapshot 6 orders the Snow Bricks family immediately before Sea Lantern.
+        event.register(VanillaTabs.BUILDING_BLOCKS, (flags, output, operator) ->
+            output.before(Items.SEA_LANTERN).add(ModBlocks.SNOW_BRICKS.get(),
+                ModBlocks.SNOW_BRICK_STAIRS.get(), ModBlocks.SNOW_BRICK_SLAB.get(), ModBlocks.SNOW_BRICK_WALL.get()));
         registerBundlesOfBravery(event);
         registerTheGardenAwakens(event);
         registerSpringToLife(event);
