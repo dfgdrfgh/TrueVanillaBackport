@@ -45,7 +45,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.MapDecorations;
 import net.minecraft.core.component.DataComponents;
 public class ModItems {
-    public record Entry(Item value) { public Item get() { return value; } }
+    public record Entry(Item value) implements java.util.function.Supplier<Item> { public Item get() { return value; } }
     private static Entry register(String id) {
         return new Entry(Registry.register(BuiltInRegistries.ITEM, ResourceLocation.withDefaultNamespace(id),
             new MapItem(new Item.Properties().component(DataComponents.MAP_DECORATIONS, MapDecorations.EMPTY))));
