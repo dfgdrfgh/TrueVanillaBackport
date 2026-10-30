@@ -19,7 +19,7 @@ source = root / "common/src/main/java/com/blackgear/vanillabackport"
 textures = {'ocean_monument_map': '946e97c6f590eea1108bafb485eddf5165de9d04c739710de784f92cf84c8d9b', 'woodland_mansion_map': 'c8df872f0397ce803a1efec05e509aed98ee2bced2bd3e51436afe6d8fe2aca0', 'buried_trial_chambers_map': '47c5866edff73625a8ae1a47145a4a4ed678bf8d55d085d410130394ca802cbd', 'jungle_pyramid_map': '4b798b8d5ce96e0e013947dda1cff874e2930486dbeff8196e7a2b5fd7c3f064', 'swamp_hut_map': '22e9677eff901911bd67444610eeaf5b23137c16a0befe2925989a4d6fe09708', 'desert_village_map': 'a2d9211194bc6c803aa842c385f8b48fd026c461a47358eb9f2530440b4e9324', 'plains_village_map': 'dd210e0c15a635feb48281e018da402558b79dd4e405815739b1c67fb7f03c45', 'savanna_village_map': '0da470ef4dec00249874738b873ff5c5b613f5e1bd33e9c17070ba5baeb7b58b', 'snowy_village_map': '00262a964489a06db90eab455717a30c71bc2b7fb1585dc7f682c19fe10d8edb', 'taiga_village_map': 'b02c61345fdc72482c0e3a273e28827d1feeb9fcff34a2ccc0443978c3c174e3', 'buried_treasure_map': 'd732fc827a285cb84065332b32000cf53a5dd0d279f74947c4bf243d6908f2eb', 'buried_ancient_city_map': 'b3b0c921ce5f9e956bfe3d9c81d525d182b1b7d749402ed832fbed10b5cc3a61', 'buried_mineshaft_map': 'f202cf37c8237804bd04a3abe965302c61a40fe60cbfc2ba7add83ba92e6b833', 'desert_pyramid_map': '67a16df4ee39568647adf79ab3247b8d2f1cc7e48e0fdd6d8301de929d642bba', 'abandoned_camp_map': 'f1fdebb2a83fa2868db187bb1782dbd0349b51e6a1e498955e30be88036df1ed', 'warm_ocean_ruins_map': 'dbd4e4dcccd5d4949a70121ae42167c1ee0747b79f3f5b1430ad82cedfefbce2'}
 registrations = (source / "common/registries/items/ModItems.java").read_text()
 for name, digest in textures.items():
-    assert re.search(r'REGISTRIES.register\("' + name + r'",\s*MapItem::new, new Properties\(\).component\(DataComponents.MAP_DECORATIONS, MapDecorations.EMPTY\)\)', registrations), name
+    assert re.search(r'REGISTRIES.register\("' + name + r'",\s*MapItem::new, new Properties\(\).component\(DataComponents.MAP_DECORATIONS, MapDecorations.EMPTY\).component\(DataComponents.MAP_COLOR, MapItemColor.DEFAULT\)\)', registrations), name
     assets = root / "common/src/main/resources/assets/minecraft"
     assert hashlib.sha256((assets / f"textures/item/{name}.png").read_bytes()).hexdigest() == digest, name
     assert json.loads((assets / f"models/item/{name}.json").read_text()) == {
@@ -43,12 +43,13 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.MapDecorations;
+import net.minecraft.world.item.component.MapItemColor;
 import net.minecraft.core.component.DataComponents;
 public class ModItems {
     public record Entry(Item value) implements java.util.function.Supplier<Item> { public Item get() { return value; } }
     private static Entry register(String id) {
         return new Entry(Registry.register(BuiltInRegistries.ITEM, ResourceLocation.withDefaultNamespace(id),
-            new MapItem(new Item.Properties().component(DataComponents.MAP_DECORATIONS, MapDecorations.EMPTY))));
+            new MapItem(new Item.Properties().component(DataComponents.MAP_DECORATIONS, MapDecorations.EMPTY).component(DataComponents.MAP_COLOR, MapItemColor.DEFAULT))));
     }
     %s
 }
@@ -116,7 +117,10 @@ public class ExplorerMapRegression {
             require(converted.is(BuiltInRegistries.ITEM.get(id(pair.getValue()))), "Wrong item for " + pair);
             require(converted.getItem() instanceof MapItem, "Lost map behavior");
             require(converted.getCount() == 3 && new MapId(77).equals(converted.get(DataComponents.MAP_ID)), "Lost count/map ID");
-            require(original.getComponents().equals(converted.getComponents()), "Lost component data");
+            require(original.getComponents().keySet().equals(converted.getComponents().keySet()), "Lost component keys");
+            for (var component : original.getComponents()) {
+                require(Objects.equals(component.value(), converted.get(component.type())), "Lost component value: " + component.type());
+            }
             require(original.is(Items.FILLED_MAP), "Mutated source stack");
             require(ExplorerMaps.convert(converted) == converted, "Migration is not idempotent");
         }

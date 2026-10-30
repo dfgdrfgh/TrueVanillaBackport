@@ -187,7 +187,8 @@
     "common.explorer_maps.MapExtendingRecipeMixin",
     "common.explorer_maps.CartographyTableMenuMixin",
     "common.explorer_maps.CartographyMapSlotMixin",
-    "common.explorer_maps.ItemFrameMixin"
+    "common.explorer_maps.ItemFrameMixin",
+    "common.explorer_maps.MapItemSavedDataMixin"
   ],
   "injectors": {
     "defaultRequire": 1

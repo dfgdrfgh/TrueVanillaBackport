@@ -13,6 +13,7 @@ import net.minecraft.class_2680;
 import net.minecraft.class_2960;
 import net.minecraft.class_3730;
 import net.minecraft.class_5425;
+import net.minecraft.class_5321;
 import net.minecraft.class_5819;
 import net.minecraft.class_6862;
 import net.minecraft.class_7923;
@@ -25,6 +26,10 @@ import org.zerw.net.icecaves.registry.ModEntities;
 public final class IceCaveSpawnControl {
     public static final class_6862<class_1959> HAS_ICE_CAVES = class_6862.method_40092(
         class_7924.field_41236, class_2960.method_60655("ice_caves", "has_ice_caves"));
+    private static final class_5321<class_1959> ICE_CAVES = class_5321.method_29179(
+        class_7924.field_41236, class_2960.method_60655("minecraft", "ice_caves"));
+    public static final class_6862<class_1959> FROSTBITE_SURFACE_BIOMES = class_6862.method_40092(
+        class_7924.field_41236, class_2960.method_60655("minecraft", "spawns_frostbite_surface"));
     private static final int[][] DIRECTIONS = {{1,0,0},{-1,0,0},{0,1,0},{0,-1,0},{0,0,1},{0,0,-1}};
     private IceCaveSpawnControl() {}
 
@@ -70,13 +75,19 @@ public final class IceCaveSpawnControl {
         // Skip powder snow above the entity as vanilla does for surface strays.
         class_2338 skyPos = pos.method_10084();
         while (level.method_8320(skyPos).method_27852(class_2246.field_27879)) skyPos = skyPos.method_10084();
-        return level.method_8311(skyPos.method_10074()) || isIceCaveInterior(level, pos);
+        return level.method_23753(pos).method_40220(FROSTBITE_SURFACE_BIOMES)
+            && level.method_8311(skyPos.method_10074()) || isIceCaveInterior(level, pos);
+    }
+
+    public static boolean isTrueIceCaves(class_1936 level, class_2338 pos) {
+        return level.method_23753(pos).method_40225(ICE_CAVES);
     }
 
     private static boolean isIceCaveInterior(class_1936 level, class_2338 pos) {
+        if (isTrueIceCaves(level, pos)) return true;
         if (!level.method_23753(pos).method_40220(HAS_ICE_CAVES) || level.method_8311(pos)) return false;
-        // A surface-biome tag alone cannot identify a cave. Until this decorator
-        // becomes a true biome, use its distinctive decorations or a mixed wall
+        // A surface-biome tag alone cannot identify a legacy decorated cave.
+        // Retain existing caves only with distinctive decorations or a mixed wall
         // of packed ice and calcite. Ordinary snow, stone, and ice never qualify.
         int packedIce = 0, calcite = 0;
         class_2248 crystal = ModBlocks.iceCrystal();

@@ -81,3 +81,5 @@ print("PASS: minecraft: Ice Caves registry IDs; Ice Door and old creative insert
 # Apply version-specific mechanics after namespace normalization.
 import runpy
 runpy.run_path(str(ROOT / ".github/scripts/prepare_ice_caves_parity.py"), run_name="__main__")
+
+runpy.run_path(str(ROOT / ".github/scripts/prepare_ice_biome.py"), run_name="__main__")

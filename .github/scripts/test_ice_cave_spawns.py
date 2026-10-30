@@ -17,13 +17,14 @@ fixtures={
 'net.minecraft.class_1299':'''public class class_1299<T> {public final String id;public class_1299(String id){this.id=id;}public static final class_1299<class_1308> field_6098=new class_1299<>("stray");}''',
 'net.minecraft.class_1959':'public class class_1959 {}',
 'net.minecraft.class_2960':'public record class_2960(String id){public static class_2960 method_60655(String ns,String p){return new class_2960(ns+":"+p);}}',
+'net.minecraft.class_5321':'public class class_5321<T>{public static <T>class_5321<T> method_29179(Object r,class_2960 id){return new class_5321<>();}}',
 'net.minecraft.class_6862':'public class class_6862<T>{public static <T>class_6862<T> method_40092(Object r,class_2960 id){return new class_6862<>();}}',
 'net.minecraft.class_7924':'public class class_7924{public static Object field_41236=new Object();}',
 'net.minecraft.class_7923':'''public class class_7923{public static final class_7923 field_41177=new class_7923();public class_2960 method_10221(class_1299<?> t){return new class_2960(t.id);}}''',
 'net.minecraft.class_3730':'public enum class_3730{field_16459,field_16472,SPAWNER,CONVERSION,COMMAND,field_16463,field_16527,field_16474}',
 'net.minecraft.class_5819':'public class class_5819 {}',
 'net.minecraft.class_1936':'''public class class_1936{
- public boolean sky=false,tag=true,floor=true,monsterRules=true;public int marker=0;
+ public boolean sky=false,tag=true,surface=true,trueBiome=false,floor=true,monsterRules=true;public int marker=0;
  public class_2680 method_8320(class_2338 p){
   if(p.y()==9)return new class_2680(floor?class_2246.STONE:class_2246.field_10124);
   if(marker==1&&p.x()==1&&p.y()==10)return new class_2680(org.zerw.net.icecaves.registry.ModBlocks.CRYSTAL);
@@ -32,7 +33,7 @@ fixtures={
   return new class_2680(class_2246.field_10124);
  }
  public boolean method_8311(class_2338 p){return sky;}public boolean method_22340(class_2338 p){return true;}
- public Holder method_23753(class_2338 p){return new Holder(tag);}public record Holder(boolean tag){public boolean method_40220(Object t){return tag;}}
+ public Holder method_23753(class_2338 p){return new Holder(tag,surface,trueBiome);}public record Holder(boolean tag,boolean surface,boolean trueBiome){public boolean method_40220(Object t){return t==org.zerw.net.icecaves.worldgen.IceCaveSpawnControl.FROSTBITE_SURFACE_BIOMES?surface:tag;}public boolean method_40225(Object k){return trueBiome;}}
 }''',
 'net.minecraft.class_5425':'public class class_5425 extends class_1936 {}',
 'net.minecraft.class_1588':'''public class class_1588{public static boolean method_20680(class_1299<?> t,class_5425 l,class_3730 r,class_2338 p,class_5819 random){return l.monsterRules;}}''',
@@ -51,7 +52,11 @@ public class SpawnTest{
   check(IceCaveSpawnControl.shouldBlockMonsterType(frost,l,p,natural),"ordinary cold caves reject frostbites");
   check(!IceCaveSpawnControl.checkFrostbiteSpawnRules(frost,l,natural,p,r),"registration predicate rejects ordinary cave");
   l.sky=true;check(IceCaveSpawnControl.checkFrostbiteSpawnRules(frost,l,natural,p,r),"cold surface permits frostbite");
-  l.sky=false;
+  l.surface=false;check(!IceCaveSpawnControl.checkFrostbiteSpawnRules(frost,l,natural,p,r),"unlisted surface biome rejects frostbite even with sky");l.surface=true;
+  l.sky=false;l.trueBiome=true;l.tag=false;
+  check(IceCaveSpawnControl.checkFrostbiteSpawnRules(frost,l,natural,p,r),"true ice caves do not require legacy tag or decorations");
+  check(IceCaveSpawnControl.shouldAllowCaveStraySpawn(class_1299.field_6098,l,p,natural,r),"true ice caves permit stray without decorations");
+  l.trueBiome=false;l.tag=true;
   for(int marker=1;marker<=2;marker++){
    l.marker=marker;
    check(IceCaveSpawnControl.checkFrostbiteSpawnRules(frost,l,natural,p,r),"decorated cave permits frostbite");

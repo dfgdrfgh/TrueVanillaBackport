@@ -80,6 +80,9 @@ public class CommonConfig {
     public final ConfigBuilder.ConfigValue<Boolean> doMerchantTradeChaosCubedContents;
     public final ConfigBuilder.ConfigValue<Boolean> hasBounceMusicDisc;
     
+    // Ice Caves
+    public final ConfigBuilder.ConfigValue<Boolean> hasIceCaves;
+
     // Wilderness Bound
     public final ConfigBuilder.ConfigValue<Boolean> hasDappledForest;
 
@@ -228,6 +231,11 @@ public class CommonConfig {
                 .define("has_bounce_music_disc", true);
         builder.pop();
         
+        builder.push("Ice Caves");
+        this.hasIceCaves = builder.comment("allow Ice Caves biomes to generate")
+            .define("has_ice_caves", true);
+        builder.pop();
+
         builder.push("Wilderness Bound");
         this.hasDappledForest = builder.comment("allow Dappled Forest biomes to generate")
             .define("has_dappled_forest", true);

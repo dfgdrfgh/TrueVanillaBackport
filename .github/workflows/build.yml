@@ -107,6 +107,9 @@ jobs:
           python .github/scripts/test_sulfur_cold.py common/build/recipe-test-classpath.txt
           python .github/scripts/test_ice_crevasse.py
           python .github/scripts/test_ice_cave_spawns.py
+          python .github/scripts/test_map_markers.py
+          python .github/scripts/test_ice_biome.py
+          python .github/scripts/test_ice_cave_ores.py
       - name: Check cow textures and slab loot parity
         run: python .github/scripts/check_cow_and_slab_parity.py
       - name: Assemble installable mod
@@ -127,6 +130,16 @@ jobs:
         env:
           JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
         run: python .github/scripts/smoke.py ${{ matrix.loader }}
+      - name: Build isolated runtime parity tests
+        if: matrix.loader == 'fabric'
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
+        run: bash gradlew :fabric:remapParityTestJar --stacktrace
+      - name: Test transformed maps and ice mechanics in production
+        if: matrix.loader == 'fabric'
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}
+        run: python .github/scripts/smoke.py fabric parity
       - name: Check WWOO compatibility in a normal world
         env:
           JAVA_HOME: ${{ env.JAVA_HOME_21_X64 }}

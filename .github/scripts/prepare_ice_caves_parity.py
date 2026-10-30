@@ -50,6 +50,18 @@ data = json.loads(mixins.read_text())
 data['client'].append('IceAmbientMixin')
 mixins.write_text(json.dumps(data, indent=2) + '\n')
 
+# The true biome owns cave features and cave spawns; only vanilla cold surface
+# biomes receive additional Frostbites, at their exact snapshot weights.
+main_source = main.read_text()
+for prefix in ('      BiomeModifications.addFeature(', '      BiomeModifications.addSpawn('):
+    main_source = '\n'.join(line for line in main_source.split('\n') if not line.startswith(prefix))
+spawns = ''
+for group, weight in [(['deep_frozen_ocean', 'frozen_ocean', 'frozen_peaks', 'frozen_river', 'ice_spikes'], 25),
+                      (['jagged_peaks', 'snowy_plains', 'snowy_slopes'], 10)]:
+    keys = ', '.join('class_5321.method_29179(class_7924.field_41236, class_2960.method_60655("minecraft", "' + name + '"))' for name in group)
+    spawns += '      BiomeModifications.addSpawn(BiomeSelectors.includeByKey(' + keys + '), class_1311.field_6302, FROSTBITE, ' + str(weight) + ', 4, 4);\n'
+main.write_text(main_source.replace('      IceCavesCommon.init();', spawns + '      IceCavesCommon.init();'))
+
 # Preserve regular monsters instead of clearing spawn lists across cold surface biomes.
 text = main.read_text()
 start = text.index('      BiomeModifications.create(')
