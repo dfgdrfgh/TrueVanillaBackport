@@ -7,6 +7,19 @@ DATA = Path(__file__).resolve().parents[1] / ".github/ice-caves-resource-overrid
 
 
 class IceLootTests(unittest.TestCase):
+    def test_frostbite_ice_balls_use_vanilla_count_and_looting(self):
+        table = json.loads((DATA / "ice_caves/loot_table/entities/frostbite.json").read_text())
+        pool = table["pools"][1]
+        self.assertNotIn("conditions", pool)
+        entry = pool["entries"][0]
+        self.assertEqual(entry["name"], "ice_caves:ice_ball")
+        count, looting = entry["functions"]
+        self.assertEqual(count, {"function": "minecraft:set_count", "count": {
+            "type": "minecraft:uniform", "min": 0, "max": 3
+        }})
+        self.assertEqual(looting, {"function": "minecraft:enchanted_count_increase",
+            "enchantment": "minecraft:looting", "count": {"type": "minecraft:uniform", "min": 0, "max": 1}})
+
     def test_crystal_drops_itself_without_silk_touch(self):
         table = json.loads((DATA / "ice_caves/loot_table/blocks/ice_crystal.json").read_text())
         self.assertEqual(table["pools"], [{
