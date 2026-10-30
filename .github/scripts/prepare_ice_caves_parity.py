@@ -14,13 +14,26 @@ def edit(path, old, new):
     path.write_text(text.replace(old, new))
 
 blocks = SOURCE / 'registry/ModBlocks.java'
-edit(blocks, 'new class_5542(5.0F, 3.0F,', 'new org.zerw.net.icecaves.block.IceCrystalBlock(')
+edit(blocks,
+     'new class_5542(5.0F, 3.0F, class_2251.method_55226(class_2246.field_27162).method_9626(ModSounds.ICE_CRYSTAL))',
+     'new org.zerw.net.icecaves.block.IceCrystalBlock(class_2251.method_9637().method_31710(class_3620.field_16016)'
+     '.method_9626(ModSounds.ICE_CRYSTAL).method_51368(net.minecraft.class_2766.field_12647).method_9632(1.5F)'
+     '.method_9631(state -> 4).method_50012(class_3619.field_15971).method_26236((state, level, pos) -> false).method_22488())')
 edit(blocks,
      'return class_2251.method_9637().method_31710(class_3620.field_16016).method_9628(0.98F).method_9632(0.5F).method_9626(ModSounds.ICE);',
-     'return class_2251.method_9637().method_31710(class_3620.field_16016).method_9628(0.98F).method_9632(0.5F).method_29292().method_9626(ModSounds.PACKED_ICE);')
+     'return class_2251.method_9637().method_31710(class_3620.field_16016).method_9628(0.6F).method_9632(0.5F).method_29292().method_51368(net.minecraft.class_2766.field_12647).method_9626(ModSounds.PACKED_ICE);')
 edit(blocks,
      '.method_9632(0.5F).method_9626(ModSounds.ICE).method_22488()',
-     '.method_9632(0.5F).method_9626(ModSounds.BRITTLE_ICE).method_22488()')
+     '.method_9632(0.5F).method_9626(ModSounds.BRITTLE_ICE).method_51368(net.minecraft.class_2766.field_12647)'
+     '.method_26235((state, level, pos, type) -> type == net.minecraft.class_1299.field_6042)'
+     '.method_26236((state, level, pos) -> false).method_50012(class_3619.field_15971).method_22488()')
+
+block_text = blocks.read_text()
+start = block_text.index('   public static IcicleBlock createIcicle()')
+end = block_text.index('   public static BrittleIceBlock createBrittleIce()', start)
+icicle = block_text[start:end].replace('class_3620.field_16016', 'class_3620.field_16024')
+icicle = icicle.replace('.method_9626(ModSounds.ICE_CRYSTAL)', '.method_51368(net.minecraft.class_2766.field_12647).method_9626(ModSounds.ICICLE)')
+blocks.write_text(block_text[:start] + icicle + block_text[end:])
 
 sounds = SOURCE / 'registry/ModSounds.java'
 manifest = json.loads((ROOT / '.github/ice-caves-sounds.json').read_text())
@@ -33,7 +46,7 @@ for name in extra:
     declarations += f'   public static final class_2960 {field}_ID = class_2960.method_60655("minecraft", "{name}");\n'
     declarations += f'   public static final class_3414 {field} = class_3414.method_47908({field}_ID);\n'
     registrations += f'      class_2378.method_10230(class_7923.field_41172, ModSounds.{field}_ID, ModSounds.{field});\n'
-for block in ('packed_ice', 'blue_ice', 'brittle_ice'):
+for block in ('packed_ice', 'blue_ice', 'brittle_ice', 'icicle'):
     field = block.upper()
     declarations += f'   public static final class_2498 {field} = new class_2498(1.0F, 1.0F, {field}_BREAK, {field}_STEP, {field}_PLACE, {field}_HIT, {field}_FALL);\n'
 edit(sounds, '   private ModSounds() {', declarations + '\n   private ModSounds() {')
@@ -58,7 +71,7 @@ for prefix in ('      BiomeModifications.addFeature(', '      BiomeModifications
 spawns = ''
 for group, weight in [(['deep_frozen_ocean', 'frozen_ocean', 'frozen_peaks', 'frozen_river', 'ice_spikes'], 25),
                       (['jagged_peaks', 'snowy_plains', 'snowy_slopes'], 10)]:
-    keys = ', '.join('class_5321.method_29179(class_7924.field_41236, class_2960.method_60655("minecraft", "' + name + '"))' for name in group)
+    keys = ', '.join('net.minecraft.class_5321.method_29179(net.minecraft.class_7924.field_41236, class_2960.method_60655("minecraft", "' + name + '"))' for name in group)
     spawns += '      BiomeModifications.addSpawn(BiomeSelectors.includeByKey(' + keys + '), class_1311.field_6302, FROSTBITE, ' + str(weight) + ', 4, 4);\n'
 main.write_text(main_source.replace('      IceCavesCommon.init();', spawns + '      IceCavesCommon.init();'))
 

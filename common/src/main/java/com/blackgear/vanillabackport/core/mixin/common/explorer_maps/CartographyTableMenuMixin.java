@@ -4,6 +4,8 @@ import com.blackgear.vanillabackport.common.level.items.maps.ExplorerMaps;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.world.inventory.CartographyTableMenu;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -17,9 +19,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(CartographyTableMenu.class)
-public abstract class CartographyTableMenuMixin {
+public abstract class CartographyTableMenuMixin extends AbstractContainerMenu {
     @Shadow @Final private ResultContainer resultContainer;
-    @Shadow public abstract void broadcastChanges();
+
+    protected CartographyTableMenuMixin(MenuType<?> type, int containerId) {
+        super(type, containerId);
+    }
 
     @Inject(method = "setupResultSlot", at = @At("HEAD"), cancellable = true)
     private void vb$onlyExtendTaggedMaps(ItemStack map, ItemStack material, ItemStack result, CallbackInfo ci) {

@@ -33,6 +33,8 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 
 import java.util.List;
 import java.util.Map;
@@ -98,10 +100,26 @@ public final class ParityTestMod implements ModInitializer {
 
     private static void checkIce(MinecraftServer server) {
         ServerLevel level = server.overworld();
+        var iceBiome = level.registryAccess().registryOrThrow(Registries.BIOME)
+            .getHolderOrThrow(com.blackgear.vanillabackport.common.registries.worldgen.IceCavesBiomes.ICE_CAVES);
+        require(net.minecraft.world.entity.npc.VillagerType.byBiome(iceBiome) == net.minecraft.world.entity.npc.VillagerType.SNOW,
+            "Ice Caves zombie villagers must use snowy variant");
         BlockPos pos = new BlockPos(32, 80, 32);
         level.getChunkAt(pos);
         Block brittle = BuiltInRegistries.BLOCK.getOptional(id("brittle_ice")).orElseThrow();
         IntegerProperty age = (IntegerProperty)brittle.getStateDefinition().getProperty("age");
+        require(brittle.defaultBlockState().getPistonPushReaction() == PushReaction.DESTROY, "Pistons must destroy brittle ice");
+        require(!brittle.defaultBlockState().isValidSpawn(level, pos, EntityType.IRON_GOLEM), "Iron golems must not spawn on brittle ice");
+        require(brittle.defaultBlockState().isValidSpawn(level, pos, EntityType.POLAR_BEAR), "Brittle ice must permit polar bears");
+        require(!brittle.defaultBlockState().isRedstoneConductor(level, pos), "Brittle ice must not conduct redstone");
+        for (String name : List.of("packed_ice_bricks", "packed_ice_brick_stairs", "packed_ice_brick_slab", "packed_ice_brick_wall", "chiseled_packed_ice")) {
+            Block block = BuiltInRegistries.BLOCK.get(id(name));
+            require(block.getFriction() == 0.6F, "Incorrectly slippery building block: " + name);
+            require(block.defaultBlockState().requiresCorrectToolForDrops(), "Missing mining tool requirement: " + name);
+        }
+        Block crystal = BuiltInRegistries.BLOCK.get(id("ice_crystal"));
+        require(crystal.defaultBlockState().getMapColor(level, pos) == MapColor.ICE, "Ice crystal has amethyst map color");
+        require(crystal.defaultBlockState().getLightEmission() == 4, "Incorrect crystal light level");
         level.setBlockAndUpdate(pos, brittle.defaultBlockState());
         var stray = EntityType.STRAY.create(level);
         brittle.stepOn(level, pos, level.getBlockState(pos), stray);

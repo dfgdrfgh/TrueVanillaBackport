@@ -1,6 +1,10 @@
 {
   "values": [
     "minecraft:pale_garden",
-    "minecraft:sulfur_caves"
+    "minecraft:sulfur_caves",
+    {
+      "id": "minecraft:ice_caves",
+      "required": false
+    }
   ]
 }

@@ -134,3 +134,12 @@ with tempfile.TemporaryDirectory(prefix='ice-biome-') as directory:
 print('PASS: Fabric-only 1.21.1 biome schema, complete spawn table, 16 ore configurations and 21 placements'+(' compared to official snapshot' if len(sys.argv)>1 else ''))
 
 assert not (ROOT / "fabric/src/main/resources/data/minecraft/worldgen/noise/ice_cave_gradient.json").exists(), "Duplicate Fabric/common resource breaks processResources"
+
+# Shared resources must contain optional membership, never duplicate Fabric entries.
+for name in ['has_structure/mineshaft', 'has_structure/ruined_portal_standard', 'has_structure/trial_chambers',
+             'is_cave', 'is_overworld', 'spawns_cold_variant_farm_animals', 'spawns_cold_variant_frogs',
+             'spawns_cold_variants_underground', 'spawns_snow_foxes', 'spawns_white_rabbits', 'stronghold_biased_to']:
+    relative = 'data/minecraft/tags/worldgen/biome/' + name + '.json'
+    values = json.loads((ROOT / 'common/src/main/generated' / relative).read_text())['values']
+    assert {'id': 'minecraft:ice_caves', 'required': False} in values, name
+    assert not (ROOT / 'fabric/src/main/resources' / relative).exists(), 'Duplicate resource: ' + relative

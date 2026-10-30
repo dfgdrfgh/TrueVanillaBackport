@@ -41,6 +41,10 @@
     {
       "id": "#c:icy",
       "required": false
+    },
+    {
+      "id": "minecraft:ice_caves",
+      "required": false
     }
   ]
 }

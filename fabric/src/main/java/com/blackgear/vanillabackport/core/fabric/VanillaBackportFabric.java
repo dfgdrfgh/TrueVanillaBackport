@@ -13,5 +13,8 @@ public final class VanillaBackportFabric implements ModInitializer {
 
         // Run our common setup.
         VanillaBackport.bootstrap();
+        net.fabricmc.fabric.api.object.builder.v1.villager.VillagerTypeHelper.addVillagerTypeToBiome(
+            com.blackgear.vanillabackport.common.registries.worldgen.IceCavesBiomes.ICE_CAVES,
+            net.minecraft.world.entity.npc.VillagerType.SNOW);
     }
 }

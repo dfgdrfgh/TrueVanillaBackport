@@ -524,6 +524,70 @@
         "block/packed_ice/step6"
       ],
       "subtitle": "subtitles.block.generic.footsteps"
+    },
+    "block.icicle.break": {
+      "sounds": [
+        "block/icicle/break1",
+        "block/icicle/break2",
+        "block/icicle/break3",
+        "block/icicle/break4",
+        "block/icicle/break5",
+        "block/icicle/break6"
+      ],
+      "subtitle": "subtitles.block.generic.break"
+    },
+    "block.icicle.fall": {
+      "sounds": [
+        "block/icicle/hit1",
+        "block/icicle/hit2",
+        "block/icicle/hit3",
+        "block/icicle/hit4",
+        "block/icicle/hit5"
+      ],
+      "subtitle": "subtitles.block.generic.fall"
+    },
+    "block.icicle.hit": {
+      "sounds": [
+        "block/icicle/hit1",
+        "block/icicle/hit2",
+        "block/icicle/hit3",
+        "block/icicle/hit4",
+        "block/icicle/hit5"
+      ],
+      "subtitle": "subtitles.block.generic.hit"
+    },
+    "block.icicle.land": {
+      "sounds": [
+        "block/icicle/land1",
+        "block/icicle/land2",
+        "block/icicle/land3",
+        "block/icicle/land4",
+        "block/icicle/land5",
+        "block/icicle/land6"
+      ],
+      "subtitle": "subtitles.block.icicle.land"
+    },
+    "block.icicle.place": {
+      "sounds": [
+        "block/icicle/place1",
+        "block/icicle/place2",
+        "block/icicle/place3",
+        "block/icicle/place4",
+        "block/icicle/place5",
+        "block/icicle/place6"
+      ],
+      "subtitle": "subtitles.block.generic.place"
+    },
+    "block.icicle.step": {
+      "sounds": [
+        "block/icicle/step1",
+        "block/icicle/step2",
+        "block/icicle/step3",
+        "block/icicle/step4",
+        "block/icicle/step5",
+        "block/icicle/step6"
+      ],
+      "subtitle": "subtitles.block.generic.footsteps"
     }
   },
   "files": {
@@ -1206,6 +1270,122 @@
     "block/packed_ice/step6.ogg": {
       "hash": "9836a952afb453d37a8b8e83a858eaf3d5c46078",
       "size": 8371
+    },
+    "block/icicle/break1.ogg": {
+      "hash": "074428910786fe9530b7870f366a93ff11ac6e82",
+      "size": 13671
+    },
+    "block/icicle/break2.ogg": {
+      "hash": "b00ac035a13516e84f851271a2dc62687996a32d",
+      "size": 13062
+    },
+    "block/icicle/break3.ogg": {
+      "hash": "8797e7a7b8afc100e640f8931697f6e39b2afc51",
+      "size": 13883
+    },
+    "block/icicle/break4.ogg": {
+      "hash": "a01838e412d534e295df22c2aa9325708a766abe",
+      "size": 11538
+    },
+    "block/icicle/break5.ogg": {
+      "hash": "2483b663265dfee81652d20564466517eb463676",
+      "size": 13511
+    },
+    "block/icicle/break6.ogg": {
+      "hash": "050e858b3fbf191e0d370fbd560ced1f8e83b3e9",
+      "size": 13607
+    },
+    "block/icicle/hit1.ogg": {
+      "hash": "387dc5aa4f13e3808a7dcf18225f2935edfe5954",
+      "size": 7891
+    },
+    "block/icicle/hit2.ogg": {
+      "hash": "4c93cba8df7c5a8468b61745af47345f8958e645",
+      "size": 7523
+    },
+    "block/icicle/hit3.ogg": {
+      "hash": "4db90ebfe7b7ba4cbcb63064d99c4815814199a1",
+      "size": 9220
+    },
+    "block/icicle/hit4.ogg": {
+      "hash": "d88a1210ee66c96358dcdd2d409de657718e796f",
+      "size": 7673
+    },
+    "block/icicle/hit5.ogg": {
+      "hash": "1c59df34b9e7e4af6821ca78cb79cbf448c114cd",
+      "size": 8041
+    },
+    "block/icicle/land1.ogg": {
+      "hash": "cae927a6e696c809e90d590c226dfeb4baae35dd",
+      "size": 12972
+    },
+    "block/icicle/land2.ogg": {
+      "hash": "182927a660a36425780ca613d01e4ac81f0b4588",
+      "size": 12968
+    },
+    "block/icicle/land3.ogg": {
+      "hash": "5405777f3d92803000e43af9db4e8128e68cf35c",
+      "size": 12824
+    },
+    "block/icicle/land4.ogg": {
+      "hash": "ae9441a7fc937a6343ac1d5e58416303e5b610e5",
+      "size": 11629
+    },
+    "block/icicle/land5.ogg": {
+      "hash": "684d2a60be4bafd8263e85d2c307c224a2750005",
+      "size": 13758
+    },
+    "block/icicle/land6.ogg": {
+      "hash": "d8b43a3fd6bd1d09b3b35c5dfda4cfa896859b46",
+      "size": 13394
+    },
+    "block/icicle/place1.ogg": {
+      "hash": "25410580f8f42601cc6f908b89990414e923379f",
+      "size": 8324
+    },
+    "block/icicle/place2.ogg": {
+      "hash": "571f1a9c10a2bec0866dea5834a807c3cb0ad56b",
+      "size": 7009
+    },
+    "block/icicle/place3.ogg": {
+      "hash": "ab40dbbf4c81883f3ca4316fa5dbfdef0e7ecb7d",
+      "size": 8014
+    },
+    "block/icicle/place4.ogg": {
+      "hash": "bb3844f3a45ed021acd01f6f4f927ba0cb75747a",
+      "size": 6895
+    },
+    "block/icicle/place5.ogg": {
+      "hash": "6fcdb2739e3ffde8e08c0c69749bd8fbaaa545c7",
+      "size": 7621
+    },
+    "block/icicle/place6.ogg": {
+      "hash": "9858b6c69e7a81538d8241d1c4f6c6eb3081cf04",
+      "size": 8981
+    },
+    "block/icicle/step1.ogg": {
+      "hash": "63f4c0d715078f840a17397040dbccbd9e8c59a5",
+      "size": 8995
+    },
+    "block/icicle/step2.ogg": {
+      "hash": "38683b575beae3c86a61122f330d82f1502340ac",
+      "size": 8360
+    },
+    "block/icicle/step3.ogg": {
+      "hash": "b0a937c5dfc8d7652f398351cbe298a2890e6050",
+      "size": 7543
+    },
+    "block/icicle/step4.ogg": {
+      "hash": "34b20f454cf2999d0c7579985fbe0fc111215e2c",
+      "size": 7451
+    },
+    "block/icicle/step5.ogg": {
+      "hash": "f2ac85022d685e6ba62d58ce9c3588a2a65b7c90",
+      "size": 7761
+    },
+    "block/icicle/step6.ogg": {
+      "hash": "356c7fffe9ba13f83dd94ed175e175abb223d116",
+      "size": 9018
     }
   }
 }
