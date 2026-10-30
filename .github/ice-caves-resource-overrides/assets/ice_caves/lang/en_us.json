@@ -36,5 +36,8 @@
   "item.ice_caves.ice_door": "Ice Door",
   "subtitles.block.ice_crystal.ambient": "Ice Crystal chimes",
   "subtitles.block.ice.ambient": "Ice resonates",
-  "subtitles.block.brittle_ice.crack": "Brittle Ice cracks"
+  "subtitles.block.brittle_ice.crack": "Brittle Ice cracks",
+  "subtitles.block.icicle.land": "Icicle crashes down",
+  "subtitles.entity.ice_ball.break": "Ice Ball hits",
+  "subtitles.entity.ice_ball.throw": "Ice Ball flies"
 }

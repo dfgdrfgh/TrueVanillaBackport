@@ -61,7 +61,31 @@ edit(hook, 'cir.setReturnValue(ModSounds.ICE);',
 mixins = RESOURCES / 'ice_caves.mixins.json'
 data = json.loads(mixins.read_text())
 data['client'].append('IceAmbientMixin')
+data['mixins'].append('LivingEntityFreezingMixin')
 mixins.write_text(json.dumps(data, indent=2) + '\n')
+
+# Ice Balls have their own throw/break events, including block impacts. The
+# snapshot applies Freezing on Frostbite melee attacks, not ordinary Ice Balls.
+edit(SOURCE / 'item/IceBallItem.java', 'class_3417.field_14873,',
+     'org.zerw.net.icecaves.registry.ModSounds.ENTITY_ICE_BALL_THROW,')
+edit(SOURCE / 'entity/FrostbiteZombie.java', 'this.method_5783(class_3417.field_14753, 1.0F, 1.0F);',
+     'this.method_5783(ModSounds.ENTITY_ICE_BALL_THROW, 1.0F, 1.0F);')
+
+# Snapshot icicles cause impact damage, without an additional freezing aura.
+icicle_source = SOURCE / 'block/IcicleBlock.java'
+edit(icicle_source, '''         if (entity instanceof class_1309 living) {
+            applyFreezing(level, living);
+         }
+''', '')
+text = icicle_source.read_text()
+assert text.count('      applyFreezingNearby(level, entity);\n') == 2
+text = text.replace('      applyFreezingNearby(level, entity);\n', '')
+start = text.index('   private static void applyFreezingNearby(')
+end = text.index('   private static boolean shouldMelt(', start)
+text = text[:start] + text[end:]
+icicle_source.write_text(text)
+edit(icicle_source, 'ModSounds.ICE_BREAK, class_3419.field_15245, 1.0F,',
+     'ModSounds.ICICLE_LAND, class_3419.field_15245, 1.0F,')
 
 # The true biome owns cave features and cave spawns; only vanilla cold surface
 # biomes receive additional Frostbites, at their exact snapshot weights.

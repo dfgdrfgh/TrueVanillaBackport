@@ -470,61 +470,6 @@
       ],
       "subtitle": "subtitles.block.generic.footsteps"
     },
-    "block.packed_ice.break": {
-      "sounds": [
-        "block/packed_ice/break1",
-        "block/packed_ice/break2",
-        "block/packed_ice/break3",
-        "block/packed_ice/break4",
-        "block/packed_ice/break5",
-        "block/packed_ice/break6"
-      ],
-      "subtitle": "subtitles.block.generic.break"
-    },
-    "block.packed_ice.fall": {
-      "sounds": [
-        "block/packed_ice/hit1",
-        "block/packed_ice/hit2",
-        "block/packed_ice/hit3",
-        "block/packed_ice/hit4",
-        "block/packed_ice/hit5",
-        "block/packed_ice/hit6"
-      ],
-      "subtitle": "subtitles.block.generic.fall"
-    },
-    "block.packed_ice.hit": {
-      "sounds": [
-        "block/packed_ice/hit1",
-        "block/packed_ice/hit2",
-        "block/packed_ice/hit3",
-        "block/packed_ice/hit4",
-        "block/packed_ice/hit5",
-        "block/packed_ice/hit6"
-      ],
-      "subtitle": "subtitles.block.generic.hit"
-    },
-    "block.packed_ice.place": {
-      "sounds": [
-        "block/packed_ice/place1",
-        "block/packed_ice/place2",
-        "block/packed_ice/place3",
-        "block/packed_ice/place4",
-        "block/packed_ice/place5",
-        "block/packed_ice/place6"
-      ],
-      "subtitle": "subtitles.block.generic.place"
-    },
-    "block.packed_ice.step": {
-      "sounds": [
-        "block/packed_ice/step1",
-        "block/packed_ice/step2",
-        "block/packed_ice/step3",
-        "block/packed_ice/step4",
-        "block/packed_ice/step5",
-        "block/packed_ice/step6"
-      ],
-      "subtitle": "subtitles.block.generic.footsteps"
-    },
     "block.icicle.break": {
       "sounds": [
         "block/icicle/break1",
@@ -588,6 +533,88 @@
         "block/icicle/step6"
       ],
       "subtitle": "subtitles.block.generic.footsteps"
+    },
+    "block.packed_ice.break": {
+      "sounds": [
+        "block/packed_ice/break1",
+        "block/packed_ice/break2",
+        "block/packed_ice/break3",
+        "block/packed_ice/break4",
+        "block/packed_ice/break5",
+        "block/packed_ice/break6"
+      ],
+      "subtitle": "subtitles.block.generic.break"
+    },
+    "block.packed_ice.fall": {
+      "sounds": [
+        "block/packed_ice/hit1",
+        "block/packed_ice/hit2",
+        "block/packed_ice/hit3",
+        "block/packed_ice/hit4",
+        "block/packed_ice/hit5",
+        "block/packed_ice/hit6"
+      ],
+      "subtitle": "subtitles.block.generic.fall"
+    },
+    "block.packed_ice.hit": {
+      "sounds": [
+        "block/packed_ice/hit1",
+        "block/packed_ice/hit2",
+        "block/packed_ice/hit3",
+        "block/packed_ice/hit4",
+        "block/packed_ice/hit5",
+        "block/packed_ice/hit6"
+      ],
+      "subtitle": "subtitles.block.generic.hit"
+    },
+    "block.packed_ice.place": {
+      "sounds": [
+        "block/packed_ice/place1",
+        "block/packed_ice/place2",
+        "block/packed_ice/place3",
+        "block/packed_ice/place4",
+        "block/packed_ice/place5",
+        "block/packed_ice/place6"
+      ],
+      "subtitle": "subtitles.block.generic.place"
+    },
+    "block.packed_ice.step": {
+      "sounds": [
+        "block/packed_ice/step1",
+        "block/packed_ice/step2",
+        "block/packed_ice/step3",
+        "block/packed_ice/step4",
+        "block/packed_ice/step5",
+        "block/packed_ice/step6"
+      ],
+      "subtitle": "subtitles.block.generic.footsteps"
+    },
+    "entity.ice_ball.break": {
+      "sounds": [
+        {
+          "name": "entity/ice_ball/hit1",
+          "pitch": 2.0
+        },
+        {
+          "name": "entity/ice_ball/hit2",
+          "pitch": 2.0
+        },
+        {
+          "name": "entity/ice_ball/hit3",
+          "pitch": 2.0
+        },
+        {
+          "name": "entity/ice_ball/hit4",
+          "pitch": 2.0
+        }
+      ],
+      "subtitle": "subtitles.entity.ice_ball.break"
+    },
+    "entity.ice_ball.throw": {
+      "sounds": [
+        "entity/ice_ball/bow"
+      ],
+      "subtitle": "subtitles.entity.ice_ball.throw"
     }
   },
   "files": {
@@ -803,38 +830,6 @@
       "hash": "a20531afd18eeee896b3cdac99098909781dd3ed",
       "size": 98571
     },
-    "block/ice/ambient2.ogg": {
-      "hash": "031805d8200a68212ffdff5917d13243d10061b4",
-      "size": 66784
-    },
-    "block/ice/ambient3.ogg": {
-      "hash": "6551f9f5af5e5ded73f2d7ef83f58d58fba4db7b",
-      "size": 105919
-    },
-    "block/ice/ambient4.ogg": {
-      "hash": "2c256c41137a854bbfbb7739787712898e030c67",
-      "size": 46104
-    },
-    "block/ice/ambient5.ogg": {
-      "hash": "6da2632023a1b174abb46956e315d71e73152a0b",
-      "size": 65907
-    },
-    "block/ice/ambient6.ogg": {
-      "hash": "da57ce1317056e920adc8ece581f8542f4f3cd94",
-      "size": 47834
-    },
-    "block/ice/ambient7.ogg": {
-      "hash": "c8578f01fc0fd2ccfeee07c51f3587737951131f",
-      "size": 41856
-    },
-    "block/ice/ambient8.ogg": {
-      "hash": "95532b871c321e5aac02ba0be5e21f374853a866",
-      "size": 79407
-    },
-    "block/ice/ambient9.ogg": {
-      "hash": "d7118dc9a0e60592f137593c4cdc98b5c26480a5",
-      "size": 63342
-    },
     "block/ice/ambient10.ogg": {
       "hash": "a9b170cbb1204cc73b14fb5ce156284fd1fc8214",
       "size": 68652
@@ -875,6 +870,10 @@
       "hash": "36e758abaf06be8088e75ad7b6418716a006eec3",
       "size": 152529
     },
+    "block/ice/ambient2.ogg": {
+      "hash": "031805d8200a68212ffdff5917d13243d10061b4",
+      "size": 66784
+    },
     "block/ice/ambient20.ogg": {
       "hash": "99b49a956d18896b2c88f9f8b25a837a21f0c6b4",
       "size": 105229
@@ -890,6 +889,34 @@
     "block/ice/ambient23.ogg": {
       "hash": "391bf67a1c1921b127ff99857ac965ee7dccd4d2",
       "size": 187715
+    },
+    "block/ice/ambient3.ogg": {
+      "hash": "6551f9f5af5e5ded73f2d7ef83f58d58fba4db7b",
+      "size": 105919
+    },
+    "block/ice/ambient4.ogg": {
+      "hash": "2c256c41137a854bbfbb7739787712898e030c67",
+      "size": 46104
+    },
+    "block/ice/ambient5.ogg": {
+      "hash": "6da2632023a1b174abb46956e315d71e73152a0b",
+      "size": 65907
+    },
+    "block/ice/ambient6.ogg": {
+      "hash": "da57ce1317056e920adc8ece581f8542f4f3cd94",
+      "size": 47834
+    },
+    "block/ice/ambient7.ogg": {
+      "hash": "c8578f01fc0fd2ccfeee07c51f3587737951131f",
+      "size": 41856
+    },
+    "block/ice/ambient8.ogg": {
+      "hash": "95532b871c321e5aac02ba0be5e21f374853a866",
+      "size": 79407
+    },
+    "block/ice/ambient9.ogg": {
+      "hash": "d7118dc9a0e60592f137593c4cdc98b5c26480a5",
+      "size": 63342
     },
     "block/ice/break1.ogg": {
       "hash": "e4dacc755e2bbbfd99b73c876eba3d0c6099da21",
@@ -987,38 +1014,6 @@
       "hash": "c886d5eaa08fe11647211631d766c54796e68c4e",
       "size": 44203
     },
-    "block/ice_crystal/ambient2.ogg": {
-      "hash": "c3370cfe5493d5bac661abd5d4363fc9487cea41",
-      "size": 60513
-    },
-    "block/ice_crystal/ambient3.ogg": {
-      "hash": "e2ea1204e217b2e40b446a1fb317c022e8a4daa6",
-      "size": 73883
-    },
-    "block/ice_crystal/ambient4.ogg": {
-      "hash": "86e6a26b98f2548d3a3e78b0657d569f4842f1fc",
-      "size": 50552
-    },
-    "block/ice_crystal/ambient5.ogg": {
-      "hash": "24025076829ecf0d5b06e9d3cf4fa79ef425ed5b",
-      "size": 46934
-    },
-    "block/ice_crystal/ambient6.ogg": {
-      "hash": "99883610606cc9823aad1fd420e7e39395da31b7",
-      "size": 66177
-    },
-    "block/ice_crystal/ambient7.ogg": {
-      "hash": "c16cd906174200ca762cbb61bc008257d465ff9c",
-      "size": 76647
-    },
-    "block/ice_crystal/ambient8.ogg": {
-      "hash": "82de0474a971bf9eabbd99fd3ae72ed630f2f101",
-      "size": 37129
-    },
-    "block/ice_crystal/ambient9.ogg": {
-      "hash": "50357d02e7675b6a078709c481358991a5cbaaf4",
-      "size": 46344
-    },
     "block/ice_crystal/ambient10.ogg": {
       "hash": "e1c820c56ed8c105d19ba2d886a0093a2e1c17e1",
       "size": 46338
@@ -1059,6 +1054,10 @@
       "hash": "f65b3c0a24807826d78775b6e2f2eb1186073adb",
       "size": 26907
     },
+    "block/ice_crystal/ambient2.ogg": {
+      "hash": "c3370cfe5493d5bac661abd5d4363fc9487cea41",
+      "size": 60513
+    },
     "block/ice_crystal/ambient20.ogg": {
       "hash": "d0e45501ead69ec58d2825e0ca4b9a9568df90ff",
       "size": 98068
@@ -1094,6 +1093,34 @@
     "block/ice_crystal/ambient28.ogg": {
       "hash": "b5ff537f73d71eecd44505438dd3196075f3e209",
       "size": 43254
+    },
+    "block/ice_crystal/ambient3.ogg": {
+      "hash": "e2ea1204e217b2e40b446a1fb317c022e8a4daa6",
+      "size": 73883
+    },
+    "block/ice_crystal/ambient4.ogg": {
+      "hash": "86e6a26b98f2548d3a3e78b0657d569f4842f1fc",
+      "size": 50552
+    },
+    "block/ice_crystal/ambient5.ogg": {
+      "hash": "24025076829ecf0d5b06e9d3cf4fa79ef425ed5b",
+      "size": 46934
+    },
+    "block/ice_crystal/ambient6.ogg": {
+      "hash": "99883610606cc9823aad1fd420e7e39395da31b7",
+      "size": 66177
+    },
+    "block/ice_crystal/ambient7.ogg": {
+      "hash": "c16cd906174200ca762cbb61bc008257d465ff9c",
+      "size": 76647
+    },
+    "block/ice_crystal/ambient8.ogg": {
+      "hash": "82de0474a971bf9eabbd99fd3ae72ed630f2f101",
+      "size": 37129
+    },
+    "block/ice_crystal/ambient9.ogg": {
+      "hash": "50357d02e7675b6a078709c481358991a5cbaaf4",
+      "size": 46344
     },
     "block/ice_crystal/break1.ogg": {
       "hash": "24c3b009981b0f3a7cd9b6276de9aca7d00d9e18",
@@ -1174,102 +1201,6 @@
     "block/ice_crystal/step5.ogg": {
       "hash": "2db60004a46be773a64ee4da7531057fcf1ce21f",
       "size": 10339
-    },
-    "block/packed_ice/break1.ogg": {
-      "hash": "5f7cef988e17aad01ed3fdf985f94a9b2233661b",
-      "size": 9869
-    },
-    "block/packed_ice/break2.ogg": {
-      "hash": "83745e826cb5e374c2ae6464366f0b8cdac953c2",
-      "size": 9727
-    },
-    "block/packed_ice/break3.ogg": {
-      "hash": "9be5d0d022a2e51108c248b2929662135b7cba63",
-      "size": 10221
-    },
-    "block/packed_ice/break4.ogg": {
-      "hash": "332d88e46936377d529c2a62f5a29aa7de672e6f",
-      "size": 10136
-    },
-    "block/packed_ice/break5.ogg": {
-      "hash": "9c0b4a9e72bf04f6cf1ca11046fee305c5e3b659",
-      "size": 10098
-    },
-    "block/packed_ice/break6.ogg": {
-      "hash": "88869d5256f05c8c330fad467fe3e137a913bb88",
-      "size": 10620
-    },
-    "block/packed_ice/hit1.ogg": {
-      "hash": "18d664031833d82688ac12ed771ff8b3cde50b4f",
-      "size": 6711
-    },
-    "block/packed_ice/hit2.ogg": {
-      "hash": "4be598dc5a3c166687f755e03180a1b19ad72fd4",
-      "size": 6391
-    },
-    "block/packed_ice/hit3.ogg": {
-      "hash": "ccf1b381a89ec54c822f96d6e01a0430a6b353a2",
-      "size": 6141
-    },
-    "block/packed_ice/hit4.ogg": {
-      "hash": "753a82a619606e4eaf0272e59f4b5007f92d3914",
-      "size": 5985
-    },
-    "block/packed_ice/hit5.ogg": {
-      "hash": "37aee8365a0f1f37abc7714587140012a1ae7345",
-      "size": 6257
-    },
-    "block/packed_ice/hit6.ogg": {
-      "hash": "ff95b7ab44a9a7b595c4d6428791abaee7541d7a",
-      "size": 5656
-    },
-    "block/packed_ice/place1.ogg": {
-      "hash": "0d1b364833d142f3f0b81fc997dd0d89ef939af6",
-      "size": 6354
-    },
-    "block/packed_ice/place2.ogg": {
-      "hash": "4e307596b772b8858675606e8a69028de9302ed4",
-      "size": 6516
-    },
-    "block/packed_ice/place3.ogg": {
-      "hash": "19f1b4f20e37a12e4dc6617343b59e0ed3a61ae2",
-      "size": 6701
-    },
-    "block/packed_ice/place4.ogg": {
-      "hash": "33d2d160e513860fa590c717008873a43df0832f",
-      "size": 6183
-    },
-    "block/packed_ice/place5.ogg": {
-      "hash": "2df219d41a0b49c63d47d99e9d83d0e8870e6e4e",
-      "size": 5816
-    },
-    "block/packed_ice/place6.ogg": {
-      "hash": "107b20a023e9b018dd35e169ade002ed172e612a",
-      "size": 6463
-    },
-    "block/packed_ice/step1.ogg": {
-      "hash": "2fb00458397e8c85390e46dd977594d59f3c1017",
-      "size": 8409
-    },
-    "block/packed_ice/step2.ogg": {
-      "hash": "2819609202b2adafa74661b1b58833b2b8fcdca3",
-      "size": 8138
-    },
-    "block/packed_ice/step3.ogg": {
-      "hash": "b44eee840709d0b0c81f51b98fb1560ff03ed049",
-      "size": 7545
-    },
-    "block/packed_ice/step4.ogg": {
-      "hash": "537753109a348eddf2661813f830683d4faf3e5e",
-      "size": 7812
-    },
-    "block/packed_ice/step5.ogg": {
-      "hash": "b2eb02697c54b3964cf7ef8fe7b060d14bbc72c3",
-      "size": 7219
-    },
-    "block/packed_ice/step6.ogg": {
-      "hash": "9836a952afb453d37a8b8e83a858eaf3d5c46078",
-      "size": 8371
     },
     "block/icicle/break1.ogg": {
       "hash": "074428910786fe9530b7870f366a93ff11ac6e82",
@@ -1386,6 +1317,122 @@
     "block/icicle/step6.ogg": {
       "hash": "356c7fffe9ba13f83dd94ed175e175abb223d116",
       "size": 9018
+    },
+    "block/packed_ice/break1.ogg": {
+      "hash": "5f7cef988e17aad01ed3fdf985f94a9b2233661b",
+      "size": 9869
+    },
+    "block/packed_ice/break2.ogg": {
+      "hash": "83745e826cb5e374c2ae6464366f0b8cdac953c2",
+      "size": 9727
+    },
+    "block/packed_ice/break3.ogg": {
+      "hash": "9be5d0d022a2e51108c248b2929662135b7cba63",
+      "size": 10221
+    },
+    "block/packed_ice/break4.ogg": {
+      "hash": "332d88e46936377d529c2a62f5a29aa7de672e6f",
+      "size": 10136
+    },
+    "block/packed_ice/break5.ogg": {
+      "hash": "9c0b4a9e72bf04f6cf1ca11046fee305c5e3b659",
+      "size": 10098
+    },
+    "block/packed_ice/break6.ogg": {
+      "hash": "88869d5256f05c8c330fad467fe3e137a913bb88",
+      "size": 10620
+    },
+    "block/packed_ice/hit1.ogg": {
+      "hash": "18d664031833d82688ac12ed771ff8b3cde50b4f",
+      "size": 6711
+    },
+    "block/packed_ice/hit2.ogg": {
+      "hash": "4be598dc5a3c166687f755e03180a1b19ad72fd4",
+      "size": 6391
+    },
+    "block/packed_ice/hit3.ogg": {
+      "hash": "ccf1b381a89ec54c822f96d6e01a0430a6b353a2",
+      "size": 6141
+    },
+    "block/packed_ice/hit4.ogg": {
+      "hash": "753a82a619606e4eaf0272e59f4b5007f92d3914",
+      "size": 5985
+    },
+    "block/packed_ice/hit5.ogg": {
+      "hash": "37aee8365a0f1f37abc7714587140012a1ae7345",
+      "size": 6257
+    },
+    "block/packed_ice/hit6.ogg": {
+      "hash": "ff95b7ab44a9a7b595c4d6428791abaee7541d7a",
+      "size": 5656
+    },
+    "block/packed_ice/place1.ogg": {
+      "hash": "0d1b364833d142f3f0b81fc997dd0d89ef939af6",
+      "size": 6354
+    },
+    "block/packed_ice/place2.ogg": {
+      "hash": "4e307596b772b8858675606e8a69028de9302ed4",
+      "size": 6516
+    },
+    "block/packed_ice/place3.ogg": {
+      "hash": "19f1b4f20e37a12e4dc6617343b59e0ed3a61ae2",
+      "size": 6701
+    },
+    "block/packed_ice/place4.ogg": {
+      "hash": "33d2d160e513860fa590c717008873a43df0832f",
+      "size": 6183
+    },
+    "block/packed_ice/place5.ogg": {
+      "hash": "2df219d41a0b49c63d47d99e9d83d0e8870e6e4e",
+      "size": 5816
+    },
+    "block/packed_ice/place6.ogg": {
+      "hash": "107b20a023e9b018dd35e169ade002ed172e612a",
+      "size": 6463
+    },
+    "block/packed_ice/step1.ogg": {
+      "hash": "2fb00458397e8c85390e46dd977594d59f3c1017",
+      "size": 8409
+    },
+    "block/packed_ice/step2.ogg": {
+      "hash": "2819609202b2adafa74661b1b58833b2b8fcdca3",
+      "size": 8138
+    },
+    "block/packed_ice/step3.ogg": {
+      "hash": "b44eee840709d0b0c81f51b98fb1560ff03ed049",
+      "size": 7545
+    },
+    "block/packed_ice/step4.ogg": {
+      "hash": "537753109a348eddf2661813f830683d4faf3e5e",
+      "size": 7812
+    },
+    "block/packed_ice/step5.ogg": {
+      "hash": "b2eb02697c54b3964cf7ef8fe7b060d14bbc72c3",
+      "size": 7219
+    },
+    "block/packed_ice/step6.ogg": {
+      "hash": "9836a952afb453d37a8b8e83a858eaf3d5c46078",
+      "size": 8371
+    },
+    "entity/ice_ball/bow.ogg": {
+      "hash": "9e47c83d26e59e926aebf5ee513dfb1d33739b9a",
+      "size": 7282
+    },
+    "entity/ice_ball/hit1.ogg": {
+      "hash": "e4e9a3fa2046158952ee79ed551b67c8ce952d50",
+      "size": 6936
+    },
+    "entity/ice_ball/hit2.ogg": {
+      "hash": "a9cf3fdcf284821e648a1d9360365516762683ef",
+      "size": 6738
+    },
+    "entity/ice_ball/hit3.ogg": {
+      "hash": "4c4877b410ec2edced75041a7ae65c8852bb8522",
+      "size": 7252
+    },
+    "entity/ice_ball/hit4.ogg": {
+      "hash": "f5f47126ff3096402c67e90d9c67786a93691cb9",
+      "size": 7491
     }
   }
 }

@@ -19,6 +19,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MapItem;
@@ -49,8 +50,71 @@ public final class ParityTestMod implements ModInitializer {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             checkMaps(server);
             checkIce(server);
+            checkFreezingAndIceBall(server);
             System.out.println("TVB_PARITY_RUNTIME_OK: transformed map save/network/cloning/zoom and ice mechanics");
         });
+    }
+
+    private static void checkFreezingAndIceBall(MinecraftServer server) {
+        ServerLevel level = server.overworld();
+        level.getChunkAt(new BlockPos(80, 80, 80));
+        var freezing = BuiltInRegistries.MOB_EFFECT.getHolder(ResourceKey.create(Registries.MOB_EFFECT, id("freezing"))).orElseThrow();
+        var cow = EntityType.COW.create(level);
+        cow.setPos(80.5, 80, 80.5);
+        cow.setNoAi(true);
+        cow.setNoGravity(true);
+        cow.addEffect(new MobEffectInstance(freezing, 400, 3));
+        require(cow.getTicksFrozen() == 0, "Freezing must not advance on application");
+        for (int i = 0; i < 10; i++) cow.tick();
+        require(cow.getTicksFrozen() == 10, "Native thawing cancelled Freezing or amplifier changed its rate");
+        cow.setTicksFrozen(cow.getTicksRequiredToFreeze() - 1);
+        cow.tick();
+        cow.tick();
+        require(cow.getTicksFrozen() == cow.getTicksRequiredToFreeze(), "Freezing exceeded its vanilla cap");
+        cow.tickCount = 39;
+        float health = cow.getHealth();
+        cow.tick();
+        require(cow.getHealth() == health - 1.5F, "Freezing damage must be 1.5 every forty ticks");
+        cow.removeEffect(freezing);
+        cow.tick();
+        require(cow.getTicksFrozen() == cow.getTicksRequiredToFreeze() - 2, "Ordinary thawing did not resume");
+
+        Block icicle = BuiltInRegistries.BLOCK.get(id("icicle"));
+        var tip = icicle.defaultBlockState()
+            .setValue(net.minecraft.world.level.block.PointedDripstoneBlock.TIP_DIRECTION, net.minecraft.core.Direction.UP)
+            .setValue(net.minecraft.world.level.block.PointedDripstoneBlock.THICKNESS,
+                net.minecraft.world.level.block.state.properties.DripstoneThickness.TIP);
+        icicle.fallOn(level, tip, new BlockPos(80, 80, 80), cow, 0.0F);
+        require(!cow.hasEffect(freezing), "Icicle applied a non-vanilla Freezing effect");
+
+        var immune = (net.minecraft.world.entity.Mob)BuiltInRegistries.ENTITY_TYPE.get(id("frostbite")).create(level);
+        immune.setPos(80.5, 80, 80.5);
+        immune.setNoAi(true);
+        immune.setNoGravity(true);
+        immune.addEffect(new MobEffectInstance(freezing, 100));
+        for (int i = 0; i < 10; i++) immune.tick();
+        require(immune.getTicksFrozen() == 0, "Freezing affected an immune Frostbite");
+
+        // Actual collision through the registered production projectile, without
+        // invoking its protected hit methods or replacing its damage implementation.
+        var target = EntityType.COW.create(level);
+        target.setPos(80.5, 80, 80.5);
+        target.setNoAi(true);
+        target.setNoGravity(true);
+        level.addFreshEntity(target);
+        var ball = BuiltInRegistries.ENTITY_TYPE.get(id("ice_ball")).create(level);
+        ball.setPos(79.5, 80.7, 80.5);
+        ball.setNoGravity(true);
+        ball.setDeltaMovement(1.5, 0, 0);
+        level.addFreshEntity(ball);
+        try {
+            ball.tick();
+            require(target.getHealth() == target.getMaxHealth() - 3, "Ice Ball speed-based impact damage");
+            require(!target.hasEffect(freezing), "Ice Ball applied a non-vanilla Freezing effect");
+        } finally {
+            ball.discard();
+            target.discard();
+        }
     }
 
     private static void checkMaps(MinecraftServer server) {

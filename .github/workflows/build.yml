@@ -110,6 +110,7 @@ jobs:
           python .github/scripts/test_map_markers.py
           python .github/scripts/test_ice_biome.py
           python .github/scripts/test_ice_cave_ores.py
+          python .github/scripts/test_ice_freezing.py
       - name: Check cow textures and slab loot parity
         run: python .github/scripts/check_cow_and_slab_parity.py
       - name: Assemble installable mod
