@@ -65,18 +65,18 @@ public final class ParityTestMod implements ModInitializer {
         cow.setNoGravity(true);
         cow.addEffect(new MobEffectInstance(freezing, 400, 3));
         require(cow.getTicksFrozen() == 0, "Freezing must not advance on application");
-        for (int i = 0; i < 10; i++) cow.tick();
+        for (int i = 0; i < 10; i++) level.tickNonPassenger(cow);
         require(cow.getTicksFrozen() == 10, "Native thawing cancelled Freezing or amplifier changed its rate");
         cow.setTicksFrozen(cow.getTicksRequiredToFreeze() - 1);
-        cow.tick();
-        cow.tick();
+        level.tickNonPassenger(cow);
+        level.tickNonPassenger(cow);
         require(cow.getTicksFrozen() == cow.getTicksRequiredToFreeze(), "Freezing exceeded its vanilla cap");
         cow.tickCount = 39;
         float health = cow.getHealth();
-        cow.tick();
+        level.tickNonPassenger(cow);
         require(cow.getHealth() == health - 1.5F, "Freezing damage must be 1.5 every forty ticks");
         cow.removeEffect(freezing);
-        cow.tick();
+        level.tickNonPassenger(cow);
         require(cow.getTicksFrozen() == cow.getTicksRequiredToFreeze() - 2, "Ordinary thawing did not resume");
 
         Block icicle = BuiltInRegistries.BLOCK.get(id("icicle"));
@@ -92,7 +92,7 @@ public final class ParityTestMod implements ModInitializer {
         immune.setNoAi(true);
         immune.setNoGravity(true);
         immune.addEffect(new MobEffectInstance(freezing, 100));
-        for (int i = 0; i < 10; i++) immune.tick();
+        for (int i = 0; i < 10; i++) level.tickNonPassenger(immune);
         require(immune.getTicksFrozen() == 0, "Freezing affected an immune Frostbite");
 
         // Actual collision through the registered production projectile, without
@@ -108,7 +108,7 @@ public final class ParityTestMod implements ModInitializer {
         ball.setDeltaMovement(1.5, 0, 0);
         level.addFreshEntity(ball);
         try {
-            ball.tick();
+            level.tickNonPassenger(ball);
             require(target.getHealth() == target.getMaxHealth() - 3, "Ice Ball speed-based impact damage");
             require(!target.hasEffect(freezing), "Ice Ball applied a non-vanilla Freezing effect");
         } finally {
