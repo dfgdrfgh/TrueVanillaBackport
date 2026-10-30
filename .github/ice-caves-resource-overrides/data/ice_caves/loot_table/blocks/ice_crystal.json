@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "conditions": [
+        { "condition": "minecraft:survives_explosion" }
+      ],
+      "entries": [
+        { "type": "minecraft:item", "name": "ice_caves:ice_crystal" }
+      ]
+    }
+  ],
+  "random_sequence": "minecraft:blocks/ice_crystal"
+}

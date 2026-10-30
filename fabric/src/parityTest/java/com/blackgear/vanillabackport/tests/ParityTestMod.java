@@ -183,6 +183,13 @@ public final class ParityTestMod implements ModInitializer {
         Block crystal = BuiltInRegistries.BLOCK.get(id("ice_crystal"));
         require(crystal.defaultBlockState().getMapColor(level, pos) == MapColor.ICE, "Ice crystal has amethyst map color");
         require(crystal.defaultBlockState().getLightEmission() == 4, "Incorrect crystal light level");
+        var crystalDrops = Block.getDrops(crystal.defaultBlockState(), level, pos, null, null, ItemStack.EMPTY);
+        require(crystalDrops.size() == 1 && crystalDrops.getFirst().is(crystal.asItem())
+            && crystalDrops.getFirst().getCount() == 1, "Ice Crystal must drop itself without Silk Touch");
+        for (int i = 0; i < 32; i++) {
+            require(Block.getDrops(Blocks.PACKED_ICE.defaultBlockState(), level, pos, null, null, ItemStack.EMPTY).isEmpty(),
+                "Packed Ice must not drop Ice Balls");
+        }
         level.setBlockAndUpdate(pos, brittle.defaultBlockState());
         var stray = EntityType.STRAY.create(level);
         brittle.stepOn(level, pos, level.getBlockState(pos), stray);
